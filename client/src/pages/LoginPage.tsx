@@ -1,24 +1,29 @@
 import React from "react";
+import "./RegisterPage.css";
 
 function LoginPage() {
-  function submit(event) {
+  function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
   }
 
   return (
     <>
-      <form action="" onSubmit={submit}>
-        <h1>Login</h1>
-        <div>
-          <label htmlFor="">Email</label>
-          <input type="text" />
+      <section className="login">
+        <div className="form-wrapper">
+          <form className="" action="" onSubmit={submit}>
+            <h1>Login</h1>
+            <div>
+              <label htmlFor="">Email</label>
+              <input type="text" />
+            </div>
+            <div>
+              <label htmlFor="">Password</label>
+              <input type="text" />
+            </div>
+            <button>Login</button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="">Password</label>
-          <input type="text" />
-        </div>
-        <button>Login</button>
-      </form>
+      </section>
     </>
   );
 }

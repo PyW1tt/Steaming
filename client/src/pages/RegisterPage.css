@@ -1,0 +1,32 @@
+section {
+  background: #000000;
+  color: white;
+}
+.register::before {
+  content: "";
+  background: url("../../public/background/bgRegister.jpg");
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.login::before {
+  content: "";
+  background: url("../../public/background/bgLogin.jpg");
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.form-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 4px;
+  padding: 70px;
+  width: 450px;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+}
