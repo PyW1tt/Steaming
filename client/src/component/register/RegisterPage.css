@@ -4,7 +4,7 @@ section {
 }
 .register::before {
   content: "";
-  background: url("../../public/background/bgRegister.jpg");
+  background: url("../../background/bgRegister.jpg");
   position: absolute;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@ section {
 }
 .login::before {
   content: "";
-  background: url("../../public/background/bgLogin.jpg");
+  background: url("../../background/bgLogin.jpg");
   position: absolute;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@ section {
   top: 50%;
   border-radius: 4px;
   padding: 70px;
-  width: 450px;
+  width: 550px;
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.85);
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import "./RegisterPage.css";
+import "../component/register/RegisterPage.css";
 
 function LoginPage() {
   function submit(event: React.FormEvent<HTMLFormElement>) {

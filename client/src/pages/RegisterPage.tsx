@@ -1,57 +1,19 @@
 import React from "react";
-import { useState } from "react";
-import "./RegisterPage.css";
+import "../component/register/RegisterPage.css";
+import Register from "../component/register/Register";
+import Package from "../component/register/Package";
+import Payment from "../component/register/Payment";
+import PaymentMui from "../component/register/PaymentMui";
 
 function RegisterPage() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-
-  function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(username);
-    console.log(password);
-    console.log(email);
-  }
-
   return (
     <>
       <section className="register">
         <div className="form-wrapper">
-          <form action="" onSubmit={submit}>
-            <h1>Register</h1>
-            <div>
-              <label htmlFor="">Username</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <label htmlFor="">Password</label>
-              <input
-                type="text"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </div>
-            <div>
-              <label htmlFor="">Email</label>
-              <input
-                type="text"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </div>
-            <button>Register</button>
-          </form>
+          {/* <Register /> */}
+          {/* <Package /> */}
+          {/* <Payment /> */}
+          <PaymentMui />
         </div>
       </section>
     </>
