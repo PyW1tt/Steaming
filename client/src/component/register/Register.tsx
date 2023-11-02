@@ -6,8 +6,11 @@ import * as Yup from "yup";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PropState } from "../../model/PropState";
+import { FormValues } from "../../model/FormValues";
+import { Link } from "react-router-dom";
 
-function Register() {
+function Register(prop: PropState): JSX.Element {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,12 +26,10 @@ function Register() {
     console.log(email);
   }
 
-  interface FormValues {
+  interface RegisterFormValues extends FormValues {
     username: string;
-    email: string;
-    password: string;
   }
-  const formik = useFormik<FormValues>({
+  const formik = useFormik<RegisterFormValues>({
     initialValues: {
       username: "",
       email: "",
@@ -36,7 +37,7 @@ function Register() {
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .min(8, "Must be 8 characters or more")
+        .min(5, "Must be 5 characters or more")
         .required("Required"),
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string()
@@ -135,17 +136,20 @@ function Register() {
               !formik.isValid ||
               Object.values(formik.values).some((value) => value === "")
             }
+            onClick={() => {
+              prop.setStep("package");
+            }}
           >
             Continue
           </Button>
           <p className="text-gray-400 text-sm font-normal text-center mt-6">
             Already have an account? &nbsp;
-            <a
-              href="#"
-              className=" text-white text-sm font-bold hover:text-emerald-500"
+            <Link
+              to="http://localhost:5173/register"
+              className=" text-sm font-bold hover:text-emerald-500 text-white"
             >
               Login
-            </a>
+            </Link>
           </p>
         </form>
       </>

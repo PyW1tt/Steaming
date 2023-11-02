@@ -1,7 +1,8 @@
 import React from "react";
+import HomePageAfter from "../component/homepage/HomePageAfter";
 
 function HomePage() {
-  return <div>HomePage</div>;
+  return <HomePageAfter />;
 }
 
 export default HomePage;
