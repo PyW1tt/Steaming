@@ -1,0 +1,56 @@
+.swiper-button-next,
+.swiper-button-prev {
+  color: #00925d;
+  width: 50px;
+  height: 100%;
+  justify-content: center;
+  top: var(--swiper-navigation-top-offset, 10%);
+  margin-top: 10;
+  z-index: 10;
+}
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 30px;
+  padding-left: 3px;
+  font-weight: 900;
+}
+
+/* .swiper-button-next {
+  background: linear-gradient(
+    270deg,
+    #0d0c0f 18.88%,
+    rgba(13, 12, 15, 0) 99.97%,
+    #0d0c0f 99.97%
+  );
+}
+.swiper-button-prev {
+  background: linear-gradient(
+    90deg,
+    #0d0c0f 18.88%,
+    rgba(13, 12, 15, 0) 99.97%,
+    #0d0c0f 99.97%
+  );
+} */
+
+.swiper-button-next {
+  right: var(--swiper-navigation-sides-offset, -15px);
+  margin-top: -15px;
+}
+.swiper-button-prev {
+  left: -15px !important;
+  margin-top: -15px;
+}
+
+/* .swiper-wrapper {
+  padding-left: 100px;
+  padding-right: 50px;
+} */
+
+/* .swiper {
+  padding-left: 50px;
+  padding-right: 50px;
+} */
+
+.swiper-slide {
+  width: fit-content;
+}

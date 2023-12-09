@@ -6,7 +6,8 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import data from "../../../hook/useMoviesData";
 import { Button } from "@/components/ui/button";
-import "./Genres.css";
+import "./Swiper.css";
+// import { useNavigate } from "react-router-dom";
 
 interface genres {
   genres: string;
@@ -66,10 +67,13 @@ const genres: genres[] = [
 
 function Genres(): JSX.Element {
   const [nameGenres, setNameGenres] = useState<string>();
+  // const navigate = useNavigate();
+
   return (
     <>
       <div className=" relative">
         <Swiper
+          style={{ "--swiper-pagination-bottom": "250px" }}
           autoplay={{
             delay: 15000,
             disableOnInteraction: false,
@@ -133,24 +137,25 @@ function Genres(): JSX.Element {
             );
           })}
         </Swiper>
-        <div className="px-[100px] w-full absolute bottom-[100px] ">
+        <div className=" w-full absolute bottom-[100px] px-[100px] ">
           <Swiper
-            slidesPerView={7}
+            slidesPerView={"auto"}
+            spaceBetween={0}
             navigation={true}
             modules={[Navigation]}
-            className="flex justify-center"
+            className=""
           >
             {genres.map((item, index) => {
               return (
                 <SwiperSlide
                   key={index}
-                  className=" h-[110px] relative cursor-pointer"
+                  className=" h-[110px] relative cursor-pointer pl-[25px] pr-[30px]"
                   onClick={() => {
                     setNameGenres(item.genres);
                   }}
                 >
                   <div
-                    className="rounded-xl w-[210px]  left-0 top-0 absolute justify-center items-center inline-flex bg-cover bg-center bg-no-repeat "
+                    className="rounded-xl w-[210px]  justify-center items-center flex bg-cover bg-center bg-no-repeat ml-4"
                     style={{ backgroundImage: `url(${item.img})` }}
                   >
                     <div

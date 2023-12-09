@@ -62,7 +62,7 @@ function Footer(): JSX.Element {
           © 2023
         </div>
       </div>
-      <BackToTop />
+      {/* <BackToTop /> */}
     </>
   );
 }
