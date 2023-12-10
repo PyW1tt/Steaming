@@ -11,7 +11,7 @@ import { useDataMovie } from "../../../context/dataMovieContext";
 
 function Release(): JSX.Element {
   const [hoveredItem, setHoveredItem] = useState<unknown>(null);
-  const { openModal, closeModal } = useOpenModal();
+  const { openModal } = useOpenModal();
   const { setDataMovie } = useDataMovie();
 
   return (

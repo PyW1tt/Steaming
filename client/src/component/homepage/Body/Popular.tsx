@@ -10,8 +10,8 @@ import useOpenModal from "../../../hook/useOpenModal";
 import { useDataMovie } from "../../../context/dataMovieContext";
 
 function Popular(): JSX.Element {
-  const { openModal, closeModal } = useOpenModal();
-  const { setDataMovie, isModalOpen } = useDataMovie();
+  const { openModal } = useOpenModal();
+  const { setDataMovie } = useDataMovie();
 
   return (
     <>

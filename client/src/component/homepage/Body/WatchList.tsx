@@ -10,7 +10,7 @@ import useOpenModal from "../../../hook/useOpenModal";
 import { useDataMovie } from "../../../context/dataMovieContext";
 
 function WatchList(): JSX.Element {
-  const { openModal, closeModal } = useOpenModal();
+  const { openModal } = useOpenModal();
   const { setDataMovie } = useDataMovie();
   return (
     <>

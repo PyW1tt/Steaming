@@ -18,13 +18,13 @@ function Navbar(props: NavbarProps): JSX.Element {
             Home
           </Link>
           <Link to="#" className="font-normal hover:text-emerald-500 ">
-            Discover
+            TV Shows
           </Link>
           <Link to="#" className="font-normal hover:text-emerald-500">
-            Movie Release
+            Moives
           </Link>
           <Link to="#" className="font-normal hover:text-emerald-500">
-            Forum
+            My List
           </Link>
           <Link to="#" className="font-normal hover:text-emerald-500">
             About
