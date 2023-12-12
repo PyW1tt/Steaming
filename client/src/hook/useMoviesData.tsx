@@ -14,6 +14,8 @@ const data = [
       "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
     subscriber: "25254545 Subscribers",
     isLive: true,
+    list: true,
+    genres: "movie",
   },
   {
     id: "2",
@@ -29,6 +31,8 @@ const data = [
       "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
     subscriber: "25254545 Subscribers",
     isLive: true,
+    list: false,
+    genres: "series",
   },
   {
     id: "3",
@@ -44,6 +48,8 @@ const data = [
       "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
     subscriber: "25254545 Subscribers",
     isLive: true,
+    list: false,
+    genres: "series",
   },
   {
     id: "4",
@@ -60,6 +66,8 @@ const data = [
       " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
     subscriber: "25254545 Subscribers",
     isLive: false,
+    list: false,
+    genres: "movie",
   },
   {
     id: "5",
@@ -76,6 +84,8 @@ const data = [
       "Big Buck Bunny tells the story of a giant rabbit with a heart bigger than himself. When one sunny day three rodents rudely harass him, something snaps... and the rabbit ain't no bunny anymore! In the typical cartoon tradition he prepares the nasty rodents a comical revenge.\n\nLicensed under the Creative Commons Attribution license\nhttp://www.bigbuckbunny.org",
     subscriber: "25254545 Subscribers",
     isLive: true,
+    list: false,
+    genres: "movie",
   },
   {
     id: "6",
@@ -91,6 +101,8 @@ const data = [
       "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
     subscriber: "25254545 Subscribers",
     isLive: false,
+    list: false,
+    genres: "movie",
   },
   {
     id: "7",
@@ -107,6 +119,8 @@ const data = [
       " Introducing Chromecast. The easiest way to enjoy online video and music on your TV—for when Batman's escapes aren't quite big enough. For $35. Learn how to use Chromecast with Google Play Movies and more at google.com/chromecast.",
     subscriber: "25254545 Subscribers",
     isLive: true,
+    list: false,
+    genres: "movie",
   },
   {
     id: "8",
@@ -122,6 +136,8 @@ const data = [
       "Song : Raja Raja Kareja Mein Samaja\nAlbum : Raja Kareja Mein Samaja\nArtist : Radhe Shyam Rasia\nSinger : Radhe Shyam Rasia\nMusic Director : Sohan Lal, Dinesh Kumar\nLyricist : Vinay Bihari, Shailesh Sagar, Parmeshwar Premi\nMusic Label : T-Series",
     subscriber: "25254545 Subscribers",
     isLive: false,
+    list: false,
+    genres: "movie",
   },
 ];
 

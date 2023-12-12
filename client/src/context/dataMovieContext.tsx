@@ -2,22 +2,44 @@ import React, { useState } from "react";
 import { DataMovie } from "../model/Data";
 
 interface DataMovieContextProps {
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isModalOpen: boolean;
-  setDataMovie: React.Dispatch<React.SetStateAction<DataMovie | null>>;
-  dataMovie: DataMovie | null;
+  setIsModalMovieOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalMovieOpen: boolean;
+  setIsModalSeriesOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalSeriesOpen: boolean;
+  setDataMovie: React.Dispatch<React.SetStateAction<DataMovie>>;
+  dataMovie: DataMovie;
 }
 
 const dataMovieContext = React.createContext<DataMovieContextProps | undefined>(
   undefined
 );
 
-function DataMovieProvider(props: React.PropsWithChildren<{}>) {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [dataMovie, setDataMovie] = useState<DataMovie | null>(null);
+function DataMovieProvider(props: React.PropsWithChildren<object>) {
+  const [isModalMovieOpen, setIsModalMovieOpen] = useState<boolean>(false);
+  const [isModalSeriesOpen, setIsModalSeriesOpen] = useState<boolean>(false);
+  const [dataMovie, setDataMovie] = useState<DataMovie>({
+    id: "",
+    title: "",
+    thumbnailUrl: "",
+    duration: "",
+    uploadTime: "",
+    views: "",
+    author: "",
+    videoUrl: "",
+    description: "",
+    subscriber: "",
+    genres: "",
+  });
   return (
     <dataMovieContext.Provider
-      value={{ setIsModalOpen, isModalOpen, setDataMovie, dataMovie }}
+      value={{
+        setIsModalMovieOpen,
+        isModalMovieOpen,
+        setDataMovie,
+        dataMovie,
+        isModalSeriesOpen,
+        setIsModalSeriesOpen,
+      }}
     >
       {props.children}
     </dataMovieContext.Provider>

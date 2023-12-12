@@ -13,7 +13,6 @@ function HomePageAfter() {
       </Navbar>
       <Body />
       <Footer />
-      <BackToTop />
     </>
   );
 }

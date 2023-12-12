@@ -9,5 +9,7 @@ export interface DataMovie {
   videoUrl: string;
   description: string;
   subscriber: string;
-  isLive: boolean;
+  isLive?: boolean;
+  list?: boolean;
+  genres: string;
 }

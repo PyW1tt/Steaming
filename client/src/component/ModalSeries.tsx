@@ -1,40 +1,26 @@
 import React, { useEffect, useState } from "react";
+import data from "../hook/useMoviesData";
 import { useDataMovie } from "../context/dataMovieContext";
 import { Button } from "@/components/ui/button";
 import useOpenModal from "../hook/useOpenModal";
 
-function ModalMovie() {
-  const { isModalMovieOpen, dataMovie } = useDataMovie();
-  const { closeModalMoive } = useOpenModal();
-  // const {
-  //   closeModal,
-  //   addWatchList,
-  //   setAddWatchList,
-  //   cancelWatchList,
-  //   setCancelWatchList,
-  // } = useOpenModal();
-  // const [watchList, setWatchList] = useState<boolean>(false);
+function ModalSeries() {
+  const { isModalSeriesOpen, dataMovie } = useDataMovie();
+  const { closeModalseries } = useOpenModal();
 
-  const [addWatchList, setAddWatchList] = useState<boolean>(true);
-  const [cancelWatchList, setCancelWatchList] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   dataMovie;
-  // }, [dataMovie]);
-
-  if (!isModalMovieOpen) return null;
+  if (!isModalSeriesOpen) return null;
 
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 "
       style={{ background: "rgba(0, 0, 0, 0.75)" }}
     >
-      <div className="w-[1000px] bg-[#28262d] h-[830px] rounded-2xl opacity-1 overflow-y-auto relative ">
+      <div className="w-[1000px] bg-[#28262d] h-[840px] rounded-2xl opacity-1 overflow-y-auto relative ">
         <div className="bg-gradient-to-t from-black w-full h-[502px] absolute opacity-90 "></div>
         <div
           className="bg-black absolute z-10 top-3 right-3 w-[36px] h-[36px] rounded-full text-center hover:bg-zinc-600 cursor-pointer flex "
           onClick={() => {
-            closeModalMoive();
+            closeModalseries();
           }}
         >
           <img src="../../icon/close.svg" alt="" />
@@ -60,16 +46,16 @@ function ModalMovie() {
               {dataMovie.list === undefined || dataMovie.list === false ? (
                 <Button
                   className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                  onClick={() => {
-                    // dataMovie.list = true;
-                    // console.log(dataMovie.list);
+                  // onClick={() => {
+                  //   // dataMovie.list = true;
+                  //   // console.log(dataMovie.list);
 
-                    // dataMovie.list = watchList;
-                    // setWatchList(!watchList);
+                  //   // dataMovie.list = watchList;
+                  //   // setWatchList(!watchList);
 
-                    dataMovie.list = addWatchList;
-                    setAddWatchList(!addWatchList);
-                  }}
+                  //   dataMovie.list = addWatchList;
+                  //   setAddWatchList(!addWatchList);
+                  // }}
                 >
                   <img
                     src="../../../icon/bookmark.svg"
@@ -81,13 +67,13 @@ function ModalMovie() {
               ) : (
                 <Button
                   className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                  onClick={() => {
-                    // dataMovie.list = false;
-                    // console.log(dataMovie.list);
+                  // onClick={() => {
+                  //   // dataMovie.list = false;
+                  //   // console.log(dataMovie.list);
 
-                    dataMovie.list = cancelWatchList;
-                    setCancelWatchList(!cancelWatchList);
-                  }}
+                  //   dataMovie.list = cancelWatchList;
+                  //   setCancelWatchList(!cancelWatchList);
+                  // }}
                 >
                   <img
                     src="../../../icon/check.svg"
@@ -117,10 +103,46 @@ function ModalMovie() {
             <div>หมวดหมู่</div>
             <div className="text-gray-400">ดราม่า</div>
           </div>
+          <div className=" mt-10">
+            <div className=" flex justify-between mb-5">
+              <p>ตอน</p>
+              <p>{dataMovie.title}</p>
+            </div>
+            <div>
+              {data.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className=" flex w-full h-[135px] p-4 items-center hover:bg-gray-600 rounded-md hover:cursor-pointer"
+                  >
+                    <div className=" w-[67px] text-center">{index + 1}</div>
+                    <div className=" w-[172px] h-[97px] ">
+                      <img
+                        src={item.thumbnailUrl}
+                        alt=""
+                        className="w-[172px] h-[98px] rounded-md "
+                      />
+                    </div>
+
+                    <div className=" px-4 py-14 w-[623px]">
+                      <div className=" flex justify-between  pb-2">
+                        <p>ชื่อตอน</p>
+                        <p>ความยาว</p>
+                      </div>
+                      <div className="">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Illum, iste!
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default ModalMovie;
+export default ModalSeries;

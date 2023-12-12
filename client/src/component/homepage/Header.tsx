@@ -8,7 +8,7 @@ import data from "../../hook/useMoviesData";
 import "./Homepage.css";
 import { Button } from "@/components/ui/button";
 
-function Header(): JSX.Element {
+function Header(): React.JSX.Element {
   return (
     <>
       <Swiper

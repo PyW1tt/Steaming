@@ -1,16 +1,41 @@
+import { useState } from "react";
 import { useDataMovie } from "../context/dataMovieContext";
 
 function useOpenModal() {
-  const { setIsModalOpen } = useDataMovie();
+  const { setIsModalMovieOpen, setIsModalSeriesOpen } = useDataMovie();
+  const [addWatchList, setAddWatchList] = useState<boolean>(true);
+  const [cancelWatchList, setCancelWatchList] = useState<boolean>(false);
 
-  function openModal() {
-    setIsModalOpen(true);
+  function openModalMoive() {
+    setIsModalMovieOpen(true);
   }
 
-  function closeModal() {
-    setIsModalOpen(false);
+  function closeModalMoive() {
+    setIsModalMovieOpen(false);
   }
-  return { openModal, closeModal };
+
+  function openModalseries() {
+    setIsModalSeriesOpen(true);
+  }
+
+  function closeModalseries() {
+    setIsModalSeriesOpen(false);
+  }
+
+  // function addWatchList() {}
+
+  // function cancelWatchList() {}
+
+  return {
+    openModalMoive,
+    closeModalMoive,
+    addWatchList,
+    setAddWatchList,
+    cancelWatchList,
+    setCancelWatchList,
+    openModalseries,
+    closeModalseries,
+  };
 }
 
 export default useOpenModal;

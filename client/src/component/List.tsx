@@ -1,37 +1,23 @@
 import React, { useState } from "react";
-import data from "../../../hook/useMoviesData";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import { Navigation } from "swiper/modules";
-import "./Swiper.css";
-import ModalMovie from "../../ModalMovie";
-import ModalSeries from "../../ModalSeries";
-import useOpenModal from "../../../hook/useOpenModal";
-import { useDataMovie } from "../../../context/dataMovieContext";
+import data from "../hook/useMoviesData";
+import useOpenModal from "../hook/useOpenModal";
+import { useDataMovie } from "../context/dataMovieContext";
+import ModalMovie from "./ModalMovie";
+import ModalSeries from "./ModalSeries";
 
-function Release(): JSX.Element {
+function List() {
   const [hoveredItem, setHoveredItem] = useState<unknown>(null);
   const { openModalMoive, openModalseries } = useOpenModal();
   const { setDataMovie } = useDataMovie();
 
   return (
-    <div className="pt-10 px-[100px]">
-      <p className="text-2xl font-bold leading-loose tracking-tight ">
-        Just Release
-      </p>
-      <Swiper
-        slidesPerView={"auto"}
-        spaceBetween={0}
-        navigation={true}
-        modules={[Navigation]}
-        className=" "
-      >
+    <div className="bg-[#28262d] px-[100px] h-screen">
+      <div className="flex flex-wrap 2xl:gap-x-[46px] xl:gap-x-1">
         {data.map((item, index) => {
           return (
-            <SwiperSlide
+            <div
               key={index}
-              className="pl-[33px] pr-[30px] cursor-pointer py-6 transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-110 duration-200 flex justify-center"
+              className="mt-5 cursor-pointer  transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-110 duration-200 flex justify-center"
               onMouseEnter={() => setHoveredItem(index)}
               onMouseLeave={() => setHoveredItem(null)}
               onClick={() => {
@@ -42,12 +28,12 @@ function Release(): JSX.Element {
               <img
                 src={item.thumbnailUrl}
                 alt=""
-                className="w-[220px] h-[300px] rounded-2xl object-fill"
+                className="w-[306px] h-[175px] rounded-xl object-fill"
               />
 
               {hoveredItem === index && (
-                <div className=" absolute bottom-5  w-[220px] h-[150px] p-5 bg-gradient-to-t from-black from-15%  rounded-bl-2xl rounded-br-2xl flex-col justify-end items-start gap-1 inline-flex">
-                  <p className="text-base font-bold leading-normal tracking-tight mb-1">
+                <div className=" absolute bottom-0  w-[306px] h-[175px] pb-2 pl-3 bg-gradient-to-t from-black from-15%  rounded-bl-xl rounded-br-xl flex-col justify-end items-start gap-1 inline-flex">
+                  <p className="text-xs font-bold leading-normal tracking-tight ">
                     {item.title}
                   </p>
                   <div className=" flex items-center text-xs font-medium ">
@@ -64,14 +50,14 @@ function Release(): JSX.Element {
                   </div>
                 </div>
               )}
-            </SwiperSlide>
+            </div>
           );
         })}
-      </Swiper>
+      </div>
       <ModalMovie />
       <ModalSeries />
     </div>
   );
 }
 
-export default Release;
+export default List;
