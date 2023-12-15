@@ -4,11 +4,13 @@ import List from "../component/List";
 
 function TVshowsPage() {
   return (
-    <Navbar bg={"bg-[#28262d]"}>
-      <div className="tvshows h-full">
-        <List />
-      </div>
-    </Navbar>
+    <div className="bg-[#28262d] h-screen">
+      <Navbar>
+        <div className="tvshows">
+          <List />
+        </div>
+      </Navbar>
+    </div>
   );
 }
 

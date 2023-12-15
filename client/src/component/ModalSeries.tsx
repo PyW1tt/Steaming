@@ -42,21 +42,8 @@ function ModalSeries() {
                 />
                 Play Now
               </Button>
-
               {dataMovie.list === undefined || dataMovie.list === false ? (
-                <Button
-                  className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                  // onClick={() => {
-                  //   // dataMovie.list = true;
-                  //   // console.log(dataMovie.list);
-
-                  //   // dataMovie.list = watchList;
-                  //   // setWatchList(!watchList);
-
-                  //   dataMovie.list = addWatchList;
-                  //   setAddWatchList(!addWatchList);
-                  // }}
-                >
+                <Button className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
                   <img
                     src="../../../icon/bookmark.svg"
                     alt=""
@@ -65,16 +52,7 @@ function ModalSeries() {
                   Add Watchlist
                 </Button>
               ) : (
-                <Button
-                  className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                  // onClick={() => {
-                  //   // dataMovie.list = false;
-                  //   // console.log(dataMovie.list);
-
-                  //   dataMovie.list = cancelWatchList;
-                  //   setCancelWatchList(!cancelWatchList);
-                  // }}
-                >
+                <Button className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
                   <img
                     src="../../../icon/check.svg"
                     alt=""
@@ -87,10 +65,10 @@ function ModalSeries() {
           </div>
         </div>
         <div className="px-12 my-5 ">
-          <div className="flex ">
+          {/* <div className="flex ">
             <div className="text-gray-400 mr-5">1 ชม. 52 นาที</div>
             <div className="text-gray-400">PG-12</div>
-          </div>
+          </div> */}
           <div className="mt-[10px]">
             <div>เรื่องย่อ</div>
             <div className="text-gray-400">{dataMovie.description}</div>
@@ -105,8 +83,12 @@ function ModalSeries() {
           </div>
           <div className=" mt-10">
             <div className=" flex justify-between mb-5">
-              <p>ตอน</p>
-              <p>{dataMovie.title}</p>
+              <p className="text-2xl font-bold tracking-tight leading-loose">
+                ตอน
+              </p>
+              <p className="text-2xl font-bold tracking-tight leading-loose">
+                {dataMovie.title}
+              </p>
             </div>
             <div>
               {data.map((item, index) => {
@@ -115,7 +97,9 @@ function ModalSeries() {
                     key={index}
                     className=" flex w-full h-[135px] p-4 items-center hover:bg-gray-600 rounded-md hover:cursor-pointer"
                   >
-                    <div className=" w-[67px] text-center">{index + 1}</div>
+                    <div className="text-2xl font-bold tracking-tight leading-loose w-[67px] text-center">
+                      {index + 1}
+                    </div>
                     <div className=" w-[172px] h-[97px] ">
                       <img
                         src={item.thumbnailUrl}
@@ -125,11 +109,11 @@ function ModalSeries() {
                     </div>
 
                     <div className=" px-4 py-14 w-[623px]">
-                      <div className=" flex justify-between  pb-2">
+                      <div className=" flex justify-between pb-2">
                         <p>ชื่อตอน</p>
                         <p>ความยาว</p>
                       </div>
-                      <div className="">
+                      <div className="text-gray-400 text-sm">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Illum, iste!
                       </div>

@@ -1,11 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "./homepage/Header";
+import DropDown from "./DropDown";
+import { useNavigate } from "react-router-dom";
 interface NavbarProps {
   children: React.ReactNode;
   bg?: string;
 }
 function Navbar(props: NavbarProps): JSX.Element {
+  const navigate = useNavigate();
   const isHome = React.Children.toArray(props.children).some(
     (child) => (child as React.ReactElement).type === Header
   );
@@ -83,18 +86,20 @@ function Navbar(props: NavbarProps): JSX.Element {
           </Link>
         </div>
         <div className="justify-start items-center gap-[23px] flex">
-          <div>
+          <div
+            className=" hover:cursor-pointer"
+            onClick={() => {
+              navigate("/search");
+            }}
+          >
             <img src="../../icon/search.svg" alt="" />
-          </div>
-          <div>
-            <img src="../../icon/bell.svg" alt="" />
           </div>
           <div className="justify-start items-center gap-1 flex">
             <img
               className="w-[50px] h-[50px] rounded-full border border-white"
               src="https://via.placeholder.com/32x32"
             />
-            <div></div>
+            <DropDown />
           </div>
         </div>
       </div>

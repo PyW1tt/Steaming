@@ -7,6 +7,8 @@ import { Routes, Route } from "react-router-dom";
 import TVshowsPage from "./TVshowsPage";
 import MoviesPage from "./MoviesPage";
 import MyListPage from "./MyListPage";
+import ProfilePage from "./ProfilePage";
+import SearchPage from "./SearchPage";
 
 function AuthenticatedApp() {
   return (
@@ -17,6 +19,8 @@ function AuthenticatedApp() {
       <Route path="/tvshows" element={<TVshowsPage />} />
       <Route path="/movies" element={<MoviesPage />} />
       <Route path="/mylist" element={<MyListPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/search" element={<SearchPage />} />
     </Routes>
   );
 }

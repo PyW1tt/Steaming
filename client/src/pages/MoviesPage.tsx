@@ -4,11 +4,13 @@ import List from "../component/List";
 
 function MoviesPage() {
   return (
-    <Navbar bg={"bg-[#28262d]"}>
-      <div className="movies">
-        <List />
-      </div>
-    </Navbar>
+    <div className="bg-[#28262d] h-screen">
+      <Navbar>
+        <div className="movies">
+          <List />
+        </div>
+      </Navbar>
+    </div>
   );
 }
 

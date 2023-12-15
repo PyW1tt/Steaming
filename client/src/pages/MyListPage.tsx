@@ -4,11 +4,13 @@ import List from "../component/List";
 
 function MyListPage() {
   return (
-    <Navbar bg={"bg-[#28262d]"}>
-      <div className="myList">
-        <List />
-      </div>
-    </Navbar>
+    <div className="bg-[#28262d] h-screen">
+      <Navbar>
+        <div className="myList">
+          <List />
+        </div>
+      </Navbar>
+    </div>
   );
 }
 

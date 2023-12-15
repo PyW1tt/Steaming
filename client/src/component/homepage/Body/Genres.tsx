@@ -112,8 +112,8 @@ function Genres(): JSX.Element {
                         <p className="text-gray-500 mx-1">•</p>
                         <span className="text-gray-400">Fantasy</span>
                       </div>
-                      <div className="mt-5 flex ">
-                        <Button className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-6">
+                      <div className="mt-10 flex ">
+                        <Button className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5">
                           <img
                             src="../../../icon/play soild.svg"
                             alt=""
@@ -121,14 +121,26 @@ function Genres(): JSX.Element {
                           />
                           Play Now
                         </Button>
-                        <div className="w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
-                          <img
-                            src="../../../icon/bookmark.svg"
-                            alt=""
-                            className="mr-[10px]"
-                          />
-                          Add Watchlist
-                        </div>
+
+                        {item.list === undefined || item.list === false ? (
+                          <Button className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
+                            <img
+                              src="../../../icon/bookmark.svg"
+                              alt=""
+                              className="mr-[10px]"
+                            />
+                            Add Watchlist
+                          </Button>
+                        ) : (
+                          <Button className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
+                            <img
+                              src="../../../icon/check.svg"
+                              alt=""
+                              className="mr-[10px]"
+                            />
+                            Watchlist
+                          </Button>
+                        )}
                       </div>
                     </div>
                   </div>

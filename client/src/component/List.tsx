@@ -11,7 +11,7 @@ function List() {
   const { setDataMovie } = useDataMovie();
 
   return (
-    <div className="bg-[#28262d] px-[100px] h-screen">
+    <div className="bg-[#28262d] px-[100px] h-full">
       <div className="flex flex-wrap 2xl:gap-x-[46px] xl:gap-x-1">
         {data.map((item, index) => {
           return (

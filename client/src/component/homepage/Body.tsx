@@ -8,7 +8,7 @@ import Genres from "./Body/Genres";
 function Body(): JSX.Element {
   return (
     <section className="bg-[#28262d] ">
-      <Action />
+      {/* <Action /> */}
       <Popular />
       <Release />
       <WatchList />

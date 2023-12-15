@@ -1,0 +1,132 @@
+import React, { useState } from "react";
+import Navbar from "../component/Navbar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+
+function ProfilePage() {
+  const [avatars, setAvatars] = useState({});
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files && e.target.files[0];
+
+    if (selectedFile) {
+      // นำออกไปเพื่อหลีกเลี่ยงการให้รูปภาพมี key ที่เป็น undefined
+      const newAvatars = { ...avatars };
+
+      // ถ้ามีรูปที่มี key เป็น 1 ให้ลบรูปเดิมออก
+      if (newAvatars[1]) {
+        URL.revokeObjectURL(newAvatars[1]);
+        delete newAvatars[1];
+      }
+
+      // ใส่รูปภาพใหม่
+      newAvatars[1] = selectedFile;
+
+      setAvatars(newAvatars);
+    }
+  };
+  console.log(avatars);
+
+  return (
+    <div className="bg-[#28262d] h-screen">
+      <Navbar>
+        <div className="px-[100px] my-[80px] flex w-full justify-center">
+          <div className=" bg-slate-400 w-[500px] h-[620px]  px-10 py-10 rounded-lg">
+            <div className="w-[15rem] h-[15rem] rounded-full border-2 border-white flex justify-center items-center relative p-1">
+              {Object.keys(avatars).length === 0 ? (
+                <img
+                  src="https://via.placeholder.com/148x148"
+                  alt=""
+                  className="w-full h-full rounded-full border border-white object-cover"
+                />
+              ) : (
+                Object.keys(avatars).map((index) => (
+                  <img
+                    key={index}
+                    className="w-full h-full rounded-full border border-white object-cover"
+                    src={URL.createObjectURL(avatars[index])}
+                    alt=""
+                  />
+                ))
+              )}
+
+              <label className=" bg-emerald-600 rounded-full border-2 border-neutral-950 w-[49.23px] h-[49.23px] flex justify-center items-center absolute bottom-0 right-5 hover:cursor-pointer hover:border-white">
+                <img
+                  src="../../icon/Camera.svg"
+                  alt=""
+                  className="w-[18.97px] h-[16.74px]"
+                />
+                <input type="file" onChange={handleFileUpload} hidden />
+              </label>
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5 mt-[20px]">
+                <Label htmlFor="" className="text-md font-bold">
+                  Package :
+                </Label>
+                <Input
+                  type=""
+                  id=""
+                  placeholder=""
+                  className="bg-[#28262d] w-[120px] "
+                  value="$49.99/year"
+                  disabled
+                />
+              </div>
+              <div className="flex items-center gap-1.5 mt-[10px]">
+                <Label htmlFor="" className="text-md font-bold">
+                  start :
+                </Label>
+                <Input
+                  type=""
+                  id=""
+                  placeholder=""
+                  className="bg-[#28262d] w-[120px]"
+                  value="16/12/2023"
+                  disabled
+                />
+              </div>
+              <div className="flex items-center gap-1.5 mt-[10px]">
+                <Label htmlFor="" className="text-md font-bold">
+                  end :
+                </Label>
+                <Input
+                  type=""
+                  id=""
+                  placeholder=""
+                  className="bg-[#28262d] w-[120px]"
+                  value="16/12/2024"
+                  disabled
+                />
+              </div>
+              <div className="flex items-center gap-1.5 mt-[10px]">
+                <Label htmlFor="email" className="text-md font-bold">
+                  Your Email :
+                </Label>
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  className="bg-[#28262d] w-[200px]"
+                  value="aaaa@example.com"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className=" flex justify-center">
+              <Button
+                type="submit"
+                className="bg-emerald-600 hover:bg-emerald-400 w-[218px] h-[46px] rounded-[10px] text-sm font-bold mt-[50px] "
+              >
+                Update Profile
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Navbar>
+    </div>
+  );
+}
+
+export default ProfilePage;
