@@ -23,7 +23,7 @@ function SearchPage() {
           <Input
             type=""
             placeholder="Search for movies, TV shows, or categories "
-            className="bg-[#28262d] text-lg text-center"
+            className="bg-[#28262d] text-lg text-center  hover:border-emerald-300 focus:border-emerald-600 rounded-full"
             value={search}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setSearch(e.target.value);

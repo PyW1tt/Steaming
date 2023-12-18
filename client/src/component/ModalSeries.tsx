@@ -3,10 +3,13 @@ import data from "../hook/useMoviesData";
 import { useDataMovie } from "../context/dataMovieContext";
 import { Button } from "@/components/ui/button";
 import useOpenModal from "../hook/useOpenModal";
+import { useNavigate } from "react-router-dom";
 
 function ModalSeries() {
   const { isModalSeriesOpen, dataMovie } = useDataMovie();
   const { closeModalseries } = useOpenModal();
+
+  const navigate = useNavigate();
 
   if (!isModalSeriesOpen) return null;
 
@@ -34,7 +37,13 @@ function ModalSeries() {
               {dataMovie.title}
             </div>
             <div className="mt-10 flex ">
-              <Button className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5">
+              <Button
+                className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
+                onClick={() => {
+                  navigate("/movieId");
+                  closeModalseries();
+                }}
+              >
                 <img
                   src="../../../icon/play soild.svg"
                   alt=""

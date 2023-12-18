@@ -44,7 +44,7 @@ function LoginPage() {
                 Email
               </Label>
               <Input
-                className="rounded bg-neutral-900 border border-zinc-800 hover:border-emerald-300 focus:border-emerald-600 mt-1"
+                className="rounded bg-neutral-900 border border-zinc-800 hover:border-emerald-300 focus:border-emerald-600 mt-1 "
                 type="text"
                 id="email"
                 name="email"

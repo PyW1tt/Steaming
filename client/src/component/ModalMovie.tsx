@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDataMovie } from "../context/dataMovieContext";
 import { Button } from "@/components/ui/button";
 import useOpenModal from "../hook/useOpenModal";
+import { useNavigate } from "react-router-dom";
 
 function ModalMovie() {
   const { isModalMovieOpen, dataMovie } = useDataMovie();
@@ -17,6 +18,8 @@ function ModalMovie() {
 
   const [addWatchList, setAddWatchList] = useState<boolean>(true);
   const [cancelWatchList, setCancelWatchList] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   dataMovie;
@@ -48,7 +51,13 @@ function ModalMovie() {
               {dataMovie.title}
             </div>
             <div className="mt-10 flex ">
-              <Button className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5">
+              <Button
+                className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
+                onClick={() => {
+                  navigate("/movieId");
+                  closeModalMoive();
+                }}
+              >
                 <img
                   src="../../../icon/play soild.svg"
                   alt=""

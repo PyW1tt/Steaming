@@ -9,6 +9,8 @@ import MoviesPage from "./MoviesPage";
 import MyListPage from "./MyListPage";
 import ProfilePage from "./ProfilePage";
 import SearchPage from "./SearchPage";
+import MovieId from "./MovieId";
+import CreateMoivePage from "./adminRole/CreateMoivePage";
 
 function AuthenticatedApp() {
   return (
@@ -21,6 +23,10 @@ function AuthenticatedApp() {
       <Route path="/mylist" element={<MyListPage />} />
       <Route path="/profile" element={<ProfilePage />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="/MovieId" element={<MovieId />} />
+
+      {/* AdminRole------- */}
+      <Route path="/createMovie" element={<CreateMoivePage />} />
     </Routes>
   );
 }
