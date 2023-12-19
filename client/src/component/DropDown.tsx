@@ -20,16 +20,16 @@ function DropDown() {
       <DropdownMenuContent className=" bg-slate-600 border-none mt-3 mr-2 py-3 shadow-lg ">
         <DropdownMenuRadioGroup>
           <DropdownMenuItem
-            className=""
+            className="hover:cursor-pointer "
             onClick={() => {
               navigate("/profile");
             }}
           >
             <img src="../../public/icon/icon=user.svg" alt="" />
-            <span className="text-slate-400 text-base ml-1">Profile</span>
+            <span className="text-slate-400 text-base ml-1 ">Profile</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator className="my-2" />
-          <DropdownMenuItem className="">
+          <DropdownMenuItem className="hover:cursor-pointer">
             <img src="../../public/icon/icon=logout.svg" alt="" />
             <span className="text-slate-400 text-base ml-1">Log Out</span>
           </DropdownMenuItem>

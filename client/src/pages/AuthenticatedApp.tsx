@@ -11,6 +11,8 @@ import ProfilePage from "./ProfilePage";
 import SearchPage from "./SearchPage";
 import MovieId from "./MovieId";
 import CreateMoivePage from "./adminRole/CreateMoivePage";
+import AdminSearchPage from "./adminRole/AdminSearchPage";
+import CreateTVshowsPage from "./adminRole/CreateTVshowsPage";
 
 function AuthenticatedApp() {
   return (
@@ -26,7 +28,9 @@ function AuthenticatedApp() {
       <Route path="/MovieId" element={<MovieId />} />
 
       {/* AdminRole------- */}
+      <Route path="/adminSearch" element={<AdminSearchPage />} />
       <Route path="/createMovie" element={<CreateMoivePage />} />
+      <Route path="/createTVshows" element={<CreateTVshowsPage />} />
     </Routes>
   );
 }
