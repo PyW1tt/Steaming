@@ -1,0 +1,7 @@
+span {
+  color: black;
+}
+
+svg[fill="none"] {
+  fill: black;
+}

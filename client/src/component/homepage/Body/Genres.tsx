@@ -16,7 +16,7 @@ interface genres {
 
 const genres: genres[] = [
   {
-    genres: "Superhero",
+    genres: "Action",
     img: "../../../../genres/Superhero.jpg",
   },
   {
@@ -24,15 +24,7 @@ const genres: genres[] = [
     img: "../../../../genres/Superhero.jpg",
   },
   {
-    genres: "Sitcom",
-    img: "../../../../genres/Superhero.jpg",
-  },
-  {
-    genres: "Thriller",
-    img: "../../../../genres/Superhero.jpg",
-  },
-  {
-    genres: "Comedy",
+    genres: "Romance",
     img: "../../../../genres/Superhero.jpg",
   },
   {
@@ -40,15 +32,39 @@ const genres: genres[] = [
     img: "../../../../genres/Superhero.jpg",
   },
   {
+    genres: "Thriller",
+    img: "../../../../genres/Superhero.jpg",
+  },
+  {
+    genres: "Science fiction",
+    img: "../../../../genres/Superhero.jpg",
+  },
+  {
     genres: "Korean Dramas",
     img: "../../../../genres/Superhero.jpg",
   },
   {
-    genres: "Western TV Shows",
+    genres: "TV Shows",
     img: "../../../../genres/Superhero.jpg",
   },
   {
-    genres: "Romance",
+    genres: "Adventure",
+    img: "../../../../genres/Superhero.jpg",
+  },
+  {
+    genres: "Crime",
+    img: "../../../../genres/Superhero.jpg",
+  },
+  {
+    genres: "Mystery",
+    img: "../../../../genres/Superhero.jpg",
+  },
+  {
+    genres: "Animation",
+    img: "../../../../genres/Superhero.jpg",
+  },
+  {
+    genres: "Historical",
     img: "../../../../genres/Superhero.jpg",
   },
   {
@@ -56,7 +72,7 @@ const genres: genres[] = [
     img: "../../../../genres/Superhero.jpg",
   },
   {
-    genres: "Sci-fi",
+    genres: "Comedy",
     img: "../../../../genres/Superhero.jpg",
   },
   {

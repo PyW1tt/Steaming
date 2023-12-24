@@ -4,6 +4,7 @@ import Search from "./search";
 import CreateMovie from "./CreateMovie";
 import CreatTVshows from "./CreateTVshows";
 import { useNavigate } from "react-router-dom";
+import "../../App.css";
 interface SidebarProps {
   children: React.ReactNode;
 }
@@ -27,8 +28,8 @@ function Sidebar(props: SidebarProps): JSX.Element {
     <div className="flex">
       <aside
         className={` ${
-          open ? "w-72" : "w-24 "
-        } pt-4 flex flex-col justify-between bg-[#28262d] border-r border-black h-screen relative duration-300`}
+          open ? "w-72 " : "w-24 "
+        } pt-4 flex flex-col justify-between bg-[#28262d] border-r border-black h-screen relative duration-200 `}
       >
         <ul className={` flex flex-col  w-full`}>
           <div className={` pb-10 flex ml-5  }`}>
@@ -47,8 +48,8 @@ function Sidebar(props: SidebarProps): JSX.Element {
               <img src="../../../icon/search.svg" alt="" />
               <p
                 className={`${
-                  !open && "hidden"
-                } origin-left duration-200 ml-4 `}
+                  open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
+                }`}
               >
                 Search
               </p>
@@ -70,10 +71,10 @@ function Sidebar(props: SidebarProps): JSX.Element {
               />
               <p
                 className={`${
-                  !open && "hidden"
-                } origin-left duration-200 ml-4 mr-1`}
+                  open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
+                }`}
               >
-                Create Movie
+                Create&nbsp;Movie
               </p>
             </div>
           </li>
@@ -92,9 +93,11 @@ function Sidebar(props: SidebarProps): JSX.Element {
                 className="w-[30px] h-[30px]"
               />
               <p
-                className={`${!open && "hidden"} origin-left duration-200 ml-4`}
+                className={`${
+                  open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
+                }`}
               >
-                Create TVshows
+                Create&nbsp;TVshows
               </p>
             </div>
           </li>
@@ -107,11 +110,11 @@ function Sidebar(props: SidebarProps): JSX.Element {
         >
           <img src="../../../icon/icon=logout2.svg" alt="" />
           <p
-            className={`origin-left transition-transform duration-200 ml-4 ${
-              open ? "" : "hidden"
+            className={`${
+              open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
             }`}
           >
-            Log Out
+            Log&nbsp;Out
           </p>
         </div>
       </aside>

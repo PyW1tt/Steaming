@@ -73,7 +73,10 @@ function ModalSeries() {
             </div>
           </div>
         </div>
-        <div className="px-12 my-5 ">
+        <div
+          className="px-12 my-5 "
+          // style={{ maxHeight: "400px", overflowY: "auto" }}
+        >
           {/* <div className="flex ">
             <div className="text-gray-400 mr-5">1 ชม. 52 นาที</div>
             <div className="text-gray-400">PG-12</div>

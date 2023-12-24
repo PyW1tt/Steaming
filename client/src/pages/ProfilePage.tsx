@@ -5,14 +5,14 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 function ProfilePage() {
-  const [avatars, setAvatars] = useState({});
+  const [avatar, setAvatar] = useState({});
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
 
     if (selectedFile) {
       // นำออกไปเพื่อหลีกเลี่ยงการให้รูปภาพมี key ที่เป็น undefined
-      const newAvatars = { ...avatars };
+      const newAvatars = { ...avatar };
 
       // ถ้ามีรูปที่มี key เป็น 1 ให้ลบรูปเดิมออก
       if (newAvatars[1]) {
@@ -23,10 +23,10 @@ function ProfilePage() {
       // ใส่รูปภาพใหม่
       newAvatars[1] = selectedFile;
 
-      setAvatars(newAvatars);
+      setAvatar(newAvatars);
     }
   };
-  console.log(avatars);
+  console.log(avatar);
 
   return (
     <div className="bg-[#28262d] h-screen">
@@ -34,18 +34,18 @@ function ProfilePage() {
         <div className="px-[100px] my-[80px] flex w-full justify-center">
           <div className=" bg-slate-400 w-[500px] h-[620px]  px-10 py-10 rounded-lg">
             <div className="w-[15rem] h-[15rem] rounded-full border-2 border-white flex justify-center items-center relative p-1">
-              {Object.keys(avatars).length === 0 ? (
+              {Object.keys(avatar).length === 0 ? (
                 <img
                   src="https://via.placeholder.com/148x148"
                   alt=""
                   className="w-full h-full rounded-full border border-white object-cover"
                 />
               ) : (
-                Object.keys(avatars).map((index) => (
+                Object.keys(avatar).map((index) => (
                   <img
                     key={index}
                     className="w-full h-full rounded-full border border-white object-cover"
-                    src={URL.createObjectURL(avatars[index])}
+                    src={URL.createObjectURL(avatar[index])}
                     alt=""
                   />
                 ))
