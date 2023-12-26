@@ -138,6 +138,8 @@ function CreateMovie() {
   const handleVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
 
+    console.log(selectedFile);
+
     if (selectedFile) {
       const newVideo = { ...video };
 
@@ -343,7 +345,7 @@ function CreateMovie() {
         + Add Cast
       </Button>
 
-      <div className="flex gap-20 ">
+      <div className="flex gap-20 mt-5">
         <div>
           <Label htmlFor="" className="text-black text-lg">
             Thumbnail
@@ -369,7 +371,7 @@ function CreateMovie() {
             id=""
             placeholder=""
             onChange={handleThumbnail}
-            className="hover:cursor-pointer max-w-xs text-black mt-2"
+            className="hover:cursor-pointer max-w-[400px] text-black mt-2"
           />
         </div>
 
@@ -398,7 +400,7 @@ function CreateMovie() {
             id=""
             placeholder=""
             onChange={handlePoster}
-            className="hover:cursor-pointer max-w-xs text-black mt-2"
+            className="hover:cursor-pointer max-w-[400px] text-black mt-2"
           />
         </div>
         <div className="">
@@ -413,10 +415,16 @@ function CreateMovie() {
           ) : (
             Object.keys(video).map((index) => (
               <video
+                controls
                 key={index}
                 className="w-[400px] h-[200px]"
                 src={URL.createObjectURL(video[index])}
-              />
+              >
+                {/* <source
+                  src={URL.createObjectURL(video[index])}
+                  type="video/mp4"
+                /> */}
+              </video>
             ))
           )}
           <Input
@@ -425,13 +433,13 @@ function CreateMovie() {
             id=""
             placeholder=""
             onChange={handleVideo}
-            className="hover:cursor-pointer max-w-xs text-black mt-2"
+            className="hover:cursor-pointer max-w-[400px] text-black mt-2"
           />
         </div>
       </div>
       <div className="w-full flex justify-end">
         <Button
-          className="mt-28 bg-emerald-600 hover:bg-emerald-400 "
+          className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
           onClick={handleSubmit}
         >
           Create Movie
