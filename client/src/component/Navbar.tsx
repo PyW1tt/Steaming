@@ -58,7 +58,7 @@ function Navbar(props: NavbarProps): JSX.Element {
               isTVShow ? "font-extrabold " : "font-normal"
             }`}
           >
-            TV Shows
+            Series
           </Link>
           <Link
             to="/movies"

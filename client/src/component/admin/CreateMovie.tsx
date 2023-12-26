@@ -156,285 +156,286 @@ function CreateMovie() {
     }));
   };
   const handleSubmit = () => {
-    console.log(movieData);
-    console.log(cast);
+    const data = { ...movieData, cast: cast };
+    console.log(data);
+    // console.log(movieData);
+    // console.log(cast);
     console.log(thumbnail);
     console.log(poster);
     console.log(video);
   };
 
   return (
-    <div>
-      <div className="">
-        <div className=" max-w-lg mb-3">
-          <Label htmlFor="title" className="text-black text-base">
-            Title
-          </Label>
-          <Input
-            type="text"
-            id="title"
-            placeholder="Enter the movie title"
-            className="text-black "
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.preventDefault();
-              handleChange("title", e.target.value);
-            }}
-          />
-        </div>
-        <div className="max-w-xs mb-3">
-          <Label htmlFor="Author" className="text-black text-base">
-            Author
-          </Label>
-          <Input
-            type="text"
-            id="Author"
-            placeholder="Author name"
-            className="text-black"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.preventDefault();
-              handleChange("author", e.target.value);
-            }}
-          />
-        </div>
-        <div className="max-w-xs mb-3">
-          <Label htmlFor="Release Date" className="text-black text-base">
-            Release Date
-          </Label>
-          <Input
-            type="date"
-            id="Release Date"
-            className="text-black"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.preventDefault();
-              handleChange("date", e.target.value);
-            }}
-          />
-        </div>
+    <div className="">
+      <div className=" max-w-lg mb-3">
+        <Label htmlFor="title" className="text-black text-base">
+          Title
+        </Label>
+        <Input
+          type="text"
+          id="title"
+          placeholder="Enter the movie title"
+          className="text-black "
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault();
+            handleChange("title", e.target.value);
+          }}
+        />
+      </div>
+      <div className="max-w-xs mb-3">
+        <Label htmlFor="Author" className="text-black text-base">
+          Author
+        </Label>
+        <Input
+          type="text"
+          id="Author"
+          placeholder="Author name"
+          className="text-black"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault();
+            handleChange("author", e.target.value);
+          }}
+        />
+      </div>
+      <div className="max-w-xs mb-3">
+        <Label htmlFor="Release Date" className="text-black text-base">
+          Release Date
+        </Label>
+        <Input
+          type="date"
+          id="Release Date"
+          className="text-black"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault();
+            const parts = e.target.value.split("-");
+            const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            handleChange("date", sqlFormattedDate);
+          }}
+        />
+      </div>
 
-        <div className="mb-3">
-          <Label htmlFor="Duration" className="text-black text-base">
-            Duration
-          </Label>
-          <div className="flex gap-2 max-w-xs">
-            <Input
-              type="number"
-              id="Duration"
-              placeholder="Hours"
-              className="text-black"
-              min="0"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                e.preventDefault();
-                handleChange("hours", e.target.value);
-              }}
-            />
-            <Input
-              type="number"
-              id="Duration"
-              placeholder="Minutes"
-              className="text-black"
-              min="0"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                e.preventDefault();
-                handleChange("min", e.target.value);
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="max-w-fit mb-3">
-          <Label htmlFor="" className="text-black text-base">
-            Rating
-          </Label>
+      <div className="mb-3">
+        <Label htmlFor="Duration" className="text-black text-base">
+          Duration
+        </Label>
+        <div className="flex gap-2 max-w-xs">
           <Input
             type="number"
+            id="Duration"
+            placeholder="Hours"
+            className="text-black"
             min="0"
-            max="5"
-            step="0.1"
-            id=""
-            placeholder="Rating"
-            className="text-black"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               e.preventDefault();
-              handleChange("rating", e.target.value);
+              handleChange("hours", e.target.value);
+            }}
+          />
+          <Input
+            type="number"
+            id="Duration"
+            placeholder="Minutes"
+            className="text-black"
+            min="0"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              e.preventDefault();
+              handleChange("min", e.target.value);
             }}
           />
         </div>
-        <div className="max-w-full mb-3">
-          <Label htmlFor="Description" className="text-black text-base">
-            Description
+      </div>
+
+      <div className="max-w-24 mb-3">
+        <Label htmlFor="" className="text-black text-base">
+          Rating
+        </Label>
+        <Input
+          type="number"
+          min="0"
+          max="5"
+          step="0.1"
+          id=""
+          placeholder="Rating"
+          className="text-black"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault();
+            handleChange("rating", e.target.value);
+          }}
+        />
+      </div>
+      <div className="max-w-full mb-3">
+        <Label htmlFor="Description" className="text-black text-base">
+          Description
+        </Label>
+        <Textarea
+          placeholder="Write a brief description of the movie, including its plot, characters, and key themes."
+          id="Description"
+          className="text-black"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            e.preventDefault();
+            handleChange("description", e.target.value);
+          }}
+        />
+      </div>
+      <div className=" flex gap-2 mb-3">
+        <Select onValueChange={(value: string) => handleChange("type", value)}>
+          <SelectTrigger className="w-[180px] ">
+            <SelectValue placeholder="Select Type" />
+          </SelectTrigger>
+          <SelectContent className="">
+            <SelectGroup>
+              <SelectLabel className="text-black">Type</SelectLabel>
+              {type.map((type, index) => {
+                return (
+                  <SelectItem key={index} value={type} className="text-black">
+                    {type}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select
+          onValueChange={(value: string) => handleChange("genres", value)}
+        >
+          <SelectTrigger className="w-[180px] ">
+            <SelectValue placeholder="Select Genres" />
+          </SelectTrigger>
+          <SelectContent className="">
+            <SelectGroup>
+              <SelectLabel className="text-black">Genres</SelectLabel>
+              {genres.sort().map((genres, index) => {
+                return (
+                  <SelectItem key={index} value={genres} className="text-black">
+                    {genres}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select onValueChange={(value: string) => handleChange("MPA", value)}>
+          <SelectTrigger className="w-[180px] ">
+            <SelectValue placeholder="Select MPA ratings" />
+          </SelectTrigger>
+          <SelectContent className="">
+            <SelectGroup>
+              <SelectLabel className="text-black">MPA film ratings</SelectLabel>
+              {MPA.map((MPA, index) => {
+                return (
+                  <SelectItem key={index} value={MPA} className="text-black">
+                    {MPA}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className=" max-w-xs mb-3">
+        <Label htmlFor="Cast" className="text-black text-base">
+          Cast
+        </Label>
+        {divs}
+      </div>
+      <Button className="mb-3" onClick={handleAddDiv}>
+        + Add Cast
+      </Button>
+
+      <div className="flex gap-20 ">
+        <div>
+          <Label htmlFor="" className="text-black text-lg">
+            Thumbnail
           </Label>
-          <Textarea
-            placeholder="Write a brief description of the movie, including its plot, characters, and key themes."
-            id="Description"
-            className="text-black"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.preventDefault();
-              handleChange("description", e.target.value);
-            }}
-          />
-        </div>
-        <div className=" flex gap-2 mb-3">
-          <Select
-            onValueChange={(value: string) => handleChange("type", value)}
-          >
-            <SelectTrigger className="w-[180px] ">
-              <SelectValue placeholder="Select Type" />
-            </SelectTrigger>
-            <SelectContent className="">
-              <SelectGroup>
-                <SelectLabel className="text-black">Type</SelectLabel>
-                {type.map((type, index) => {
-                  return (
-                    <SelectItem key={index} value={type} className="text-black">
-                      {type}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          <Select
-            onValueChange={(value: string) => handleChange("genres", value)}
-          >
-            <SelectTrigger className="w-[180px] ">
-              <SelectValue placeholder="Select Genres" />
-            </SelectTrigger>
-            <SelectContent className="">
-              <SelectGroup>
-                <SelectLabel className="text-black">Genres</SelectLabel>
-                {genres.sort().map((genres, index) => {
-                  return (
-                    <SelectItem
-                      key={index}
-                      value={genres}
-                      className="text-black"
-                    >
-                      {genres}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          <Select onValueChange={(value: string) => handleChange("MPA", value)}>
-            <SelectTrigger className="w-[180px] ">
-              <SelectValue placeholder="Select MPA ratings" />
-            </SelectTrigger>
-            <SelectContent className="">
-              <SelectGroup>
-                <SelectLabel className="text-black">
-                  MPA film ratings
-                </SelectLabel>
-                {MPA.map((MPA, index) => {
-                  return (
-                    <SelectItem key={index} value={MPA} className="text-black">
-                      {MPA}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className=" max-w-xs mb-3">
-          <Label htmlFor="Cast" className="text-black text-base">
-            Cast
-          </Label>
-          {divs}
-        </div>
-        <Button className="mb-3" onClick={handleAddDiv}>
-          + เพิ่ม
-        </Button>
-
-        <div className="flex gap-20 ">
-          <div>
-            <Label htmlFor="" className="text-black text-lg">
-              Thumbnail
-            </Label>
-            {Object.keys(thumbnail).length === 0 ? (
+          {Object.keys(thumbnail).length === 0 ? (
+            <img
+              src="https://via.placeholder.com/148x148"
+              alt=""
+              className=" w-[400px] h-[200px]"
+            />
+          ) : (
+            Object.keys(thumbnail).map((index) => (
               <img
-                src="https://via.placeholder.com/148x148"
-                alt=""
+                key={index}
                 className=" w-[400px] h-[200px]"
-              />
-            ) : (
-              Object.keys(thumbnail).map((index) => (
-                <img
-                  key={index}
-                  className=" w-[400px] h-[200px]"
-                  src={URL.createObjectURL(thumbnail[index])}
-                  alt=""
-                />
-              ))
-            )}
-            <Input
-              type="file"
-              id=""
-              placeholder=""
-              onChange={handleThumbnail}
-              className="hover:cursor-pointer max-w-xs text-black mt-2"
-            />
-          </div>
-
-          <div className="">
-            <Label htmlFor="" className="text-black text-lg">
-              Posters
-            </Label>
-            {Object.keys(poster).length === 0 ? (
-              <img
-                src="https://via.placeholder.com/148x148"
+                src={URL.createObjectURL(thumbnail[index])}
                 alt=""
-                className="w-[400px] h-[200px]"
               />
-            ) : (
-              Object.keys(poster).map((index) => (
-                <img
-                  key={index}
-                  className=" w-[400px] h-[200px]"
-                  src={URL.createObjectURL(poster[index])}
-                  alt=""
-                />
-              ))
-            )}
-            <Input
-              type="file"
-              id=""
-              placeholder=""
-              onChange={handlePoster}
-              className="hover:cursor-pointer max-w-xs text-black mt-2"
-            />
-          </div>
-          <div className="">
-            <Label htmlFor="" className="text-black text-lg">
-              Video
-            </Label>
-            {Object.keys(video).length === 0 ? (
-              <img
-                src="https://via.placeholder.com/148x148"
-                className=" w-[300px] h-[300px]"
-              />
-            ) : (
-              Object.keys(video).map((index) => (
-                <video
-                  key={index}
-                  className=" w-[300px] h-[300px]"
-                  src={URL.createObjectURL(video[index])}
-                />
-              ))
-            )}
-            <Input
-              type="file"
-              accept="video/*"
-              id=""
-              placeholder=""
-              onChange={handleVideo}
-              className="hover:cursor-pointer max-w-xs text-black mt-2"
-            />
-          </div>
+            ))
+          )}
+          <Input
+            type="file"
+            id=""
+            placeholder=""
+            onChange={handleThumbnail}
+            className="hover:cursor-pointer max-w-xs text-black mt-2"
+          />
         </div>
-        <Button onClick={handleSubmit}>Create Movie</Button>
+
+        <div className="">
+          <Label htmlFor="" className="text-black text-lg">
+            Posters
+          </Label>
+          {Object.keys(poster).length === 0 ? (
+            <img
+              src="https://via.placeholder.com/148x148"
+              alt=""
+              className="w-[400px] h-[200px]"
+            />
+          ) : (
+            Object.keys(poster).map((index) => (
+              <img
+                key={index}
+                className=" w-[400px] h-[200px]"
+                src={URL.createObjectURL(poster[index])}
+                alt=""
+              />
+            ))
+          )}
+          <Input
+            type="file"
+            id=""
+            placeholder=""
+            onChange={handlePoster}
+            className="hover:cursor-pointer max-w-xs text-black mt-2"
+          />
+        </div>
+        <div className="">
+          <Label htmlFor="" className="text-black text-lg">
+            Video
+          </Label>
+          {Object.keys(video).length === 0 ? (
+            <img
+              src="https://via.placeholder.com/148x148"
+              className=" w-[400px] h-[200px]"
+            />
+          ) : (
+            Object.keys(video).map((index) => (
+              <video
+                key={index}
+                className="w-[400px] h-[200px]"
+                src={URL.createObjectURL(video[index])}
+              />
+            ))
+          )}
+          <Input
+            type="file"
+            accept="video/*"
+            id=""
+            placeholder=""
+            onChange={handleVideo}
+            className="hover:cursor-pointer max-w-xs text-black mt-2"
+          />
+        </div>
+      </div>
+      <div className="w-full flex justify-end">
+        <Button
+          className="mt-28 bg-emerald-600 hover:bg-emerald-400 "
+          onClick={handleSubmit}
+        >
+          Create Movie
+        </Button>
       </div>
     </div>
   );

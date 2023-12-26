@@ -25,13 +25,13 @@ function Sidebar(props: SidebarProps): JSX.Element {
   );
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <aside
         className={` ${
           open ? "w-72 " : "w-24 "
-        } pt-4 flex flex-col justify-between bg-[#28262d] border-r border-black h-screen relative duration-200 `}
+        } pt-4 flex flex-col justify-between bg-[#28262d] border-r border-black h-auto  duration-200  `}
       >
-        <ul className={` flex flex-col  w-full`}>
+        <ul className={` flex flex-col  w-full relative`}>
           <div className={` pb-10 flex ml-5  }`}>
             <Hamburger toggled={open} toggle={setOpen} color="white" />
           </div>
@@ -79,14 +79,14 @@ function Sidebar(props: SidebarProps): JSX.Element {
             </div>
           </li>
           <li
-            className={`cursor-pointer ${
+            className={`cursor-pointer  ${
               isTVshows ? " bg-slate-400 " : "hover:bg-slate-300"
             }`}
             onClick={() => {
               navigate(`/createTVshows`);
             }}
           >
-            <div className=" flex ml-7 my-4 items-center">
+            <div className=" flex ml-7 my-4 items-center ">
               <img
                 src="../../../icon/icons8-tv-show-50.png"
                 alt=""
@@ -97,30 +97,34 @@ function Sidebar(props: SidebarProps): JSX.Element {
                   open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
                 }`}
               >
-                Create&nbsp;TVshows
+                Create&nbsp;Series
+              </p>
+            </div>
+          </li>
+          <li
+            className={` cursor-pointer hover:bg-slate-300 fixed bottom-0  ${
+              open ? " w-[249px]" : "w-fit"
+            }`}
+            //   onClick={() => {
+            //     signOut();
+            //   }}
+          >
+            <div className="flex items-center px-7 py-4 ">
+              <img src="../../../icon/icon=logout2.svg" alt="" />
+              <p
+                className={`${
+                  open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
+                }`}
+              >
+                Log&nbsp;Out
               </p>
             </div>
           </li>
         </ul>
-        <div
-          className="flex items-center px-7 py-4 cursor-pointer hover:bg-slate-300 border-t border-black"
-          //   onClick={() => {
-          //     signOut();
-          //   }}
-        >
-          <img src="../../../icon/icon=logout2.svg" alt="" />
-          <p
-            className={`${
-              open ? "origin-left duration-200 ml-4 mr-1" : "hidden"
-            }`}
-          >
-            Log&nbsp;Out
-          </p>
-        </div>
       </aside>
 
       <div className="flex flex-col w-full ">
-        <nav className="w-full h-fit flex items-center py-4 text-gray-600 bg-[#28262d]  text-body2">
+        <nav className="w-full h-fit flex items-center py-4  bg-[#28262d] ">
           <div
             className="pl-[30px] pr-4 hover:cursor-pointer"
             onClick={() => {
