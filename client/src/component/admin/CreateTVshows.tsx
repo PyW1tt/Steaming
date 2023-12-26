@@ -21,8 +21,8 @@ function CreateTVshows() {
     title: "",
     author: "",
     date: "",
-    hours: "",
-    min: "",
+    // hours: "",
+    // min: "",
     rating: "",
     description: "",
     type: "",
@@ -30,9 +30,6 @@ function CreateTVshows() {
     MPA: "",
   });
   const [thumbnail, setThumbnail] = useState({});
-  const [poster, setPoster] = useState({});
-  const [video, setVideo] = useState({});
-
   const [cast, setCast] = useState<{ [key: string]: string }>({});
   const [divs, setDivs] = useState<JSX.Element[]>([
     <Input
@@ -47,120 +44,68 @@ function CreateTVshows() {
     />,
   ]);
 
-  const [episodes, setEpisodes] = useState({});
-
-  const [episodesCover, setEpisodesCover] = useState({});
-  // const handleEpisodesCover = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  //   index: number
-  // ) => {
-  //   const files = event.target.files;
-  //   if (files) {
-  //     setEpisodesCover({
-  //       ...episodesCover,
-  //       [index]: files[0],
-  //     });
-  //   }
-  //   console.log(index);
-  //   console.log(files);
-  // };
+  const [episodes, setEpisodes] = useState<
+    Array<{
+      cover: File | null;
+      video: File | null;
+      episode: string | null;
+      hours: string | null;
+      min: string | null;
+      details: string | null;
+    }>
+  >([
+    {
+      cover: null,
+      video: null,
+      episode: null,
+      hours: null,
+      min: null,
+      details: null,
+    },
+  ]);
 
   const handleEpisodesCover = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
+    type: "cover" | "video" | "episode" | "hours" | "min" | "details"
   ) => {
     const files = event.target.files;
-    if (files) {
-      setEpisodesCover({
-        ...episodesCover,
-        [index + 1]: files[0],
-      });
+    if (files && files.length > 0 && (type === "cover" || type === "video")) {
+      const updatedEpisodes = [...episodes];
 
-      // Update divEpisodes with the new image
-      const updatedDivEpisodes = divEpisodes.map((div, i) => {
-        if (i === index) {
-          return (
-            <div
-              key={i}
-              className=" flex w-full border-b border-gray-400 p-5 hover:bg-slate-100"
-            >
-              <div className=" flex flex-col mr-2">
-                <img
-                  key={index}
-                  className="w-[270px] h-[150px] rounded-md mb-1"
-                  src={URL.createObjectURL(files[0])}
-                  alt=""
-                />
-                <Input
-                  type="file"
-                  id=""
-                  placeholder=""
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                    handleEpisodesCover(event, index)
-                  }
-                  className=" text-black "
-                />
-              </div>
-              <div className="flex flex-col w-full">
-                <Input
-                  type="text"
-                  name=""
-                  id="Episodes"
-                  placeholder="Episode Name"
-                  className=" w-80 mb-3"
-                />
-                <Textarea
-                  name=""
-                  id=""
-                  placeholder="Episode details"
-                  className=""
-                />
-              </div>
-            </div>
-          );
-        }
-        return div;
-      });
+      updatedEpisodes[index][type] = files[0];
 
-      setDivEpisodes(updatedDivEpisodes);
+      setEpisodes(updatedEpisodes);
     }
+
+    if (
+      type === "episode" ||
+      type === "hours" ||
+      type === "min" ||
+      type === "details"
+    ) {
+      const updatedEpisodes = [...episodes];
+
+      updatedEpisodes[index][type] = event.target.value;
+
+      setEpisodes(updatedEpisodes);
+    }
+    // console.log(files);
   };
 
-  const [divEpisodes, setDivEpisodes] = useState<JSX.Element[]>([
-    <div
-      key="0"
-      className=" flex w-full border-b border-gray-400 p-5 hover:bg-slate-100"
-    >
-      <div className=" flex flex-col mr-2">
-        {Object.keys(episodesCover).length === 0 && (
-          <img
-            src="https://via.placeholder.com/148x148"
-            alt=""
-            className="w-[270px] h-[150px] rounded-md mb-1"
-          />
-        )}
-        <Input
-          type="file"
-          id=""
-          placeholder=""
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            handleEpisodesCover(event, 0)
-          }
-          className=" text-black "
-        />
-      </div>
-      <div className="flex flex-col w-full">
-        <Input
-          type="text"
-          name=""
-          id="Episodes"
-          placeholder="Episode Name"
-          className=" w-80 mb-3"
-        />
-        <Textarea name="" id="" placeholder="Episode details" className="" />
-      </div>
-    </div>,
-  ]);
+  const handleAddDivEpisodes = () => {
+    setEpisodes([
+      ...episodes,
+      {
+        cover: null,
+        video: null,
+        episode: null,
+        hours: null,
+        min: null,
+        details: null,
+      },
+    ]);
+  };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -194,47 +139,6 @@ function CreateTVshows() {
     const newDivs = [...divs, newDiv];
     setDivs(newDivs);
   };
-
-  const handleAddDivEpisodes = () => {
-    const newIndex = divEpisodes.length;
-    const newDiv = (
-      <div
-        key={newIndex}
-        className=" flex w-full border-b border-gray-400 p-5 hover:bg-slate-100"
-      >
-        <div className=" flex flex-col mr-2">
-          {Object.keys(episodesCover[newIndex] || {}).length === 0 && (
-            <img
-              src="https://via.placeholder.com/148x148"
-              alt=""
-              className="w-[270px] h-[150px] rounded-md mb-1"
-            />
-          )}
-          <Input
-            type="file"
-            id=""
-            placeholder=""
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              handleEpisodesCover(event, newIndex)
-            }
-            className=" text-black "
-          />
-        </div>
-        <div className="flex flex-col w-full">
-          <Input
-            type="text"
-            name=""
-            id="Episodes"
-            placeholder="Episode Name"
-            className=" w-80 mb-3"
-          />
-          <Textarea name="" id="" placeholder="Episode details" className="" />
-        </div>
-      </div>
-    );
-    const newDivs = [...divEpisodes, newDiv];
-    setDivEpisodes(newDivs);
-  };
   const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
 
@@ -249,34 +153,6 @@ function CreateTVshows() {
       setThumbnail(newThumbnail);
     }
   };
-  const handlePoster = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files && e.target.files[0];
-
-    if (selectedFile) {
-      const newPoster = { ...poster };
-
-      if (newPoster[1]) {
-        URL.revokeObjectURL(newPoster[1]);
-        delete newPoster[1];
-      }
-      newPoster[1] = selectedFile;
-      setPoster(newPoster);
-    }
-  };
-  const handleVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files && e.target.files[0];
-
-    if (selectedFile) {
-      const newVideo = { ...video };
-
-      if (newVideo[1]) {
-        URL.revokeObjectURL(newVideo[1]);
-        delete newVideo[1];
-      }
-      newVideo[1] = selectedFile;
-      setVideo(newVideo);
-    }
-  };
   const handleChange = (key: string, value: string) => {
     setMovieData((prevData) => ({
       ...prevData,
@@ -284,11 +160,17 @@ function CreateTVshows() {
     }));
   };
   const handleSubmit = () => {
-    console.log(movieData);
-    console.log(cast);
-    console.log(thumbnail);
-    console.log(poster);
-    console.log(video);
+    // console.log(movieData);
+    // console.log(cast);
+    // console.log(thumbnail);
+    // console.log(episodes);
+    const data = {
+      ...movieData,
+      cast: cast,
+      thumbnail: thumbnail,
+      episodes: episodes,
+    };
+    console.log(data);
   };
 
   return (
@@ -338,36 +220,6 @@ function CreateTVshows() {
             handleChange("date", sqlFormattedDate);
           }}
         />
-      </div>
-
-      <div className="mb-3">
-        <Label htmlFor="Duration" className="text-black text-base">
-          Duration
-        </Label>
-        <div className="flex gap-2 max-w-xs">
-          <Input
-            type="number"
-            id="Duration"
-            placeholder="Hours"
-            className="text-black"
-            min="0"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.preventDefault();
-              handleChange("hours", e.target.value);
-            }}
-          />
-          <Input
-            type="number"
-            id="Duration"
-            placeholder="Minutes"
-            className="text-black"
-            min="0"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              e.preventDefault();
-              handleChange("min", e.target.value);
-            }}
-          />
-        </div>
       </div>
 
       <div className="max-w-24 mb-3">
@@ -469,16 +321,7 @@ function CreateTVshows() {
         + Add Cast
       </Button>
 
-      <div className="mb-3 mt-5">
-        <Label htmlFor="Episodes" className="text-black text-base">
-          Episodes
-        </Label>
-        {divEpisodes}
-      </div>
-      <Button className="mb-3" onClick={handleAddDivEpisodes}>
-        + Add Episodes
-      </Button>
-      <div className="flex gap-20 ">
+      <div className="flex">
         <div>
           <Label htmlFor="" className="text-black text-lg">
             Thumbnail
@@ -504,66 +347,143 @@ function CreateTVshows() {
             id=""
             placeholder=""
             onChange={handleThumbnail}
-            className="hover:cursor-pointer max-w-xs text-black mt-2"
-          />
-        </div>
-
-        <div className="">
-          <Label htmlFor="" className="text-black text-lg">
-            Posters
-          </Label>
-          {Object.keys(poster).length === 0 ? (
-            <img
-              src="https://via.placeholder.com/148x148"
-              alt=""
-              className="w-[400px] h-[200px]"
-            />
-          ) : (
-            Object.keys(poster).map((index) => (
-              <img
-                key={index}
-                className=" w-[400px] h-[200px]"
-                src={URL.createObjectURL(poster[index])}
-                alt=""
-              />
-            ))
-          )}
-          <Input
-            type="file"
-            id=""
-            placeholder=""
-            onChange={handlePoster}
-            className="hover:cursor-pointer max-w-xs text-black mt-2"
-          />
-        </div>
-        <div className="">
-          <Label htmlFor="" className="text-black text-lg">
-            Video
-          </Label>
-          {Object.keys(video).length === 0 ? (
-            <img
-              src="https://via.placeholder.com/148x148"
-              className=" w-[400px] h-[200px]"
-            />
-          ) : (
-            Object.keys(video).map((index) => (
-              <video
-                key={index}
-                className="w-[400px] h-[200px]"
-                src={URL.createObjectURL(video[index])}
-              />
-            ))
-          )}
-          <Input
-            type="file"
-            accept="video/*"
-            id=""
-            placeholder=""
-            onChange={handleVideo}
-            className="hover:cursor-pointer max-w-xs text-black mt-2"
+            className="hover:cursor-pointer max-w-[400px] text-black mt-2"
           />
         </div>
       </div>
+
+      <div className="mb-3 mt-5">
+        <Label htmlFor="Episodes" className="text-black text-base">
+          Episodes
+        </Label>
+        <div className="">
+          {episodes.map((episode, index) => (
+            <div
+              key={index}
+              className="flex w-full border-b border-gray-400 pr-5 py-5 hover:bg-slate-100"
+            >
+              <div className="flex flex-col justify-center m-2">
+                <p className=" text-black text-xl font-bold">{index + 1}</p>
+              </div>
+
+              <div className="flex flex-col mr-2">
+                <Label
+                  htmlFor={`episodeFile-${index}`}
+                  className=" text-black text-base"
+                >
+                  Cover
+                </Label>
+                {episode.cover ? (
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(episode.cover)}
+                    alt=""
+                    className="w-[270px] h-[150px] rounded-md mb-1"
+                  />
+                ) : (
+                  <img
+                    src="https://via.placeholder.com/148x148"
+                    alt=""
+                    className="w-[270px] h-[150px] rounded-md mb-1"
+                  />
+                )}
+
+                <Input
+                  type="file"
+                  id={`episodeFile-${index}`}
+                  placeholder=""
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    handleEpisodesCover(event, index, "cover")
+                  }
+                  className="text-black"
+                />
+              </div>
+              <div className="flex flex-col mr-2">
+                <Label
+                  htmlFor={`episodeFile-${index}`}
+                  className=" text-black text-base"
+                >
+                  Video
+                </Label>
+                {episode.video ? (
+                  <video
+                    controls
+                    key={index}
+                    src={URL.createObjectURL(episode.video)}
+                    className="w-[270px] h-[150px] rounded-md mb-1"
+                  ></video>
+                ) : (
+                  <img
+                    src="https://via.placeholder.com/148x148"
+                    alt=""
+                    className="w-[270px] h-[150px] rounded-md mb-1"
+                  />
+                )}
+
+                <Input
+                  type="file"
+                  accept="video/*"
+                  id={`episodeFile-${index}`}
+                  placeholder=""
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    handleEpisodesCover(event, index, "video")
+                  }
+                  className="text-black"
+                />
+              </div>
+              <div className="flex flex-col justify-end w-full">
+                <Input
+                  type="text"
+                  name={`episodeName-${index}`}
+                  id={`episodeName-${index}`}
+                  placeholder="Episode Name"
+                  className="w-80 mb-3 text-black "
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    handleEpisodesCover(event, index, "episode")
+                  }
+                />
+                <div className="mb-3">
+                  <div className="flex gap-2 max-w-52">
+                    <Input
+                      type="number"
+                      id="Duration"
+                      placeholder="Hours"
+                      className="text-black "
+                      min="0"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleEpisodesCover(event, index, "hours")
+                      }
+                    />
+                    <Input
+                      type="number"
+                      id="Duration"
+                      placeholder="Minutes"
+                      className="text-black"
+                      min="0"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        handleEpisodesCover(event, index, "min")
+                      }
+                    />
+                  </div>
+                </div>
+                <Textarea
+                  name={`episodeDescription-${index}`}
+                  id={`episodeDescription-${index}`}
+                  placeholder="Episode details"
+                  className=" text-black "
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    handleEpisodesCover(event, index, "details")
+                  }
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <Button className="mb-3" onClick={handleAddDivEpisodes}>
+        + Add Episodes
+      </Button>
+
       <div className="w-full flex justify-end">
         <Button
           className="mt-28 bg-emerald-600 hover:bg-emerald-400 "
