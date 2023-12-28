@@ -137,7 +137,7 @@ function Sidebar(props: SidebarProps): JSX.Element {
             Administrator
           </p>
         </nav>
-        <div className=" h-full pt-10 pb-20 px-10  bg-gray-200">
+        <div className=" h-full pt-10 pb-20 px-10 bg-gray-200">
           {props.children}
         </div>
       </div>

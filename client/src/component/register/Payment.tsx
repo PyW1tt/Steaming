@@ -6,14 +6,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { usePaymentInputs } from "react-payment-inputs";
 import images from "react-payment-inputs/images";
+import { useOmise } from "../../context/omisecontext";
+import Loading from "../../pages/Loading";
 
 function Payment(): JSX.Element {
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [cardName, setCardName] = useState<string>("");
-  const [month, setMonth] = useState<string>("");
-  const [year, setYear] = useState<string>("");
-  const [cvc, setCvc] = useState<string>("");
+  // const [cardNumber, setCardNumber] = useState<string>("");
+  // const [cardName, setCardName] = useState<string>("");
+  // const [month, setMonth] = useState<string>("");
+  // const [year, setYear] = useState<string>("");
+  // const [cvc, setCvc] = useState<string>("");
 
+  const { status, setOmiseCard, omiseCardHandler } = useOmise();
   const {
     getCardImageProps,
     getCardNumberProps,
@@ -57,7 +60,11 @@ function Payment(): JSX.Element {
   });
 
   return (
-    <form>
+    <div
+    // onSubmit={() => {
+    //   omiseCardHandler(omiseCard);
+    // }}
+    >
       <p className=" text-center font-semibold text-2xl mb-6">Payment</p>
       <div className="mb-2 h-24 relative">
         <Label className="font-semibold text-base" htmlFor="">
@@ -70,7 +77,11 @@ function Payment(): JSX.Element {
             onBlur: formik.handleBlur,
             onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
               formik.handleChange(e);
-              setCardNumber(e.target.value.replace(/\s/g, ""));
+              // setCardNumber(e.target.value.replace(/\s/g, ""));
+              setOmiseCard((prevOmiseCard) => ({
+                ...prevOmiseCard,
+                cardNumber: e.target.value.replace(/\s/g, ""),
+              }));
             },
           })}
           className="rounded bg-neutral-900 border border-zinc-800 hover:border-emerald-300 focus:border-emerald-600 mt-1"
@@ -97,7 +108,10 @@ function Payment(): JSX.Element {
           placeholder="Card owner name"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             formik.handleChange(e);
-            setCardName(e.target.value);
+            setOmiseCard((prevOmiseCard) => ({
+              ...prevOmiseCard,
+              cardName: e.target.value,
+            }));
           }}
           onBlur={formik.handleBlur}
           value={formik.values.cardName}
@@ -129,8 +143,11 @@ function Payment(): JSX.Element {
                     .match(/.{1,2}/g);
                   if (matchResult) {
                     const [month, year] = matchResult;
-                    setMonth(month);
-                    setYear(year);
+                    setOmiseCard((prevOmiseCard) => ({
+                      ...prevOmiseCard,
+                      month: month,
+                      year: year,
+                    }));
                   } else {
                     console.log("Invalid format");
                   }
@@ -160,7 +177,10 @@ function Payment(): JSX.Element {
               onBlur: formik.handleBlur,
               onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                 formik.handleChange(e);
-                setCvc(e.target.value);
+                setOmiseCard((prevOmiseCard) => ({
+                  ...prevOmiseCard,
+                  cvc: e.target.value,
+                }));
               },
             })}
             className=" w-full rounded bg-neutral-900 border border-zinc-800 hover:border-emerald-300 focus:border-emerald-600 mt-1"
@@ -177,14 +197,19 @@ function Payment(): JSX.Element {
       <Button
         type="submit"
         className="bg-emerald-600 hover:bg-emerald-400 w-full rounded-[10px] text-sm font-bold"
-        disabled={
-          !formik.isValid ||
-          Object.values(formik.values).some((value) => value === "")
-        }
+        onClick={() => {
+          omiseCardHandler();
+        }}
+        // disabled={
+        //   !formik.isValid ||
+        //   Object.values(formik.values).some((value) => value === "")
+        // }
+        // disabled={status === false}
       >
         Register
       </Button>
-    </form>
+      {/* {status && <Loading />} */}
+    </div>
   );
 }
 

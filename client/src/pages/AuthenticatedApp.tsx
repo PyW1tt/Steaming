@@ -10,9 +10,11 @@ import MyListPage from "./MyListPage";
 import ProfilePage from "./ProfilePage";
 import SearchPage from "./SearchPage";
 import MovieId from "./MovieId";
-import CreateMoivePage from "./adminRole/CreateMoivePage";
+import CreateMoviePage from "./adminRole/CreateMoviePage";
 import AdminSearchPage from "./adminRole/AdminSearchPage";
 import CreateTVshowsPage from "./adminRole/CreateTVshowsPage";
+import UpdateMoivePage from "./adminRole/UpdateMoviePage";
+import UpdateTVshowsPage from "./adminRole/UpdateTVshowsPage";
 
 function AuthenticatedApp() {
   return (
@@ -29,8 +31,10 @@ function AuthenticatedApp() {
 
       {/* AdminRole------- */}
       <Route path="/adminSearch" element={<AdminSearchPage />} />
-      <Route path="/createMovie" element={<CreateMoivePage />} />
+      <Route path="/createMovie" element={<CreateMoviePage />} />
       <Route path="/createTVshows" element={<CreateTVshowsPage />} />
+      <Route path="/updateMovie" element={<UpdateMoivePage />} />
+      <Route path="/updateTVshows" element={<UpdateTVshowsPage />} />
     </Routes>
   );
 }

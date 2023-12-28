@@ -47,8 +47,8 @@ function MovieId() {
             navigate("/");
           }}
         />
-        <p className=" text-xl font-bold">
-          <span className=" font-light">Wacthing : </span>
+        <p className="flex text-xl font-bold">
+          <div className=" font-light">Wacthing :</div> &nbsp;
           {data[0].title}
         </p>
       </nav>

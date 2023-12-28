@@ -24,7 +24,6 @@ function WatchList(): JSX.Element {
         spaceBetween={0}
         navigation={true}
         modules={[Navigation]}
-        className=""
       >
         {data.map((item, index) => {
           return (
