@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormValues } from "../model/FormValues";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -14,9 +15,11 @@ function LoginPage() {
   const eyeOutline: string = "../../../icon/eyeOutline.svg";
   const eyeSolid: string = "../../../icon/eyeSolid.svg";
 
-  function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-  }
+  const { login, dataLogin, setDataLogin } = useAuth();
+
+  // function submit(event: React.FormEvent<HTMLFormElement>) {
+  //   event.preventDefault();
+  // }
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -37,7 +40,7 @@ function LoginPage() {
     <>
       <section className="login">
         <div className="form-wrapper">
-          <form action="" onSubmit={submit} className="">
+          <div>
             <p className=" text-center font-semibold text-2xl mb-6">Login</p>
             <div className="mb-2 h-24">
               <Label className="font-semibold text-base" htmlFor="">
@@ -50,7 +53,7 @@ function LoginPage() {
                 name="email"
                 placeholder="Email"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  // setEmail(e.target.value);
+                  setDataLogin({ ...dataLogin, email: e.target.value });
                   formik.handleChange(e);
                 }}
                 onBlur={formik.handleBlur}
@@ -73,7 +76,7 @@ function LoginPage() {
                 name="password"
                 placeholder="Password"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  // setPassword(e.target.value);
+                  setDataLogin({ ...dataLogin, password: e.target.value });
                   formik.handleChange(e);
                 }}
                 onBlur={formik.handleBlur}
@@ -106,7 +109,7 @@ function LoginPage() {
                 Object.values(formik.values).some((value) => value === "")
               }
               onClick={() => {
-                // prop.setStep("package");
+                login(dataLogin);
               }}
             >
               Continue
@@ -120,7 +123,7 @@ function LoginPage() {
                 Sign up
               </Link>
             </p>
-          </form>
+          </div>
         </div>
       </section>
     </>

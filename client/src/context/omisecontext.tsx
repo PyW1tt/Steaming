@@ -37,14 +37,14 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
   });
 
   const omiseCardHandler = async () => {
-    Swal.fire({
-      title: "Please Wait!",
-      html: "Currently paying",
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
+    // Swal.fire({
+    //   title: "Please Wait!",
+    //   html: "Currently paying",
+    //   allowOutsideClick: false,
+    //   didOpen: () => {
+    //     Swal.showLoading();
+    //   },
+    // });
     // setStatus(true);
     console.log(omiseCard);
     const bodyFormData = new FormData();
@@ -82,12 +82,12 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
       });
       if (result.data.message == "successful") {
         // setStatus(false);
-        Swal.close();
+        // Swal.close();
         await Swal.fire("Payment Successful", "", "success");
         navigate("/login");
       }
     } catch (error) {
-      await Swal.fire("Payment Failed", "Return to search page.", "error");
+      await Swal.fire("Payment Failed", "", "error");
     }
   };
 

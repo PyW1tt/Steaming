@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { usePaymentInputs } from "react-payment-inputs";
 import images from "react-payment-inputs/images";
 import { useOmise } from "../../context/omisecontext";
+import { useAuth } from "../../context/AuthContext";
 import Loading from "../../pages/Loading";
 
 function Payment(): JSX.Element {
@@ -15,8 +16,8 @@ function Payment(): JSX.Element {
   // const [month, setMonth] = useState<string>("");
   // const [year, setYear] = useState<string>("");
   // const [cvc, setCvc] = useState<string>("");
-
-  const { status, setOmiseCard, omiseCardHandler } = useOmise();
+  const { register, dataRegister } = useAuth();
+  const { setOmiseCard } = useOmise();
   const {
     getCardImageProps,
     getCardNumberProps,
@@ -198,7 +199,7 @@ function Payment(): JSX.Element {
         type="submit"
         className="bg-emerald-600 hover:bg-emerald-400 w-full rounded-[10px] text-sm font-bold"
         onClick={() => {
-          omiseCardHandler();
+          register(dataRegister);
         }}
         // disabled={
         //   !formik.isValid ||

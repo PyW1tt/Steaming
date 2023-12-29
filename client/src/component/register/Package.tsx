@@ -1,8 +1,10 @@
 import React from "react";
 import { PropState } from "../../model/PropState";
 import { useOmise } from "../../context/omisecontext";
+import { useAuth } from "../../context/AuthContext";
 
 function Package(prop: PropState): JSX.Element {
+  const { dataRegister, setDataRegister } = useAuth();
   const { setOmiseCard } = useOmise();
   return (
     <div className="">
@@ -17,6 +19,7 @@ function Package(prop: PropState): JSX.Element {
               ...prevOmiseCard,
               totalAmount: "171.11",
             }));
+            setDataRegister({ ...dataRegister, package: "1" });
             prop.setStep("payment");
           }}
         >
@@ -30,6 +33,7 @@ function Package(prop: PropState): JSX.Element {
               ...prevOmiseCard,
               totalAmount: "1714.16",
             }));
+            setDataRegister({ ...dataRegister, package: "2" });
             prop.setStep("payment");
           }}
         >

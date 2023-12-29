@@ -7,6 +7,7 @@ import { Step1, Step2, Step3 } from "../../public/icon/Stepper";
 
 function RegisterPage() {
   const [step, setStep] = useState<string>("register");
+
   return (
     <>
       <section className="register">

@@ -27,7 +27,7 @@ pamentGatewayRouter.post("/", async (req, res) => {
       currency: "thb",
       card: token.startsWith("tokn_") ? token : null,
     });
-    console.log(charge);
+    // console.log(charge);
     if (charge.status === "successful") {
       return res.status(200).json({ message: "successful" });
     } else {

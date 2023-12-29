@@ -9,22 +9,24 @@ import { Button } from "@/components/ui/button";
 import { PropState } from "../../model/PropState";
 import { FormValues } from "../../model/FormValues";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Register(prop: PropState): JSX.Element {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  // const [username, setUsername] = useState<string>("");
+  // const [password, setPassword] = useState<string>("");
+  // const [email, setEmail] = useState<string>("");
+  const { dataRegister, setDataRegister } = useAuth();
 
   const eyeOutline: string = "../../../icon/eyeOutline.svg";
   const eyeSolid: string = "../../../icon/eyeSolid.svg";
 
-  function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(username);
-    console.log(password);
-    console.log(email);
-  }
+  // function submit(event: React.FormEvent<HTMLFormElement>) {
+  //   event.preventDefault();
+  //   console.log(username);
+  //   console.log(password);
+  //   console.log(email);
+  // }
 
   interface RegisterFormValues extends FormValues {
     username: string;
@@ -51,7 +53,7 @@ function Register(prop: PropState): JSX.Element {
   {
     return (
       <>
-        <form action="" onSubmit={submit}>
+        <div>
           <p className=" text-center font-semibold text-2xl mb-6">Register</p>
           <div className="mb-2 h-24">
             <Label className="font-semibold text-base" htmlFor="">
@@ -64,7 +66,7 @@ function Register(prop: PropState): JSX.Element {
               name="username"
               placeholder="Username"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setUsername(e.target.value);
+                setDataRegister({ ...dataRegister, username: e.target.value });
                 formik.handleChange(e);
               }}
               onBlur={formik.handleBlur}
@@ -87,7 +89,7 @@ function Register(prop: PropState): JSX.Element {
               name="email"
               placeholder="Email"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setEmail(e.target.value);
+                setDataRegister({ ...dataRegister, email: e.target.value });
                 formik.handleChange(e);
               }}
               onBlur={formik.handleBlur}
@@ -110,7 +112,7 @@ function Register(prop: PropState): JSX.Element {
               name="password"
               placeholder="Password"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setPassword(e.target.value);
+                setDataRegister({ ...dataRegister, password: e.target.value });
                 formik.handleChange(e);
               }}
               onBlur={formik.handleBlur}
@@ -151,7 +153,7 @@ function Register(prop: PropState): JSX.Element {
               Login
             </Link>
           </p>
-        </form>
+        </div>
       </>
     );
   }

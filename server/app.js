@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import pamentGatewayRouter from "./routers/payment.js";
+import authRouter from "./routers/auth.js";
 
 function init() {
   const app = express();
@@ -10,14 +11,16 @@ function init() {
   app.use(cors());
   app.use(bodyParser.json());
 
-  app.get("/", (res) => {
+  //pamentGatewayRouter
+  app.use("/pamentGateway", pamentGatewayRouter);
+  // Auth
+  app.use("/auth", authRouter);
+
+  app.get("/", (req, res) => {
     res.send("Hello World!");
   });
 
-  //pamentGatewayRouter
-  app.use("/pamentGateway", pamentGatewayRouter);
-
-  app.get("*", (res) => {
+  app.get("*", (req, res) => {
     res.status(404).send("Not found");
   });
 
