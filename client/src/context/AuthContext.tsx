@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal, { SweetAlertResult } from "sweetalert2";
 import { useOmise } from "./omisecontext";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthRegister {
   email: string;
@@ -25,6 +26,8 @@ interface AuthContextProps {
     data: AuthRegister
   ) => Promise<SweetAlertResult<AuthRegister> | undefined>;
   login: (data: AuthLogin) => Promise<SweetAlertResult<AuthLogin> | undefined>;
+  logout: () => Promise<void>;
+  isAuthenticated: boolean;
 }
 
 const AuthContext = React.createContext<AuthContextProps | undefined>(
@@ -83,14 +86,22 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
     });
     try {
       const result = await axios.post("/auth/login", data);
-      console.log(result.data.data);
-      console.log("token" + result.data.token);
+      const token = result.data.token;
+      localStorage.setItem("token", token);
+
+      // const userDataFromToken = jwtDecode(token);
+      // localStorage.setItem("user", userDataFromToken);
+      // console.log(userDataFromToken);
+
+      // console.log(result.data.data);
+      localStorage.setItem("userData", JSON.stringify(result.data.data));
+
       Swal.close();
       await Swal.fire("Login Successful", "", "success");
       navigate("/");
     } catch (error) {
-      if (error.response.data.message === "Invalid login credentials") {
-        return await Swal.fire("Invalid login credentials", "", "error");
+      if (error.response.data.message === "Invalid email or password") {
+        return await Swal.fire("Invalid email or password", "", "error");
       }
       if (error.response.data.message === "Email not confirmed") {
         return await Swal.fire("Email not confirmed", "", "error");
@@ -100,7 +111,18 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
       }
     }
   }
+  async function logout() {
+    try {
+      // await axios.get("/logout");
+      // localStorage.removeItem("token");
+      localStorage.clear();
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  const isAuthenticated = Boolean(localStorage.getItem("token"));
   return (
     <AuthContext.Provider
       value={{
@@ -110,6 +132,8 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
         login,
         dataLogin,
         setDataLogin,
+        isAuthenticated,
+        logout,
       }}
     >
       {props.children}
@@ -124,4 +148,4 @@ const useAuth = () => {
   }
   return context;
 };
-export { useAuth, AuthProvider };
+export { AuthProvider, useAuth };

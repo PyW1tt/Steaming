@@ -1,7 +1,10 @@
 import { Router } from "express";
 import supabase from "../utils/supabaseAuth.js";
 import pool from "../utils/db.js";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 
+dotenv.config();
 const authRouter = Router();
 
 authRouter.post("/register", async (req, res) => {
@@ -82,11 +85,22 @@ authRouter.post("/login", async (req, res) => {
       }
     }
     if (data) {
-      const token = data.session.access_token;
       const result = await pool.query(
-        "SELECT email, package, role FROM user_profile WHERE email = $1",
+        "SELECT id,email, package, role ,created_at  FROM user_profile WHERE email = $1",
         [loginData.email]
       );
+
+      // const token = data.session.access_token;
+      // console.log(result.rows[0]);
+      const token = jwt.sign(
+        {
+          data: result.rows[0],
+        },
+        process.env.SECRET_KEY,
+        // { expiresIn: "900000" }
+        { expiresIn: "43200000" }
+      );
+
       return res.status(200).json({
         message: "Login successful",
         token,

@@ -2,10 +2,10 @@ import { Router } from "express";
 import Omise from "omise";
 
 const omise = Omise({
-  // secretKey: process.env.SECRET_KEY_OMISE,
-  secretKey: "skey_test_5x5w3xsxg2gqel1tyx4", //TODO: move to env
-  omiseVersion: "2019-05-29",
-  //   publicKey: process.env.Public_Key,
+  secretKey: process.env.SECRET_KEY_OMISE,
+  // secretKey: "skey_test_5x5w3xsxg2gqel1tyx4", //TODO: move to env
+  // omiseVersion: "2019-05-29",
+  publicKey: process.env.Public_Key,
 });
 
 const pamentGatewayRouter = Router();

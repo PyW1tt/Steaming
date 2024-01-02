@@ -1,11 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import useDataUser from "../hook/useDataUser";
 
 function ProfilePage() {
   const [avatar, setAvatar] = useState({});
+
+  const { data, getData } = useDataUser();
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // const userDataString = localStorage.getItem("userData");
+
+  // if (userDataString) {
+  //   const userData = JSON.parse(userDataString);
+  //   console.log(userData);
+  // } else {
+  //   console.error("userData is not available in localStorage");
+  // }
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
@@ -27,6 +43,34 @@ function ProfilePage() {
     }
   };
   console.log(avatar);
+
+  //package
+  const monthlyPrice = 4.99;
+  const yearlyPrice = 49.99;
+  const value =
+    data?.package === 1 ? `${monthlyPrice}/month` : `${yearlyPrice}/year`;
+
+  //date start
+  // const isDate = new Date(data?.created_at);
+  const isDate = new Date(data?.created_at ?? "");
+  const yyyy = isDate.getFullYear();
+  const mm = String(isDate.getMonth() + 1).padStart(2, "0");
+  const dd = String(isDate.getDate()).padStart(2, "0");
+  const start = `${dd}/${mm}/${yyyy}`;
+
+  // date end
+  const end = new Date(isDate);
+  end.setDate(isDate.getDate() + 30);
+  const endYYYY = end.getFullYear();
+  const endMM = String(end.getMonth() + 1).padStart(2, "0");
+  const endDD = String(end.getDate()).padStart(2, "0");
+  const endFormatted = `${endDD}/${endMM}/${endYYYY}`;
+
+  // const endFormatted = end.toLocaleDateString("en-GB", {
+  //   day: "2-digit",
+  //   month: "2-digit",
+  //   year: "numeric",
+  // });
 
   return (
     <div className="bg-[#28262d] h-screen">
@@ -70,7 +114,7 @@ function ProfilePage() {
                   id=""
                   placeholder=""
                   className="bg-[#28262d] w-[120px] "
-                  value="$49.99/year"
+                  defaultValue={value}
                   disabled
                 />
               </div>
@@ -83,7 +127,7 @@ function ProfilePage() {
                   id=""
                   placeholder=""
                   className="bg-[#28262d] w-[120px]"
-                  value="16/12/2023"
+                  value={start}
                   disabled
                 />
               </div>
@@ -96,7 +140,7 @@ function ProfilePage() {
                   id=""
                   placeholder=""
                   className="bg-[#28262d] w-[120px]"
-                  value="16/12/2024"
+                  value={endFormatted}
                   disabled
                 />
               </div>
@@ -108,8 +152,8 @@ function ProfilePage() {
                   type="email"
                   id="email"
                   placeholder="Email"
-                  className="bg-[#28262d] w-[200px]"
-                  value="aaaa@example.com"
+                  className="bg-[#28262d] w-[230px]"
+                  defaultValue={data?.email}
                   disabled
                 />
               </div>

@@ -3,10 +3,12 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import pamentGatewayRouter from "./routers/payment.js";
 import authRouter from "./routers/auth.js";
+// import userRouter from "./routers/userData.js";
+// import adminRouter from "./routers/adminData.js";
 
 function init() {
   const app = express();
-  const port = process.env.PORT || 4000;
+  const port = process.env.PORT;
 
   app.use(cors());
   app.use(bodyParser.json());
@@ -15,6 +17,10 @@ function init() {
   app.use("/pamentGateway", pamentGatewayRouter);
   // Auth
   app.use("/auth", authRouter);
+  //user
+  // app.use("/data", userRouter);
+  //admin
+  // app.use("/data", adminRouter);
 
   app.get("/", (req, res) => {
     res.send("Hello World!");

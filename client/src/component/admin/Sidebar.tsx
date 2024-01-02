@@ -5,6 +5,7 @@ import CreateMovie from "./CreateMovie";
 import CreatTVshows from "./CreateTVshows";
 import { useNavigate } from "react-router-dom";
 import "../../App.css";
+import { useAuth } from "../../context/AuthContext";
 interface SidebarProps {
   children: React.ReactNode;
 }
@@ -13,6 +14,7 @@ function Sidebar(props: SidebarProps): JSX.Element {
   const [open, setOpen] = useState<boolean>(true);
 
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const isSearch = React.Children.toArray(props.children).some(
     (child) => (child as React.ReactElement).type === Search
@@ -105,9 +107,9 @@ function Sidebar(props: SidebarProps): JSX.Element {
             className={` cursor-pointer hover:bg-slate-300 fixed bottom-0  ${
               open ? " w-[249px]" : "w-fit"
             }`}
-            //   onClick={() => {
-            //     signOut();
-            //   }}
+            onClick={() => {
+              logout();
+            }}
           >
             <div className="flex items-center px-7 py-4 ">
               <img src="../../../icon/icon=logout2.svg" alt="" />

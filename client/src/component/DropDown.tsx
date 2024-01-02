@@ -9,9 +9,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../context/AuthContext";
 function DropDown() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className=" hover:cursor-pointer">
@@ -30,8 +31,15 @@ function DropDown() {
           </DropdownMenuItem>
           <DropdownMenuSeparator className="my-2" />
           <DropdownMenuItem className="hover:cursor-pointer">
-            <img src="../../public/icon/icon=logout.svg" alt="" />
-            <span className="text-slate-400 text-base ml-1">Log Out</span>
+            <div
+              className="flex"
+              onClick={() => {
+                logout();
+              }}
+            >
+              <img src="../../public/icon/icon=logout.svg" alt="" />
+              <span className="text-slate-400 text-base ml-1">Log Out</span>
+            </div>
           </DropdownMenuItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>

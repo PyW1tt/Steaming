@@ -2,7 +2,6 @@ import React from "react";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import HomePage from "./HomePage";
-import OpenMovie from "../component/OpenMovie";
 import { Routes, Route } from "react-router-dom";
 import TVshowsPage from "./TVshowsPage";
 import MoviesPage from "./MoviesPage";

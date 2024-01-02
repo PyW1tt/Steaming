@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../component/register/RegisterPage.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FormValues } from "../model/FormValues";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+// import useDataUser from "../hook/useDataUser";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -20,6 +21,9 @@ function LoginPage() {
   // function submit(event: React.FormEvent<HTMLFormElement>) {
   //   event.preventDefault();
   // }
+
+  // const { data } = useDataUser();
+  // console.log(data);
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -36,6 +40,7 @@ function LoginPage() {
       alert(JSON.stringify(values, null, 2));
     },
   });
+
   return (
     <>
       <section className="login">

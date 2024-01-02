@@ -172,6 +172,7 @@ function CreateTVshows() {
     };
     console.log(data);
   };
+  console.log(episodes);
 
   return (
     <div className="">
