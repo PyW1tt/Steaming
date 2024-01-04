@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +10,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import useDataUser from "../hook/useDataUser";
+
 function DropDown() {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, userData } = useAuth();
+  const { getData } = useDataUser();
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className=" hover:cursor-pointer">
@@ -23,7 +31,7 @@ function DropDown() {
           <DropdownMenuItem
             className="hover:cursor-pointer "
             onClick={() => {
-              navigate("/profile");
+              navigate(`/profile/${userData?.id}`);
             }}
           >
             <img src="../../public/icon/icon=user.svg" alt="" />

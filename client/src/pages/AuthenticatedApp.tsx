@@ -24,7 +24,7 @@ function AuthenticatedApp() {
       <Route path="/tvshows" element={<TVshowsPage />} />
       <Route path="/movies" element={<MoviesPage />} />
       <Route path="/mylist" element={<MyListPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/profile/:id" element={<ProfilePage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/MovieId" element={<MovieId />} />
 

@@ -86,7 +86,7 @@ authRouter.post("/login", async (req, res) => {
     }
     if (data) {
       const result = await pool.query(
-        "SELECT id,email, package, role ,created_at  FROM user_profile WHERE email = $1",
+        "SELECT id,email, package, role ,img_name,profile_img,created_at  FROM user_profile WHERE email = $1",
         [loginData.email]
       );
 

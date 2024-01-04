@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "./homepage/Header";
 import DropDown from "./DropDown";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import useDataUser from "../hook/useDataUser";
 interface NavbarProps {
   children: React.ReactNode;
   bg?: string;
 }
 function Navbar(props: NavbarProps): JSX.Element {
+  const { userData } = useAuth();
+  const { getData } = useDataUser();
   const navigate = useNavigate();
+
   const isHome = React.Children.toArray(props.children).some(
     (child) => (child as React.ReactElement).type === Header
   );
@@ -31,6 +36,9 @@ function Navbar(props: NavbarProps): JSX.Element {
       ((child as React.ReactElement).props.className || "").includes("myList")
   );
 
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <div
@@ -97,7 +105,11 @@ function Navbar(props: NavbarProps): JSX.Element {
           <div className="justify-start items-center gap-1 flex">
             <img
               className="w-[50px] h-[50px] rounded-full border border-white"
-              src="https://via.placeholder.com/32x32"
+              src={
+                userData.profile_img === null
+                  ? "https://via.placeholder.com/32x32"
+                  : userData.profile_img
+              }
             />
             <DropDown />
           </div>

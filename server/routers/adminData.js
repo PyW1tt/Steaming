@@ -1,5 +1,5 @@
 // import { Router } from "express";
-// import protect from "../middleware/protect";
+// import {protect} from "../middleware/protect";
 
 // const adminRouter = Router();
 // adminRouter.use(protect);

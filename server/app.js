@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import pamentGatewayRouter from "./routers/payment.js";
 import authRouter from "./routers/auth.js";
-// import userRouter from "./routers/userData.js";
+import userRouter from "./routers/userData.js";
 // import adminRouter from "./routers/adminData.js";
 
 function init() {
@@ -17,8 +17,8 @@ function init() {
   app.use("/pamentGateway", pamentGatewayRouter);
   // Auth
   app.use("/auth", authRouter);
-  //user
-  // app.use("/data", userRouter);
+  // user
+  app.use("/user", userRouter);
   //admin
   // app.use("/data", adminRouter);
 

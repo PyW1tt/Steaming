@@ -5,6 +5,15 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { useOmise } from "./omisecontext";
 import { jwtDecode } from "jwt-decode";
 
+interface UserData {
+  email: string;
+  package: number;
+  role: string;
+  created_at: Date;
+  id: string;
+  img_name: string;
+  profile_img: string;
+}
 interface AuthRegister {
   email: string;
   password: string;
@@ -28,6 +37,8 @@ interface AuthContextProps {
   login: (data: AuthLogin) => Promise<SweetAlertResult<AuthLogin> | undefined>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
+  setUserData: Dispatch<SetStateAction<UserData>>;
+  userData: UserData;
 }
 
 const AuthContext = React.createContext<AuthContextProps | undefined>(
@@ -35,6 +46,15 @@ const AuthContext = React.createContext<AuthContextProps | undefined>(
 );
 
 function AuthProvider(props: React.PropsWithChildren<object>) {
+  const [userData, setUserData] = useState({
+    email: "",
+    package: 0,
+    role: "",
+    created_at: new Date(),
+    id: "",
+    img_name: "",
+    profile_img: "",
+  });
   const [dataRegister, setDataRegister] = useState({
     email: "",
     password: "",
@@ -134,6 +154,8 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
         setDataLogin,
         isAuthenticated,
         logout,
+        userData,
+        setUserData,
       }}
     >
       {props.children}

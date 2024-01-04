@@ -4,11 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import useDataUser from "../hook/useDataUser";
-
+import { useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import Loading from "../component/Loading";
 function ProfilePage() {
   const [avatar, setAvatar] = useState({});
-
-  const { data, getData } = useDataUser();
+  const param = useParams();
+  const { getData, updateProfile, loading } = useDataUser();
+  const { userData } = useAuth();
 
   useEffect(() => {
     getData();
@@ -25,6 +28,7 @@ function ProfilePage() {
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
+    // console.log(e.target.files);
 
     if (selectedFile) {
       // นำออกไปเพื่อหลีกเลี่ยงการให้รูปภาพมี key ที่เป็น undefined
@@ -37,40 +41,46 @@ function ProfilePage() {
       }
 
       // ใส่รูปภาพใหม่
-      newAvatars[1] = selectedFile;
+      newAvatars[0] = selectedFile;
 
       setAvatar(newAvatars);
+      // console.log(newAvatars[0]);
     }
   };
-  console.log(avatar);
+  // const imgName = data?.img_name;
+  // const avatars = {
+  //   avatars: avatar[0],
+  // };
+  // console.log(avatar[0]);
 
   //package
   const monthlyPrice = 4.99;
   const yearlyPrice = 49.99;
   const value =
-    data?.package === 1 ? `${monthlyPrice}/month` : `${yearlyPrice}/year`;
+    userData?.package === 1 ? `${monthlyPrice}/month` : `${yearlyPrice}/year`;
 
   //date start
   // const isDate = new Date(data?.created_at);
-  const isDate = new Date(data?.created_at ?? "");
+  const isDate = new Date(userData?.created_at ?? "");
   const yyyy = isDate.getFullYear();
   const mm = String(isDate.getMonth() + 1).padStart(2, "0");
   const dd = String(isDate.getDate()).padStart(2, "0");
   const start = `${dd}/${mm}/${yyyy}`;
 
-  // date end
-  const end = new Date(isDate);
-  end.setDate(isDate.getDate() + 30);
-  const endYYYY = end.getFullYear();
-  const endMM = String(end.getMonth() + 1).padStart(2, "0");
-  const endDD = String(end.getDate()).padStart(2, "0");
-  const endFormatted = `${endDD}/${endMM}/${endYYYY}`;
-
-  // const endFormatted = end.toLocaleDateString("en-GB", {
-  //   day: "2-digit",
-  //   month: "2-digit",
-  //   year: "numeric",
-  // });
+  // date end 1month
+  const endMonth = new Date(isDate);
+  endMonth.setDate(isDate.getDate() + 30);
+  const endMonthYYYY = endMonth.getFullYear();
+  const endMonthMM = String(endMonth.getMonth() + 1).padStart(2, "0");
+  const endMonthDD = String(endMonth.getDate()).padStart(2, "0");
+  const endMonthFormatted = `${endMonthDD}/${endMonthMM}/${endMonthYYYY}`;
+  // date end 1year
+  const endYear = new Date(isDate);
+  endYear.setFullYear(endYear.getFullYear() + 1); // เพิ่ม 1 ปี
+  const endYearYYYY = endYear.getFullYear();
+  const endYearMM = String(endYear.getMonth() + 1).padStart(2, "0");
+  const endYearDD = String(endYear.getDate()).padStart(2, "0");
+  const endYearFormatted = `${endYearDD}/${endYearMM}/${endYearYYYY}`;
 
   return (
     <div className="bg-[#28262d] h-screen">
@@ -80,7 +90,11 @@ function ProfilePage() {
             <div className="w-[15rem] h-[15rem] rounded-full border-2 border-white flex justify-center items-center relative p-1">
               {Object.keys(avatar).length === 0 ? (
                 <img
-                  src="https://via.placeholder.com/148x148"
+                  src={
+                    userData.profile_img === null
+                      ? "https://via.placeholder.com/148x148"
+                      : userData.profile_img
+                  }
                   alt=""
                   className="w-full h-full rounded-full border border-white object-cover"
                 />
@@ -140,7 +154,11 @@ function ProfilePage() {
                   id=""
                   placeholder=""
                   className="bg-[#28262d] w-[120px]"
-                  value={endFormatted}
+                  value={
+                    userData.package === 1
+                      ? endMonthFormatted
+                      : endYearFormatted
+                  }
                   disabled
                 />
               </div>
@@ -153,7 +171,7 @@ function ProfilePage() {
                   id="email"
                   placeholder="Email"
                   className="bg-[#28262d] w-[230px]"
-                  defaultValue={data?.email}
+                  defaultValue={userData?.email}
                   disabled
                 />
               </div>
@@ -162,6 +180,7 @@ function ProfilePage() {
               <Button
                 type="submit"
                 className="bg-emerald-600 hover:bg-emerald-400 w-[218px] h-[46px] rounded-[10px] text-sm font-bold mt-[50px] "
+                onClick={() => updateProfile(avatar[0], param.id)}
               >
                 Update Profile
               </Button>
@@ -169,6 +188,8 @@ function ProfilePage() {
           </div>
         </div>
       </Navbar>
+
+      {loading && <Loading />}
     </div>
   );
 }
