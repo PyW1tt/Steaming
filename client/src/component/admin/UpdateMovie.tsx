@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Admin.css";
 import useInputType from "../../hook/adminHook/useInputType";
 import { Input } from "@/components/ui/input";
@@ -15,10 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
+import useMedia from "../../hook/adminHook/useMedia";
 function UpdateMovie() {
   const navigate = useNavigate();
+  const param = useParams();
   const { genres, MPA, type } = useInputType();
+  const { getMoviesById } = useMedia();
 
   // const [title, setTitle] = useState("");
   // const [author, setAuthor] = useState("");
@@ -168,6 +171,10 @@ function UpdateMovie() {
     console.log(poster);
     console.log(video);
   };
+
+  useEffect(() => {
+    getMoviesById(param.id);
+  }, []);
 
   return (
     <div className="">

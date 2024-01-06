@@ -45,4 +45,46 @@ userRouter.put("/:userId", fileUpload, async (req, res) => {
   }
 });
 
+userRouter.get("/movies", async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+      data_movie.id,
+  data_movie.title,
+  data_movie.author,
+  data_movie.release_date,
+  data_movie.hours,
+  data_movie.min,
+  data_movie.rating,
+  data_movie.description,
+  data_movie.type,
+  data_movie.genres,
+  data_movie.mpa,
+  data_movie.thumbnail_name,
+  data_movie.thumbnail_url,
+  data_movie.poster_name,
+  data_movie.poster_url,
+  data_movie.video_name,
+  data_movie.video_url,
+  data_movie.created_at,
+  data_movie.updated_at,
+        jsonb_agg(jsonb_build_object(
+          'cast_name', cast_name.cast_name
+        )) AS cast_names
+      FROM data_movie
+      LEFT JOIN cast_name ON data_movie.id = cast_name.data_movie_id
+      GROUP BY data_movie.id;
+    `);
+
+    // console.log(result.rows);
+    // console.log(result.rows[0].cast_names[0].cast_name);
+    return res.status(200).json({ data: result.rows });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+});
 export default userRouter;

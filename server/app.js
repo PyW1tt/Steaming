@@ -4,7 +4,7 @@ import cors from "cors";
 import pamentGatewayRouter from "./routers/payment.js";
 import authRouter from "./routers/auth.js";
 import userRouter from "./routers/userData.js";
-// import adminRouter from "./routers/adminData.js";
+import adminRouter from "./routers/adminData.js";
 
 function init() {
   const app = express();
@@ -20,7 +20,7 @@ function init() {
   // user
   app.use("/user", userRouter);
   //admin
-  // app.use("/data", adminRouter);
+  app.use("/admin", adminRouter);
 
   app.get("/", (req, res) => {
     res.send("Hello World!");

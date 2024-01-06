@@ -31,7 +31,7 @@ function Sidebar(props: SidebarProps): JSX.Element {
       <aside
         className={` ${
           open ? "w-72 " : "w-24 "
-        } pt-4 flex flex-col justify-between bg-[#28262d] border-r border-black h-auto  duration-200  `}
+        } pt-4 flex flex-col justify-between bg-[#28262d] border-r border-black  duration-200 h-auto `}
       >
         <ul className={` flex flex-col  w-full relative`}>
           <div className={` pb-10 flex ml-5  }`}>
@@ -124,7 +124,6 @@ function Sidebar(props: SidebarProps): JSX.Element {
           </li>
         </ul>
       </aside>
-
       <div className="flex flex-col w-full ">
         <nav className="w-full h-fit flex items-center py-4  bg-[#28262d] ">
           <div
@@ -142,7 +141,7 @@ function Sidebar(props: SidebarProps): JSX.Element {
         <div className=" h-full pt-10 pb-20 px-10 bg-gray-200">
           {props.children}
         </div>
-      </div>
+      </div>{" "}
     </div>
   );
 }

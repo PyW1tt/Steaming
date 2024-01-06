@@ -25,7 +25,9 @@ const multerUpload = multer({
 });
 const fileUpload = multerUpload.fields([
   { name: "avatars" },
-  //   { name: "video" },
+  { name: "posterFile" },
+  { name: "thumbnailFile" },
+  { name: "videoFile" },
 ]);
 
 // export default fileUpload;

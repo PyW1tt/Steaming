@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import useDataUser from "../hook/useDataUser";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import Loading from "../component/Loading";
+import LoadingPage from "./LoadingPage";
 function ProfilePage() {
   const [avatar, setAvatar] = useState({});
   const param = useParams();
@@ -189,7 +189,7 @@ function ProfilePage() {
         </div>
       </Navbar>
 
-      {loading && <Loading />}
+      {loading && <LoadingPage />}
     </div>
   );
 }
