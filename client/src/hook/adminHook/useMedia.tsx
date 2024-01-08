@@ -1,4 +1,5 @@
 import axios from "axios";
+import { log } from "console";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
@@ -71,37 +72,58 @@ function useMedia() {
       console.log(error);
     }
   }
-  async function createDataSeries(movieData, thumbnail, episodes) {
+  // async function createDataSeries(movieData, thumbnail, episodes) {
+  async function createDataSeries(cover, video) {
     // console.log(data.title);
     // console.log(episodes);
     // console.log(movieData);
     // console.log(thumbnail);
     // console.log(episodes);
+    // console.log(episodes);
 
     try {
-      setloading(true);
+      // setloading(true);
 
-      const formData = new FormData();
-      for (let i = 0; i < episodes.length; i++) {
-        const episode = episodes[i];
-        console.log(episode);
+      // const formData = new FormData();
+      // for (let i = 0; i < episodes.length; i++) {
+      //   const episode = episodes[i];
+      //   // console.log(episode);
 
-        formData.append(`episodes[${i}][cover]`, episode.cover);
-        formData.append(`episodes[${i}][video]`, episode.video);
-        formData.append(`episodes[${i}][episodesName]`, episode.episodeName);
-        formData.append(`episodes[${i}][episodes]`, episode.episode);
-        formData.append(`episodes[${i}][hours]`, episode.hours);
-        formData.append(`episodes[${i}][min]`, episode.min);
-        formData.append(`episodes[${i}][details]`, episode.details);
-      }
+      //   formData.append(`episodes[${i}][cover]`, episode.cover);
+      //   formData.append(`episodes[${i}][video]`, episode.video);
+      //   formData.append(`episodes[${i}][episodesName]`, episode.episodeName);
+      //   formData.append(`episodes[${i}][episodes]`, episode.episode);
+      //   formData.append(`episodes[${i}][hours]`, episode.hours);
+      //   formData.append(`episodes[${i}][min]`, episode.min);
+      //   formData.append(`episodes[${i}][details]`, episode.details);
+      // }
+      // console.log(formData);
+
+      // const formData = new FormData();
+      // episodes.forEach((episode, index) => {
+      //   formData.append(`episodes[${index}][cover]`, episode.cover);
+      //   formData.append(`episodes[${index}][video]`, episode.video);
+      //   formData.append(`episodes[${index}][episodeName]`, episode.episodeName);
+      //   formData.append(`episodes[${index}][episode]`, episode.episode);
+      //   formData.append(`episodes[${index}][hours]`, episode.hours);
+      //   formData.append(`episodes[${index}][min]`, episode.min);
+      //   formData.append(`episodes[${index}][details]`, episode.details);
+      // });
+
+      // ตรวจสอบข้อมูลที่จะส่ง
+      // console.log(formData);
+      console.log(cover);
+      console.log(video);
 
       const result = await axios.post(
         "/admin/createSeries",
         {
-          movieData,
-          formData,
-          thumbnailName: "",
-          thumbnailFile: thumbnail,
+          // movieData,
+          // formData,
+          cover: cover,
+          video: video,
+          // thumbnailName: "",
+          // thumbnailFile: thumbnail,
         },
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -109,25 +131,25 @@ function useMedia() {
       );
 
       console.log(result);
-      setloading(false);
-      await Swal.fire({
-        // position: "top-end",
-        icon: "success",
-        title: "Create Successful",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      // setloading(false);
+      // await Swal.fire({
+      //   // position: "top-end",
+      //   icon: "success",
+      //   title: "Create Successful",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
     } catch (error) {
       console.log(error);
-      setloading(false);
-      setIsError(true);
-      await Swal.fire({
-        // position: "top-end",
-        icon: "error",
-        title: error.message,
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      // setloading(false);
+      // setIsError(true);
+      // await Swal.fire({
+      //   // position: "top-end",
+      //   icon: "error",
+      //   title: error.message,
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
     }
   }
   async function updateDatamovieId(id, data, thumbnail, poster, video) {

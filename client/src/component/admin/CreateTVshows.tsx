@@ -543,7 +543,8 @@ function CreateTVshows() {
             <Button
               className="mt-28 bg-emerald-600 hover:bg-emerald-400 "
               onClick={() => {
-                createDataSeries(movieData, thumbnail[1], episodes);
+                // createDataSeries(movieData, thumbnail[1]);
+                createDataSeries(episodes[0].cover, episodes[0].video);
                 // , handleSubmit();
               }}
             >

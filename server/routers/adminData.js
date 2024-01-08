@@ -3,7 +3,6 @@ import { protect } from "../middleware/protect.js";
 import fileUpload from "../utils/muleterUpload.js";
 import { supabaseUpdateMovie } from "../utils/supabaseUpload.js";
 import pool from "../utils/db.js";
-// import multer from "multer";
 
 const adminRouter = Router();
 adminRouter.use(protect);
@@ -118,9 +117,11 @@ adminRouter.post("/createMovie", fileUpload, async (req, res) => {
 });
 
 adminRouter.post("/createSeries", fileUpload, async (req, res) => {
-  const episode = req.files.episode;
-  console.log(episode);
   try {
+    console.log(req);
+    console.log(req.body);
+    console.log(req.files);
+    console.log(req.files.posterFile[0]);
   } catch (error) {
     return res.status(500).json({
       message: " failed",
