@@ -69,7 +69,9 @@ userRouter.get("/movies", async (req, res) => {
   data_movie.created_at,
   data_movie.updated_at,
         jsonb_agg(jsonb_build_object(
-          'cast_name', cast_name.cast_name
+          'cast_name', cast_name.cast_name,
+          'id', cast_name.id,
+          'movie_id', data_movie_id
         )) AS cast_names
       FROM data_movie
       LEFT JOIN cast_name ON data_movie.id = cast_name.data_movie_id

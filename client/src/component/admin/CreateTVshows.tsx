@@ -20,13 +20,11 @@ import useMedia from "../../hook/adminHook/useMedia";
 
 function CreateTVshows() {
   const { genres, MPA, type } = useInputType();
-  const { loading, isError } = useMedia();
+  const { loading, isError, createDataSeries } = useMedia();
   const [movieData, setMovieData] = useState({
     title: "",
     author: "",
     date: "",
-    // hours: "",
-    // min: "",
     rating: "",
     description: "",
     type: "",
@@ -52,6 +50,7 @@ function CreateTVshows() {
     Array<{
       cover: File | null;
       video: File | null;
+      episodeName: string | null;
       episode: string | null;
       hours: string | null;
       min: string | null;
@@ -61,6 +60,7 @@ function CreateTVshows() {
     {
       cover: null,
       video: null,
+      episodeName: null,
       episode: null,
       hours: null,
       min: null,
@@ -71,7 +71,14 @@ function CreateTVshows() {
   const handleEpisodesCover = (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    type: "cover" | "video" | "episode" | "hours" | "min" | "details"
+    type:
+      | "cover"
+      | "video"
+      | "episodeName"
+      | "episode"
+      | "hours"
+      | "min"
+      | "details"
   ) => {
     const files = event.target.files;
     if (files && files.length > 0 && (type === "cover" || type === "video")) {
@@ -83,7 +90,7 @@ function CreateTVshows() {
     }
 
     if (
-      type === "episode" ||
+      type === "episodeName" ||
       type === "hours" ||
       type === "min" ||
       type === "details"
@@ -103,6 +110,7 @@ function CreateTVshows() {
       {
         cover: null,
         video: null,
+        episodeName: null,
         episode: null,
         hours: null,
         min: null,
@@ -110,6 +118,13 @@ function CreateTVshows() {
       },
     ]);
   };
+
+  // const data = {
+  //   ...movieData,
+  //   cast: cast,
+  //   thumbnail: thumbnail,
+  //   episodes: episodes,
+  // };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -163,20 +178,17 @@ function CreateTVshows() {
       [key]: value,
     }));
   };
-  const handleSubmit = () => {
-    // console.log(movieData);
-    // console.log(cast);
-    // console.log(thumbnail);
-    // console.log(episodes);
-    const data = {
-      ...movieData,
-      cast: cast,
-      thumbnail: thumbnail,
-      episodes: episodes,
-    };
-    console.log(data);
-  };
-  console.log(episodes);
+  // const handleSubmit = () => {
+  //   // console.log(movieData);
+  //   // console.log(cast);
+  //   // console.log(thumbnail);
+  //   // console.log(episodes);
+
+  //   console.log(data);
+  //   console.log(thumbnail[1]);
+  //   console.log(episodes);
+  // };
+  // console.log(episodes);
 
   return (
     <div className="">
@@ -221,8 +233,9 @@ function CreateTVshows() {
               Release Date
             </Label>
             <Input
-              type="date"
+              type="text"
               id="Release Date"
+              placeholder="DD-MM-YYYY"
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
@@ -461,16 +474,29 @@ function CreateTVshows() {
                     />
                   </div>
                   <div className="flex flex-col justify-end w-full">
-                    <Input
-                      type="text"
-                      name={`episodeName-${index}`}
-                      id={`episodeName-${index}`}
-                      placeholder="Episode Name"
-                      className="w-80 mb-3 text-black "
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        handleEpisodesCover(event, index, "episode")
-                      }
-                    />
+                    <div className="flex">
+                      <Input
+                        type="text"
+                        name={`episode-${index}`}
+                        id={`episode-${index}`}
+                        placeholder="Episode"
+                        className="w-20 mb-3 text-black mr-2"
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>
+                        ) => handleEpisodesCover(event, index, "episode")}
+                      />
+                      <Input
+                        type="text"
+                        name={`episodeName-${index}`}
+                        id={`episodeName-${index}`}
+                        placeholder="Episode Name"
+                        className="w-80 mb-3 text-black "
+                        onChange={(
+                          event: React.ChangeEvent<HTMLInputElement>
+                        ) => handleEpisodesCover(event, index, "episodeName")}
+                      />
+                    </div>
+
                     <div className="mb-3">
                       <div className="flex gap-2 max-w-52">
                         <Input
@@ -516,7 +542,10 @@ function CreateTVshows() {
           <div className="w-full flex justify-end">
             <Button
               className="mt-28 bg-emerald-600 hover:bg-emerald-400 "
-              onClick={handleSubmit}
+              onClick={() => {
+                createDataSeries(movieData, thumbnail[1], episodes);
+                // , handleSubmit();
+              }}
             >
               Create Movie
             </Button>

@@ -172,15 +172,15 @@ function CreateMovie() {
     // videoFile: video,
   };
 
-  const handleSubmit = () => {
-    // console.log(data);
-    // console.log(movieData);
-    // console.log(cast);
-    // console.log(thumbnail);
-    // console.log(poster);
-    // console.log(video);
-    console.log(data);
-  };
+  // const handleSubmit = () => {
+  //   // console.log(data);
+  //   // console.log(movieData);
+  //   // console.log(cast);
+  //   // console.log(thumbnail);
+  //   // console.log(poster);
+  //   // console.log(video);
+  //   // console.log(data);
+  // };
 
   return (
     <div className="">
@@ -225,14 +225,15 @@ function CreateMovie() {
               Release Date
             </Label>
             <Input
-              type="date"
+              type="text"
               id="Release Date"
+              placeholder="DD-MM-YYYY"
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
-                const parts = e.target.value.split("-");
-                const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                handleChange("date", sqlFormattedDate);
+                // const parts = e.target.value.split("-");
+                // const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                handleChange("date", e.target.value);
               }}
             />
           </div>
@@ -481,7 +482,7 @@ function CreateMovie() {
               className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
               onClick={() => {
                 postDatamovie(data, thumbnail[1], poster[1], video[1]);
-                handleSubmit();
+                // handleSubmit();
               }}
             >
               Create Movie

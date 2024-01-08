@@ -80,13 +80,19 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
           "Content-Type": "application/json",
         },
       });
-      if (result.data.message == "successful") {
+      console.log(result);
+
+      if (result.data.message === "successful") {
         // setStatus(false);
         // Swal.close();
         await Swal.fire("Payment Successful", "", "success");
         navigate("/login");
       }
+      // if (result.data.message === "authentication failed") {
+      //   await Swal.fire("Payment Failed", "", "error");
+      // }
     } catch (error) {
+      console.log(error);
       await Swal.fire("Payment Failed", "", "error");
     }
   };

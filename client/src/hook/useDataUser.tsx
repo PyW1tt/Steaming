@@ -2,21 +2,47 @@ import axios from "axios";
 // import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
-// import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
-// interface UserData {
-//   email: string;
-//   package: number;
-//   role: string;
-//   created_at: Date;
-//   id: string;
-//   img_name: string;
+// interface dataMovies {
+//   title: "",
+//   author: "",
+//   date: "",
+//   hours: "",
+//   min: "",
+//   rating: "",
+//   description: "",
+//   type: "",
+//   genres: "",
+//   MPA: "",
 // }
 
 function useDataUser() {
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  // const [dataMovies, setDataMovies] = useState(null);
+  const [dataMovies, setDataMovies] = useState([
+    {
+      title: "",
+      author: "",
+      release_date: "",
+      hours: "",
+      min: "",
+      rating: "",
+      description: "",
+      type: "",
+      genres: "",
+      mpa: "",
+      poster_name: "",
+      poster_url: "",
+      thumbnail_name: "",
+      thumbnail_url: "",
+      video_name: "",
+      video_url: "",
+      created_at: new Date(),
+      updated_at: new Date(),
+      cast_names: [{}],
+    },
+  ]);
   const { userData, setUserData } = useAuth();
 
   function getData() {
@@ -59,10 +85,24 @@ function useDataUser() {
       localStorage.setItem("userData", JSON.stringify(NewData));
       setUserData(NewData);
       setloading(false);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "success",
+        title: "Update Success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       setloading(false);
       setIsError(true);
       console.log(error.message);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   }
 
@@ -71,7 +111,7 @@ function useDataUser() {
       setloading(true);
       const result = await axios.get(`/user/movies`);
 
-      // setDataMovies(result);
+      setDataMovies(result.data.data);
       console.log(result.data.data);
 
       setloading(false);
@@ -82,7 +122,7 @@ function useDataUser() {
     }
   }
 
-  return { getData, updateProfile, loading, isError, getMovies };
+  return { getData, updateProfile, loading, isError, getMovies, dataMovies };
 }
 
 export default useDataUser;

@@ -117,7 +117,13 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
       localStorage.setItem("userData", JSON.stringify(result.data.data));
 
       Swal.close();
-      await Swal.fire("Login Successful", "", "success");
+      await Swal.fire({
+        // position: "top-end",
+        icon: "success",
+        title: "Login Successful",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       navigate("/");
     } catch (error) {
       if (error.response.data.message === "Invalid email or password") {

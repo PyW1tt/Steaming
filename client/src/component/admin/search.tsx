@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import data from "../../hook/useMoviesData";
 import { useNavigate } from "react-router-dom";
-import { useDataMovie } from "../../context/dataMovieContext";
+// import { useDataMovie } from "../../context/dataMovieContext";
 import { Input } from "@/components/ui/input";
 import NotFoundPage from "../../pages/NotFoundPage";
 import useDataUser from "../../hook/useDataUser";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
+
 function Search() {
-  const { setDataMovie } = useDataMovie();
-  const { getMovies, loading, isError } = useDataUser();
+  // const { setDataMovie } = useDataMovie();
+  const { getMovies, loading, isError, dataMovies } = useDataUser();
   const navigate = useNavigate();
 
   useEffect(() => {
     getMovies();
   }, []);
+  // console.log(dataMovies);
 
   return (
     <div className="h-full">
@@ -35,18 +37,18 @@ function Search() {
             />
           </div>
           <div className=" flex flex-wrap gap-1.5 h-full w-full">
-            {data.map((item, index) => {
+            {dataMovies.map((item, index) => {
               return (
                 <div
                   key={index}
                   className="relative hover:z-30  cursor-pointer transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-95 duration-200 flex justify-center"
                   onClick={() => {
-                    setDataMovie(item);
+                    // setDataMovie(item);
                     navigate(`/updateMovie/${item.id}`);
                   }}
                 >
                   <img
-                    src={item.thumbnailUrl}
+                    src={item.poster_url}
                     alt=""
                     className="w-[220px] h-[300px] rounded-2xl object-fill"
                   />

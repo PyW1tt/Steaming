@@ -10,9 +10,10 @@ interface NavbarProps {
   bg?: string;
 }
 function Navbar(props: NavbarProps): JSX.Element {
-  const { userData } = useAuth();
+  const { userData, isAuthenticated } = useAuth();
   const { getData } = useDataUser();
   const navigate = useNavigate();
+  console.log(userData);
 
   const isHome = React.Children.toArray(props.children).some(
     (child) => (child as React.ReactElement).type === Header
@@ -84,14 +85,14 @@ function Navbar(props: NavbarProps): JSX.Element {
           >
             My List
           </Link>
-          <Link
-            to="#"
-            className={` hover:text-emerald-500 ${
-              isHome ? "font-extrabold " : "font-normal"
-            }`}
-          >
-            Release
-          </Link>
+          {userData.role === "admin" && (
+            <Link
+              to="/adminSearch"
+              className={` hover:text-emerald-500 ${"font-normal"}`}
+            >
+              Admin
+            </Link>
+          )}
         </div>
         <div className="justify-start items-center gap-[23px] flex">
           <div

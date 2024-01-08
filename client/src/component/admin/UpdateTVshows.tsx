@@ -212,8 +212,9 @@ function UpdateTVshows() {
           Release Date
         </Label>
         <Input
-          type="date"
+          type="text"
           id="Release Date"
+          placeholder="DD-MM-YYYY"
           className="text-black"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             e.preventDefault();

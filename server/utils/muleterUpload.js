@@ -28,6 +28,7 @@ const fileUpload = multerUpload.fields([
   { name: "posterFile" },
   { name: "thumbnailFile" },
   { name: "videoFile" },
+  { name: "episode" },
 ]);
 
 // export default fileUpload;
