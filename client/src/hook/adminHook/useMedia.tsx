@@ -1,11 +1,11 @@
 import axios from "axios";
-import { log } from "console";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 function useMedia() {
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+
   const [dataMovieId, setDataMovieId] = useState({
     id: "",
     title: "",
@@ -28,7 +28,71 @@ function useMedia() {
     updated_at: new Date(),
     cast_names: [{ id: "", movie_id: "", cast_name: "" }],
   });
-  const [dataSeries, setDataSeries] = useState([{}]);
+  // const [dataSeriesId, setDataSeriesId] = useState({
+  //   id: "",
+  //   title: "",
+  //   author: "",
+  //   release_date: "",
+  //   rating: "",
+  //   description: "",
+  //   type: "",
+  //   genres: "",
+  //   mpa: "",
+  //   thumbnail_name: "",
+  //   thumbnail_url: "",
+  //   created_at: new Date(),
+  //   updated_at: new Date(),
+  //   cast_names: [{ id: "", movie_id: "", cast_name: "" }],
+  //   episodes: [
+  //     {
+  //       id: "",
+  //       episode: "",
+  //       episodeName: "",
+  //       hours: "",
+  //       min: "",
+  //       series_id: "",
+  //       details: "",
+  //       coverName: "",
+  //       coverUrl: "",
+  //       videoName: "",
+  //       videoUrl: "",
+  //     },
+  //   ],
+  // });
+
+  const [dataSeriesId, setDataSeriesId] = useState({
+    id: "",
+    title: "",
+    author: "",
+    release_date: "",
+    rating: "",
+    description: "",
+    type: "",
+    genres: "",
+    mpa: "",
+    thumbnail_name: "",
+    thumbnail_url: "",
+    created_at: new Date(),
+    updated_at: new Date(),
+    cast_names: [{ id: "", series_id: "", cast_name: "" }],
+  });
+  const [dataEpisodeId, setDataEpisodeId] = useState([
+    {
+      id: "",
+      episode: "",
+      episodeName: "",
+      hours: "",
+      min: "",
+      series_id: "",
+      details: "",
+      coverName: "",
+      coverUrl: "",
+      videoName: "",
+      videoUrl: "",
+      NewCover: null as File | null,
+      NewVideo: null as File | null,
+    },
+  ]);
 
   async function postDatamovie(data, thumbnail, poster, video) {
     try {
@@ -72,73 +136,135 @@ function useMedia() {
       console.log(error);
     }
   }
-  // async function createDataSeries(movieData, thumbnail, episodes) {
-  async function createDataSeries(cover, video) {
-    // console.log(data.title);
-    // console.log(episodes);
-    // console.log(movieData);
-    // console.log(thumbnail);
-    // console.log(episodes);
-    // console.log(episodes);
 
+  async function createDataSeries(thumbnail, movieData, cast) {
     try {
-      // setloading(true);
-
-      // const formData = new FormData();
-      // for (let i = 0; i < episodes.length; i++) {
-      //   const episode = episodes[i];
-      //   // console.log(episode);
-
-      //   formData.append(`episodes[${i}][cover]`, episode.cover);
-      //   formData.append(`episodes[${i}][video]`, episode.video);
-      //   formData.append(`episodes[${i}][episodesName]`, episode.episodeName);
-      //   formData.append(`episodes[${i}][episodes]`, episode.episode);
-      //   formData.append(`episodes[${i}][hours]`, episode.hours);
-      //   formData.append(`episodes[${i}][min]`, episode.min);
-      //   formData.append(`episodes[${i}][details]`, episode.details);
-      // }
-      // console.log(formData);
-
-      // const formData = new FormData();
-      // episodes.forEach((episode, index) => {
-      //   formData.append(`episodes[${index}][cover]`, episode.cover);
-      //   formData.append(`episodes[${index}][video]`, episode.video);
-      //   formData.append(`episodes[${index}][episodeName]`, episode.episodeName);
-      //   formData.append(`episodes[${index}][episode]`, episode.episode);
-      //   formData.append(`episodes[${index}][hours]`, episode.hours);
-      //   formData.append(`episodes[${index}][min]`, episode.min);
-      //   formData.append(`episodes[${index}][details]`, episode.details);
-      // });
-
-      // ตรวจสอบข้อมูลที่จะส่ง
-      // console.log(formData);
-      console.log(cover);
-      console.log(video);
-
+      setloading(true);
       const result = await axios.post(
         "/admin/createSeries",
         {
-          // movieData,
-          // formData,
-          cover: cover,
-          video: video,
-          // thumbnailName: "",
-          // thumbnailFile: thumbnail,
+          thumbnailName: "",
+          thumbnailFile: thumbnail,
+          movieData,
+          cast,
         },
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      // console.log(result.data.data);
+      // setIdSeries(result.data.data);
+      localStorage.setItem("idSeries", result.data.data);
+      // idSeries = result.data.data;
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  }
 
-      console.log(result);
+  async function createDataEpisodes(data) {
+    const idSeries = localStorage.getItem("idSeries");
+    // console.log(idSeries);
+    try {
+      setloading(true);
+      await axios.post(
+        "/admin/createEpisodes",
+        {
+          data_series_id: idSeries,
+          episode: data.episode,
+          episodeName: data.episodeName,
+          details: data.details,
+          hours: data.hours,
+          min: data.min,
+          coverName: "",
+          videoName: "",
+          cover: data.cover,
+          video: data.video,
+        },
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }
+
+  async function updateDataSeries(thumbnail, id, data) {
+    try {
+      // setloading(true);
+      // console.log(thumbnail);
+      // console.log("id :" + id);
+      // console.log(data);
+      const result = await axios.put(
+        `/admin/updateSeries/${id}`,
+        {
+          data,
+          thumbnailFile: thumbnail,
+        },
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      console.log(result.data);
+      // setIdSeries(result.data.data);
+      // localStorage.setItem("idSeries", result.data.data);
+      // idSeries = result.data.data;
+    } catch (error) {
       // setloading(false);
+      // setIsError(true);
       // await Swal.fire({
-      //   // position: "top-end",
-      //   icon: "success",
-      //   title: "Create Successful",
+      //   icon: "error",
+      //   title: error.message,
       //   showConfirmButton: false,
       //   timer: 1500,
       // });
+      console.log(error);
+    }
+  }
+
+  async function updateDataEpisodes(data) {
+    const idSeries = localStorage.getItem("idSeries");
+    console.log(idSeries);
+    console.log(data);
+    try {
+      // setloading(true);
+      await axios.post(
+        "/admin/createEpisodes",
+        {
+          data_series_id: idSeries,
+          episode: data.episode,
+          episodeName: data.episodeName,
+          details: data.details,
+          hours: data.hours,
+          min: data.min,
+          coverName: data.coverName,
+          videoName: data.videoName,
+          cover: data.cover,
+          video: data.video,
+          newCover: data.NewCover,
+          newVideo: data.NewVideo,
+        },
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
     } catch (error) {
       console.log(error);
       // setloading(false);
@@ -210,7 +336,43 @@ function useMedia() {
       console.log(error);
     }
   }
+  async function getSeriesById(id) {
+    try {
+      setloading(true);
+      const result = await axios.get(`/admin/series/${id}`);
+      // console.log(result.data.data.cast_names);
+      // setDataSeriesId(result.data.data);
+      const data = {
+        id: result.data.data.id,
+        title: result.data.data.title,
+        author: result.data.data.author,
+        release_date: result.data.data.release_date,
+        rating: result.data.data.rating,
+        description: result.data.data.description,
+        type: result.data.data.type,
+        genres: result.data.data.genres,
+        mpa: result.data.data.mpa,
+        thumbnail_name: result.data.data.thumbnail_name,
+        thumbnail_url: result.data.data.thumbnail_url,
+        created_at: result.data.data.created_at,
+        updated_at: result.data.data.updated_at,
+        cast_names: result.data.data.cast_names,
+      };
+      // console.log(data.cast_names);
 
+      const episode = result.data.data.episodes;
+      // console.log(data);
+      // console.log(episode);
+      setDataEpisodeId(episode);
+      setDataSeriesId(data);
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+  // console.log(idSeries);
   return {
     loading,
     isError,
@@ -220,6 +382,15 @@ function useMedia() {
     setDataMovieId,
     updateDatamovieId,
     createDataSeries,
+    createDataEpisodes,
+    setloading,
+    getSeriesById,
+    dataSeriesId,
+    setDataSeriesId,
+    dataEpisodeId,
+    setDataEpisodeId,
+    updateDataSeries,
+    updateDataEpisodes,
   };
 }
 

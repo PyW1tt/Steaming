@@ -87,7 +87,6 @@ function UpdateMovie() {
       const updatedCastNames = [...prevInputValues.cast_names];
       updatedCastNames[key] = { ...updatedCastNames[key], cast_name: value };
       // console.log(updatedCastNames[key]);
-
       return {
         ...prevInputValues,
         cast_names: updatedCastNames,
@@ -114,7 +113,7 @@ function UpdateMovie() {
       ...prevData,
       cast_names: [
         ...prevData.cast_names,
-        { cast_name: "" }, // เพิ่ม cast name ใหม่
+        { id: "", movie_id: "", cast_name: "" }, // เพิ่ม cast name ใหม่
       ],
     }));
   };
@@ -163,6 +162,7 @@ function UpdateMovie() {
     }
   };
   const handleChange = (key: string, value: string) => {
+    console.log({ [key]: value });
     setDataMovieId((prevData) => ({
       ...prevData,
       [key]: value || "",
@@ -211,7 +211,7 @@ function UpdateMovie() {
           </div>
           <div className="max-w-xs mb-3">
             <Label htmlFor="Author" className="text-black text-base">
-              Author
+              Director
             </Label>
             <Input
               type="text"
@@ -283,7 +283,7 @@ function UpdateMovie() {
             <Input
               type="number"
               min="0"
-              max="5"
+              max="10"
               step="0.1"
               id=""
               placeholder="Rating"
@@ -292,7 +292,7 @@ function UpdateMovie() {
                 e.preventDefault();
                 handleChange("rating", e.target.value);
               }}
-              value={dataMovieId.rating}
+              value={dataMovieId.rating || ""}
             />
           </div>
           <div className="max-w-full mb-3">
@@ -307,13 +307,13 @@ function UpdateMovie() {
                 e.preventDefault();
                 handleChange("description", e.target.value);
               }}
-              value={dataMovieId.description}
+              value={dataMovieId.description || ""}
             />
           </div>
           <div className=" flex gap-2 mb-3">
             <Select
               onValueChange={(value: string) => handleChange("type", value)}
-              value={dataMovieId.type}
+              value={dataMovieId.type || ""}
             >
               <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Select Type" />
@@ -399,7 +399,7 @@ function UpdateMovie() {
                 id={`Cast-${index}`}
                 placeholder="Cast name"
                 className="text-black mb-1"
-                value={cast.cast_name}
+                value={cast.cast_name || ""}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleInputChange(e, index.toString())
                 }

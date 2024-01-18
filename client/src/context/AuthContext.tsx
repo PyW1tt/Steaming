@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal, { SweetAlertResult } from "sweetalert2";
 import { useOmise } from "./omisecontext";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 interface UserData {
   email: string;

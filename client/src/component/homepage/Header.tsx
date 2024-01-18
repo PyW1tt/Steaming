@@ -55,7 +55,7 @@ function Header(): React.JSX.Element {
                   <Button
                     className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                     onClick={() => {
-                      navigate("/movieId");
+                      navigate(`/MovieId/${item.id}`);
                     }}
                   >
                     <img

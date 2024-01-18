@@ -89,4 +89,41 @@ userRouter.get("/movies", async (req, res) => {
     });
   }
 });
+
+userRouter.get("/getAll", async (req, res) => {
+  let keywords = req.query.keywords;
+  // console.log(keywords);
+  let query = "";
+  let values = [];
+  try {
+    if (keywords) {
+      keywords = "%" + keywords + "%";
+      query = `SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
+        FROM data_series
+        WHERE title ILIKE $1 OR author ILIKE $1 OR genres ILIKE $1
+        UNION
+        SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
+        FROM data_movie
+        WHERE title ILIKE $1 OR author ILIKE $1 OR genres ILIKE $1
+        ORDER BY rating DESC`;
+      values = [keywords];
+    } else {
+      query = `SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
+        FROM data_series
+        UNION
+        SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
+        FROM data_movie
+        ORDER BY rating DESC`;
+    }
+    const result = await pool.query(query, values);
+    return res.status(200).json({ data: result.rows });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+});
+
 export default userRouter;

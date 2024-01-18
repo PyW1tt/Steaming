@@ -40,7 +40,7 @@ function CreateMovie() {
     min: "",
     rating: "",
     description: "",
-    type: "",
+    type: "Movie",
     genres: "",
     MPA: "",
   });
@@ -207,7 +207,7 @@ function CreateMovie() {
           </div>
           <div className="max-w-xs mb-3">
             <Label htmlFor="Author" className="text-black text-base">
-              Author
+              Director
             </Label>
             <Input
               type="text"
@@ -275,7 +275,7 @@ function CreateMovie() {
             <Input
               type="number"
               min="0"
-              max="5"
+              max="10"
               step="0.1"
               id=""
               placeholder="Rating"
@@ -303,6 +303,7 @@ function CreateMovie() {
           <div className=" flex gap-2 mb-3">
             <Select
               onValueChange={(value: string) => handleChange("type", value)}
+              value={"Movie"}
             >
               <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Select Type" />
@@ -310,7 +311,7 @@ function CreateMovie() {
               <SelectContent className="">
                 <SelectGroup>
                   <SelectLabel className="text-black">Type</SelectLabel>
-                  {type.map((type, index) => {
+                  {/* {type.map((type, index) => {
                     return (
                       <SelectItem
                         key={index}
@@ -320,7 +321,10 @@ function CreateMovie() {
                         {type}
                       </SelectItem>
                     );
-                  })}
+                  })} */}
+                  <SelectItem value={type[0]} className="text-black">
+                    {type[0]}
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -481,6 +485,8 @@ function CreateMovie() {
             <Button
               className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
               onClick={() => {
+                // console.log(movieData);
+
                 postDatamovie(data, thumbnail[1], poster[1], video[1]);
                 // handleSubmit();
               }}

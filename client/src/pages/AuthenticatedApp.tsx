@@ -34,7 +34,7 @@ function AuthenticatedApp() {
       <Route path="/createMovie" element={<CreateMoviePage />} />
       <Route path="/createTVshows" element={<CreateTVshowsPage />} />
       <Route path="/updateMovie/:id" element={<UpdateMoivePage />} />
-      <Route path="/updateTVshows" element={<UpdateTVshowsPage />} />
+      <Route path="/updateTVshows/:id" element={<UpdateTVshowsPage />} />
     </Routes>
   );
 }

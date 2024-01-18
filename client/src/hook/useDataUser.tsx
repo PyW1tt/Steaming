@@ -20,8 +20,10 @@ import Swal from "sweetalert2";
 function useDataUser() {
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+
   const [dataMovies, setDataMovies] = useState([
     {
+      id: "",
       title: "",
       author: "",
       release_date: "",
@@ -106,14 +108,30 @@ function useDataUser() {
     }
   }
 
-  async function getMovies() {
-    try {
-      setloading(true);
-      const result = await axios.get(`/user/movies`);
+  // async function getMovies() {
+  //   try {
+  //     setloading(true);
+  //     const result = await axios.get(`/user/movies`);
 
+  //     setDataMovies(result.data.data);
+  //     console.log(result.data.data);
+
+  //     setloading(false);
+  //   } catch (error) {
+  //     setloading(false);
+  //     setIsError(true);
+  //     console.log(error);
+  //   }
+  // }
+
+  async function getAll(keywords) {
+    try {
+      // console.log(keywords);
+      setloading(true);
+      const result = await axios.get(`/user/getAll?keywords=${keywords}`);
+      // const result = await axios.get(`/user/getAll`);
       setDataMovies(result.data.data);
       console.log(result.data.data);
-
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -122,7 +140,15 @@ function useDataUser() {
     }
   }
 
-  return { getData, updateProfile, loading, isError, getMovies, dataMovies };
+  return {
+    getData,
+    updateProfile,
+    loading,
+    isError,
+    // getMovies,
+    dataMovies,
+    getAll,
+  };
 }
 
 export default useDataUser;

@@ -14,20 +14,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Swal from "sweetalert2";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
 import useMedia from "../../hook/adminHook/useMedia";
 
 function CreateTVshows() {
   const { genres, MPA, type } = useInputType();
-  const { loading, isError, createDataSeries } = useMedia();
+  const {
+    loading,
+    isError,
+    createDataEpisodes,
+    createDataSeries,
+    setloading,
+    // idSeries,
+  } = useMedia();
   const [movieData, setMovieData] = useState({
     title: "",
     author: "",
     date: "",
     rating: "",
     description: "",
-    type: "",
+    type: "Series",
     genres: "",
     MPA: "",
   });
@@ -55,6 +63,7 @@ function CreateTVshows() {
       hours: string | null;
       min: string | null;
       details: string | null;
+      // idSeries: string | null;
     }>
   >([
     {
@@ -65,6 +74,7 @@ function CreateTVshows() {
       hours: null,
       min: null,
       details: null,
+      // idSeries: null,
     },
   ]);
 
@@ -90,6 +100,7 @@ function CreateTVshows() {
     }
 
     if (
+      type === "episode" ||
       type === "episodeName" ||
       type === "hours" ||
       type === "min" ||
@@ -101,7 +112,6 @@ function CreateTVshows() {
 
       setEpisodes(updatedEpisodes);
     }
-    // console.log(files);
   };
 
   const handleAddDivEpisodes = () => {
@@ -178,17 +188,19 @@ function CreateTVshows() {
       [key]: value,
     }));
   };
-  // const handleSubmit = () => {
-  //   // console.log(movieData);
-  //   // console.log(cast);
-  //   // console.log(thumbnail);
-  //   // console.log(episodes);
 
-  //   console.log(data);
-  //   console.log(thumbnail[1]);
-  //   console.log(episodes);
-  // };
-  // console.log(episodes);
+  const simplifiedData = episodes.map(
+    ({ episode, episodeName, details, hours, min, cover, video }) => ({
+      episode,
+      episodeName,
+      details,
+      hours,
+      min,
+      cover,
+      video,
+    })
+  );
+  // console.log(idSeries);
 
   return (
     <div className="">
@@ -215,7 +227,7 @@ function CreateTVshows() {
           </div>
           <div className="max-w-xs mb-3">
             <Label htmlFor="Author" className="text-black text-base">
-              Author
+              Director
             </Label>
             <Input
               type="text"
@@ -253,7 +265,7 @@ function CreateTVshows() {
             <Input
               type="number"
               min="0"
-              max="5"
+              max="10"
               step="0.1"
               id=""
               placeholder="Rating"
@@ -281,6 +293,7 @@ function CreateTVshows() {
           <div className=" flex gap-2 mb-3">
             <Select
               onValueChange={(value: string) => handleChange("type", value)}
+              value={"Series"}
             >
               <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Select Type" />
@@ -288,7 +301,7 @@ function CreateTVshows() {
               <SelectContent className="">
                 <SelectGroup>
                   <SelectLabel className="text-black">Type</SelectLabel>
-                  {type.map((type, index) => {
+                  {/* {type.map((type, index) => {
                     return (
                       <SelectItem
                         key={index}
@@ -298,7 +311,10 @@ function CreateTVshows() {
                         {type}
                       </SelectItem>
                     );
-                  })}
+                  })} */}
+                  <SelectItem value={type[1]} className="text-black">
+                    {type[1]}
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -359,7 +375,12 @@ function CreateTVshows() {
             </Label>
             {divs}
           </div>
-          <Button className="mb-3" onClick={handleAddDiv}>
+          <Button
+            className="mb-3"
+            onClick={() => {
+              handleAddDiv(), console.log(cast);
+            }}
+          >
             + Add Cast
           </Button>
 
@@ -535,17 +556,31 @@ function CreateTVshows() {
               ))}
             </div>
           </div>
-          <Button className="mb-3" onClick={handleAddDivEpisodes}>
+          <Button
+            className="mb-3"
+            onClick={() => {
+              handleAddDivEpisodes(), console.log(cast);
+            }}
+          >
             + Add Episodes
           </Button>
 
           <div className="w-full flex justify-end">
             <Button
               className="mt-28 bg-emerald-600 hover:bg-emerald-400 "
-              onClick={() => {
-                // createDataSeries(movieData, thumbnail[1]);
-                createDataSeries(episodes[0].cover, episodes[0].video);
-                // , handleSubmit();
+              onClick={async () => {
+                await createDataSeries(thumbnail[1], movieData, cast);
+                for (const data of simplifiedData) {
+                  await createDataEpisodes(data);
+                }
+                localStorage.removeItem("idSeries");
+                setloading(false);
+                await Swal.fire({
+                  icon: "success",
+                  title: "Create Successful",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
               }}
             >
               Create Movie

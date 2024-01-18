@@ -3,19 +3,29 @@ import data from "../../hook/useMoviesData";
 import { useNavigate } from "react-router-dom";
 // import { useDataMovie } from "../../context/dataMovieContext";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import NotFoundPage from "../../pages/NotFoundPage";
 import useDataUser from "../../hook/useDataUser";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
 
 function Search() {
   // const { setDataMovie } = useDataMovie();
-  const { getMovies, loading, isError, dataMovies } = useDataUser();
+  const [keywords, setKeywords] = useState("");
+  const { loading, isError, dataMovies, getAll } = useDataUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getMovies();
+    getAll(keywords);
   }, []);
-  // console.log(dataMovies);
+
+  function handleSearch() {
+    getAll(keywords);
+  }
+  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      getAll(keywords);
+    }
+  }
 
   return (
     <div className="h-full">
@@ -29,12 +39,14 @@ function Search() {
             <Input
               type=""
               placeholder="Search for movies, TV shows, or categories "
-              className=" text-lg text-center  rounded-full text-black border-[#28262d]"
-              // value={search}
-              // onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              //   setSearch(e.target.value);
-              // }}
+              className=" text-lg text-center  rounded-full text-black border-[#28262d] mr-2"
+              value={keywords}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setKeywords(e.target.value);
+              }}
+              onKeyPress={handleKeyPress}
             />
+            <Button onClick={handleSearch}>search</Button>
           </div>
           <div className=" flex flex-wrap gap-1.5 h-full w-full">
             {dataMovies.map((item, index) => {
@@ -43,12 +55,19 @@ function Search() {
                   key={index}
                   className="relative hover:z-30  cursor-pointer transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-95 duration-200 flex justify-center"
                   onClick={() => {
-                    // setDataMovie(item);
-                    navigate(`/updateMovie/${item.id}`);
+                    if (item.type === "Movie") {
+                      navigate(`/updateMovie/${item.id}`);
+                    } else {
+                      navigate(`/updateTVshows/${item.id}`);
+                    }
                   }}
                 >
                   <img
-                    src={item.poster_url}
+                    src={
+                      item.thumbnail_url
+                        ? item.thumbnail_url
+                        : "https://via.placeholder.com/148x148"
+                    }
                     alt=""
                     className="w-[220px] h-[300px] rounded-2xl object-fill"
                   />
@@ -63,11 +82,11 @@ function Search() {
                         alt=""
                         className="mr-1 "
                       />
-                      <p className="font-semibold ">4.9</p>
+                      <p className="font-semibold ">{item.rating}</p>
                       <p className="text-gray-500 mx-1 ">|</p>
-                      <p className="text-gray-500">Action</p>
+                      <p className="text-gray-500">{item.genres}</p>
                       <p className="text-gray-500 mx-1 ">•</p>
-                      <p className="text-gray-500">Movie</p>
+                      <p className="text-gray-500">{item.type}</p>
                     </div>
                   </div>
                 </div>
