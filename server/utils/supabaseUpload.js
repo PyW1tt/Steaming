@@ -186,7 +186,6 @@ export async function supabaseCreateEpisode(fileName, file, type) {
   try {
     if (type === "cover") {
       if (fileName !== "") {
-        console.log("1");
         await supabase.storage.from("img").remove([fileName]);
 
         fileName = `series_img/cover/${uniqueId}`;

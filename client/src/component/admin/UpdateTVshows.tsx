@@ -19,6 +19,7 @@ import { LoadingPageAdmin } from "../../pages/LoadingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
 import useMedia from "../../hook/adminHook/useMedia";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateTVshows() {
   const param = useParams();
@@ -31,12 +32,21 @@ function UpdateTVshows() {
     dataEpisodeId,
     setDataEpisodeId,
     updateDataSeries,
-  } =
-    // const { loading, isError, getSeriesById, setDataSeriesId } =
-    useMedia();
-
+    updateDataEpisodes,
+    setloading,
+    handleDeleteEpisodes,
+    handleDeleteSeries,
+    handleDeleteMedia,
+  } = useMedia();
   const navigate = useNavigate();
   const { genres, MPA, type } = useInputType();
+  const [isModalEpisodes, setIsModalEpisodes] = useState(false);
+  const [isModalSeries, setIsModalSeries] = useState(false);
+  const [idEpisodes, setIdEpisodes] = useState("");
+  // const [thumbnailName, setThumbnailName] = useState("");
+  const [coverName, setCoverName] = useState("");
+  const [videoName, setVideoName] = useState("");
+  const [episodesName, setEpisodesName] = useState("");
   // const [movieData, setMovieData] = useState({
   //   title: "",
   //   author: "",
@@ -228,6 +238,42 @@ function UpdateTVshows() {
     getSeriesById(param.id);
   }, []);
 
+  const simplifiedData = dataEpisodeId.map(
+    ({
+      id,
+      episode,
+      episodeName,
+      details,
+      hours,
+      min,
+      coverName,
+      coverUrl,
+      series_id,
+      videoName,
+      videoUrl,
+      NewCover,
+      NewVideo,
+    }) => ({
+      id,
+      episode,
+      episodeName,
+      details,
+      hours,
+      min,
+      coverName,
+      coverUrl,
+      series_id,
+      videoName,
+      videoUrl,
+      NewCover,
+      NewVideo,
+    })
+  );
+  const mediaData = dataEpisodeId.map(({ coverName, videoName }) => ({
+    coverName,
+    videoName,
+  }));
+
   return (
     <div className="">
       {loading ? (
@@ -374,7 +420,7 @@ function UpdateTVshows() {
 
             <Select
               value={dataSeriesId.mpa || ""}
-              onValueChange={(value: string) => handleChange("MPA", value)}
+              onValueChange={(value: string) => handleChange("mpa", value)}
             >
               <SelectTrigger className="w-[180px] ">
                 <SelectValue placeholder="Select MPA ratings" />
@@ -468,7 +514,7 @@ function UpdateTVshows() {
               {dataEpisodeId.map((episode, index) => (
                 <div
                   key={index}
-                  className="flex w-full border-b border-gray-400 pr-5 py-5 hover:bg-slate-100"
+                  className="flex w-full border-b border-gray-400 pr-5 py-5 hover:bg-slate-100 relative"
                 >
                   <div className="flex flex-col justify-center m-2">
                     <p className=" text-black text-xl font-bold">{index + 1}</p>
@@ -518,20 +564,7 @@ function UpdateTVshows() {
                     >
                       Video
                     </Label>
-                    {/* {episode.videoUrl ? (
-                      <video
-                        controls
-                        key={index}
-                        src={episode.videoUrl}
-                        className="w-[270px] h-[150px] rounded-md mb-1"
-                      ></video>
-                    ) : (
-                      <img
-                        src="https://via.placeholder.com/148x148"
-                        alt=""
-                        className="w-[270px] h-[150px] rounded-md mb-1"
-                      />
-                    )} */}
+
                     {episode.NewVideo ? (
                       <video
                         controls
@@ -627,6 +660,62 @@ function UpdateTVshows() {
                       }
                     />
                   </div>
+
+                  <button
+                    className="absolute top-5 right-5 bg-red-600 hover:bg-red-400 w-[20px] h-[20px] rounded-full flex justify-center items-center"
+                    onClick={() => {
+                      setIsModalEpisodes(!isModalEpisodes);
+                      setIdEpisodes(episode.id);
+                      setEpisodesName(episode.episodeName);
+                      setCoverName(episode.coverName);
+                      setVideoName(episode.videoName);
+                    }}
+                  >
+                    X
+                  </button>
+                  {isModalEpisodes && (
+                    <div
+                      className="fixed inset-0 flex items-center justify-center z-40 "
+                      style={{ background: "rgba(0, 0, 0,0.35 )" }}
+                    >
+                      <div className="w-[400px] h-[208px] bg-slate-100 rounded-xl relative z-50">
+                        <div className="text-black text-xl font-bold px-6 py-4">
+                          Delete Episodes
+                        </div>
+                        <hr className="w-full text-slate-500 text-center" />
+                        <div className="p-6">
+                          <p className="text-slate-500 text-base font-bold ">
+                            Are you sure to delete episodes {episodesName} ?
+                          </p>
+
+                          <div className="flex justify-between mt-8">
+                            <Button
+                              className="  bg-red-700 hover:bg-red-400 text-base "
+                              onClick={() => {
+                                setIsModalEpisodes(!isModalEpisodes);
+                              }}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              className="text-base  bg-emerald-600 hover:bg-emerald-400"
+                              onClick={async () => {
+                                await handleDeleteEpisodes(
+                                  idEpisodes,
+                                  coverName,
+                                  videoName
+                                );
+                                await getSeriesById(param.id);
+                                setIsModalEpisodes(!isModalEpisodes);
+                              }}
+                            >
+                              Yes, I’m sure
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -635,44 +724,102 @@ function UpdateTVshows() {
             + Add Episodes
           </Button>
 
-          <div className="w-full flex justify-between">
+          <div className="w-full flex justify-between mt-24">
             <Button
-              className="mt-24 bg-red-600 hover:bg-red-400 "
+              className="bg-blue-700 hover:bg-blue-500"
               onClick={() => {
                 navigate("/createTVshows");
               }}
             >
               Back
             </Button>
-            <Button
-              className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
-              // onClick={handleSubmit}
-              // onClick={() => {
-              //   console.log(dataSeriesId),
-              //     console.log(dataEpisodeId),
-              //     console.log(thumbnail);
-              // }}
-              onClick={async () => {
-                // await updateDataSeries(
-                //   thumbnail[1] ?? "",
-                //   param.id,
-                //   dataSeriesId
-                // );
-                // for (const data of simplifiedData) {
-                //   await createDataEpisodes(data);
-                // }
-                // localStorage.removeItem("idSeries");
-                // setloading(false);
-                // await Swal.fire({
-                //   icon: "success",
-                //   title: "Create Successful",
-                //   showConfirmButton: false,
-                //   timer: 1500,
-                // });
-              }}
-            >
-              Update Series
-            </Button>
+
+            <div>
+              <Button
+                className=" bg-red-600 hover:bg-red-400 mr-5"
+                onClick={() => {
+                  setIsModalSeries(!isModalSeries);
+                }}
+              >
+                Delete
+              </Button>
+              {isModalSeries && (
+                <div
+                  className="fixed inset-0 flex items-center justify-center z-40 "
+                  style={{ background: "rgba(0, 0, 0,0.35 )" }}
+                >
+                  <div className="w-[400px] h-[208px] bg-slate-100 rounded-xl relative z-50">
+                    <div className="text-black text-xl font-bold px-6 py-4">
+                      Delete Episodes
+                    </div>
+                    <hr className="w-full text-slate-500 text-center" />
+                    <div className="p-6">
+                      <p className="text-slate-500 text-base font-bold ">
+                        Are you sure to delete episodes {dataSeriesId.title} ?
+                      </p>
+
+                      <div className="flex justify-between mt-8">
+                        <Button
+                          className="  bg-red-700 hover:bg-red-400 text-base "
+                          onClick={() => {
+                            setIsModalSeries(!isModalSeries);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          className="text-base  bg-emerald-600 hover:bg-emerald-400"
+                          onClick={async () => {
+                            await handleDeleteSeries(
+                              dataSeriesId.id,
+                              dataSeriesId.thumbnail_name
+                            );
+                            for (const data of mediaData) {
+                              await handleDeleteMedia(data);
+                            }
+                            setIsModalSeries(!isModalSeries);
+                            setloading(false);
+                            await Swal.fire({
+                              // position: "top-end",
+                              icon: "success",
+                              title: "Delete Successful",
+                              showConfirmButton: false,
+                              timer: 1500,
+                            });
+                            navigate("/adminSearch");
+                          }}
+                        >
+                          Yes, I’m sure
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <Button
+                className=" bg-emerald-600 hover:bg-emerald-400 "
+                onClick={async () => {
+                  await updateDataSeries(
+                    thumbnail[1] ?? "",
+                    param.id,
+                    dataSeriesId
+                  );
+                  // console.log(dataEpisodeId);
+                  for (const data of simplifiedData) {
+                    await updateDataEpisodes(data);
+                  }
+                  setloading(false);
+                  await Swal.fire({
+                    icon: "success",
+                    title: "Create Successful",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                }}
+              >
+                Update Series
+              </Button>
+            </div>
           </div>
         </>
       )}

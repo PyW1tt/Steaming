@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import Swal from "sweetalert2";
-
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function useMedia() {
+  const param = useParams();
+  const navigate = useNavigate();
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
 
@@ -197,7 +200,6 @@ function useMedia() {
       setloading(false);
       setIsError(true);
       await Swal.fire({
-        // position: "top-end",
         icon: "error",
         title: error.message,
         showConfirmButton: false,
@@ -208,7 +210,7 @@ function useMedia() {
 
   async function updateDataSeries(thumbnail, id, data) {
     try {
-      // setloading(true);
+      setloading(true);
       // console.log(thumbnail);
       // console.log("id :" + id);
       // console.log(data);
@@ -227,35 +229,44 @@ function useMedia() {
       // localStorage.setItem("idSeries", result.data.data);
       // idSeries = result.data.data;
     } catch (error) {
-      // setloading(false);
-      // setIsError(true);
-      // await Swal.fire({
-      //   icon: "error",
-      //   title: error.message,
-      //   showConfirmButton: false,
-      //   timer: 1500,
-      // });
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       console.log(error);
     }
   }
 
   async function updateDataEpisodes(data) {
-    const idSeries = localStorage.getItem("idSeries");
-    console.log(idSeries);
-    console.log(data);
+    // const idSeries = localStorage.getItem("idSeries");
+    // console.log(idSeries);
+
+    // console.log(param.id);
+
+    // console.log(data);
     try {
-      // setloading(true);
-      await axios.post(
-        "/admin/createEpisodes",
+      setloading(true);
+      // console.log(data.coverName);
+      console.log(param.id);
+
+      await axios.put(
+        `/admin/updateEpisodes/${param.id}`,
         {
-          data_series_id: idSeries,
+          id: data.id,
+          data_series_id: data.series_id,
           episode: data.episode,
           episodeName: data.episodeName,
           details: data.details,
           hours: data.hours,
           min: data.min,
           coverName: data.coverName,
+          coverUrl: data.coverUrl,
           videoName: data.videoName,
+          videoUrl: data.videoUrl,
           cover: data.cover,
           video: data.video,
           newCover: data.NewCover,
@@ -265,17 +276,17 @@ function useMedia() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      // console.log(result.data);
     } catch (error) {
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
       console.log(error);
-      // setloading(false);
-      // setIsError(true);
-      // await Swal.fire({
-      //   // position: "top-end",
-      //   icon: "error",
-      //   title: error.message,
-      //   showConfirmButton: false,
-      //   timer: 1500,
-      // });
     }
   }
   async function updateDatamovieId(id, data, thumbnail, poster, video) {
@@ -340,7 +351,7 @@ function useMedia() {
     try {
       setloading(true);
       const result = await axios.get(`/admin/series/${id}`);
-      // console.log(result.data.data.cast_names);
+      // console.log(result.data);
       // setDataSeriesId(result.data.data);
       const data = {
         id: result.data.data.id,
@@ -361,6 +372,7 @@ function useMedia() {
       // console.log(data.cast_names);
 
       const episode = result.data.data.episodes;
+
       // console.log(data);
       // console.log(episode);
       setDataEpisodeId(episode);
@@ -372,7 +384,129 @@ function useMedia() {
       console.log(error);
     }
   }
-  // console.log(idSeries);
+
+  async function handleDeleteMovie(id: string, poster, thumbnail, video) {
+    try {
+      setloading(true);
+      await axios.delete(`/admin/movie/${id}`, {
+        data: {
+          poster,
+          thumbnail,
+          video,
+        },
+      });
+      setloading(false);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "success",
+        title: "Delete Successful",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/adminSearch");
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  }
+
+  async function handleDeleteEpisodes(id: string, poster, video) {
+    try {
+      setloading(true);
+      await axios.delete(`/admin/episode/${id}`, {
+        data: {
+          poster,
+          video,
+        },
+      });
+      setloading(false);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "success",
+        title: "Delete Successful",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      // navigate("/adminSearch");
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  }
+
+  async function handleDeleteSeries(id: string, thumbnail) {
+    // console.log(id);
+    // console.log(thumbnail);
+
+    try {
+      setloading(true);
+      await axios.delete(`/admin/series/${id}`, {
+        data: {
+          thumbnail,
+        },
+      });
+      setloading(false);
+      // await Swal.fire({
+      //   // position: "top-end",
+      //   icon: "success",
+      //   title: "Delete Successful",
+      //   showConfirmButton: false,
+      //   timer: 1500,
+      // });
+      // navigate("/adminSearch");
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  }
+
+  async function handleDeleteMedia(data) {
+    try {
+      // console.log(data);
+      setloading(true);
+      await axios.delete(`/admin/media/${param.id}`, {
+        data: {
+          cover: data.coverName,
+          video: data.videoName,
+        },
+      });
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      await Swal.fire({
+        // position: "top-end",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      console.log(error);
+    }
+  }
   return {
     loading,
     isError,
@@ -391,6 +525,10 @@ function useMedia() {
     setDataEpisodeId,
     updateDataSeries,
     updateDataEpisodes,
+    handleDeleteMovie,
+    handleDeleteEpisodes,
+    handleDeleteSeries,
+    handleDeleteMedia,
   };
 }
 

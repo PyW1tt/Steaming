@@ -31,6 +31,7 @@ function UpdateMovie() {
     updateDatamovieId,
     loading,
     isError,
+    handleDeleteMovie,
   } = useMedia();
 
   // const [title, setTitle] = useState("");
@@ -56,7 +57,7 @@ function UpdateMovie() {
   //   genres: "",
   //   MPA: "",
   // });
-
+  const [isModalMovie, setIsModalMovie] = useState(false);
   const [thumbnail, setThumbnail] = useState({});
   const [poster, setPoster] = useState({});
   const [video, setVideo] = useState({});
@@ -362,7 +363,7 @@ function UpdateMovie() {
             </Select>
 
             <Select
-              onValueChange={(value: string) => handleChange("MPA", value)}
+              onValueChange={(value: string) => handleChange("mpa", value)}
               value={dataMovieId.mpa}
             >
               <SelectTrigger className="w-[180px] ">
@@ -519,32 +520,87 @@ function UpdateMovie() {
               />
             </div>
           </div>
-          <div className="w-full flex justify-between">
+          <div className="mt-24 w-full flex justify-between">
             <Button
-              className="mt-24 bg-red-600 hover:bg-red-400 "
+              className="bg-blue-700 hover:bg-blue-500"
               onClick={() => {
                 navigate("/adminSearch");
               }}
             >
               Back
             </Button>
-            <Button
-              className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
-              onClick={() => {
-                updateDatamovieId(
-                  param.id,
-                  dataMovieId,
-                  // thumbnail[1],
-                  // poster[1],
-                  // video[1]
-                  thumbnail[1] ?? "",
-                  poster[1] ?? "",
-                  video[1] ?? ""
-                );
-              }}
-            >
-              Update Movie
-            </Button>
+
+            <div>
+              <Button
+                className=" bg-red-600 hover:bg-red-400 mr-5"
+                onClick={() => {
+                  setIsModalMovie(!isModalMovie);
+                }}
+              >
+                Delete
+              </Button>
+              {isModalMovie && (
+                <div
+                  className="fixed inset-0 flex items-center justify-center z-40 "
+                  style={{ background: "rgba(0, 0, 0,0.35 )" }}
+                >
+                  <div className="w-[400px] h-[208px] bg-slate-100 rounded-xl relative z-50">
+                    <div className="text-black text-xl font-bold px-6 py-4">
+                      Delete Episodes
+                    </div>
+                    <hr className="w-full text-slate-500 text-center" />
+                    <div className="p-6">
+                      <p className="text-slate-500 text-base font-bold ">
+                        Are you sure to delete episodes {dataMovieId.title} ?
+                      </p>
+
+                      <div className="flex justify-between mt-8">
+                        <Button
+                          className="  bg-red-700 hover:bg-red-400 text-base "
+                          onClick={() => {
+                            setIsModalMovie(!isModalMovie);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          className="text-base  bg-emerald-600 hover:bg-emerald-400"
+                          onClick={async () => {
+                            await handleDeleteMovie(
+                              dataMovieId.id,
+                              dataMovieId.poster_name,
+                              dataMovieId.thumbnail_name,
+                              dataMovieId.video_name
+                            );
+
+                            setIsModalMovie(!isModalMovie);
+                          }}
+                        >
+                          Yes, I’m sure
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <Button
+                className=" bg-emerald-600 hover:bg-emerald-400 "
+                onClick={() => {
+                  updateDatamovieId(
+                    param.id,
+                    dataMovieId,
+                    // thumbnail[1],
+                    // poster[1],
+                    // video[1]
+                    thumbnail[1] ?? "",
+                    poster[1] ?? "",
+                    video[1] ?? ""
+                  );
+                }}
+              >
+                Update Movie
+              </Button>
+            </div>
           </div>
         </>
       )}

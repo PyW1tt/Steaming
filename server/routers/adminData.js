@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { protect } from "../middleware/protect.js";
 import fileUpload from "../utils/muleterUpload.js";
-// import episodesUpload from "../utils/muleterEpisode.js";
+import supabase from "../utils/supabaseAuth.js";
 import {
   supabaseUpdateMovie,
   supabaseCreateSeries,
@@ -329,8 +329,72 @@ adminRouter.put("/updateSeries/:id", fileUpload, async (req, res) => {
   return res.status(200).json({ message: "update successful" });
 });
 adminRouter.put("/updateEpisodes/:id", fileUpload, async (req, res) => {
+  const bodyData = [{ ...req.body, ...req.files }];
   try {
-    console.log(req.body);
+    for (const data of bodyData) {
+      let cover = data.coverName;
+      let coverlUrl = data.coverUrl;
+      let video = data.videoName;
+      let videolUrl = data.videoUrl;
+      console.log(coverlUrl);
+      if (data.newCover !== undefined) {
+        const { fileName, Url } = await supabaseCreateEpisode(
+          data.coverName,
+          data.newCover[0],
+          "cover"
+        );
+        cover = fileName;
+        coverlUrl = Url;
+        console.log(coverlUrl);
+      }
+      if (data.newVideo !== undefined) {
+        const { fileName, Url } = await supabaseCreateEpisode(
+          data.videoName,
+          data.newVideo[0],
+          "video"
+        );
+        video = fileName;
+        videolUrl = Url;
+      }
+      const update = new Date();
+      if (data.id) {
+        const query = `UPDATE episodes set title=$1,hours=$2,min=$3,details=$4,episodes_ep=$5,poster_name=$6,poster_url=$7,video_name=$8,video_url=$9,data_series_id=$10,updated_at=$11 WHERE id=$12
+      RETURNING id `;
+        const value = [
+          data.episodeName,
+          data.hours,
+          data.min,
+          data.details,
+          data.episode,
+          cover,
+          coverlUrl,
+          video,
+          videolUrl,
+          data.data_series_id,
+          update,
+          data.id,
+        ];
+        await pool.query(query, value);
+      } else {
+        const query = `INSERT INTO episodes (title,hours,min,details,episodes_ep,poster_name,poster_url,video_name,video_url,data_series_id,updated_at
+           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
+        const value = [
+          data.episodeName,
+          data.hours,
+          data.min,
+          data.details,
+          data.episode,
+          cover,
+          coverlUrl,
+          video,
+          videolUrl,
+          req.params.id,
+          update,
+        ];
+        await pool.query(query, value);
+      }
+    }
+    return res.status(200).json({ message: "update successful" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -338,7 +402,6 @@ adminRouter.put("/updateEpisodes/:id", fileUpload, async (req, res) => {
       error_message: error.message,
     });
   }
-  return res.status(200).json({ message: "update successful" });
 });
 
 adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
@@ -400,8 +463,8 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
     }
 
     const update = new Date();
-    const query = `UPDATE data_movie set title=$1,author=$2,release_date=$3,hours=$4,min=$5,rating=$6,description=$7,type=$8,genres=$9,mpa=$10,updated_at=$11 WHERE id=$12
-      RETURNING id `;
+    const query = `UPDATE data_movie  (title=$1,author=$2,release_date=$3,hours=$4,min=$5,rating=$6,description=$7,type=$8,genres=$9,mpa=$10,updated_at=$11 WHERE id=$12)
+       `;
     const value = [
       dataMovie.title,
       dataMovie.author,
@@ -526,8 +589,18 @@ adminRouter.get("/series/:id", async (req, res) => {
       COALESCE(jsonb_agg(jsonb_build_object(
         'cast_name', cast_name.cast_name,
         'id', cast_name.id,
-        'series_id', data_series.id 
-      )), '[]'::jsonb) AS cast_names,
+        'series_id', data_series.id
+      )), '[]'::jsonb) AS cast_names   
+    FROM data_series
+    LEFT JOIN cast_name ON data_series.id = cast_name.data_series_id  
+    WHERE data_series.id = $1
+    GROUP BY data_series.id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at
+    ORDER BY data_series.id;
+    `,
+      [id]
+    );
+    const episodes = await pool.query(
+      `SELECT
       COALESCE(jsonb_agg(jsonb_build_object(
         'episode', episodes.episodes_ep,
         'episodeName', episodes.title,
@@ -542,17 +615,15 @@ adminRouter.get("/series/:id", async (req, res) => {
         'series_id', episodes.data_series_id
       )), '[]'::jsonb) AS episodes
     FROM data_series
-    LEFT JOIN cast_name ON data_series.id = cast_name.data_series_id
-    LEFT JOIN episodes ON data_series.id = episodes.data_series_id 
+    LEFT JOIN episodes ON data_series.id = episodes.data_series_id
     WHERE data_series.id = $1
-    GROUP BY data_series.id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at
-    ORDER BY data_series.id;
-    `,
+    GROUP BY data_series.id;`,
       [id]
     );
-    // console.log("successful");
+    const dataSeries = { ...result.rows[0], ...episodes.rows[0] };
+    // console.log(dataSeries);
 
-    return res.status(200).json({ data: result.rows[0] });
+    return res.status(200).json({ data: dataSeries });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -560,6 +631,94 @@ adminRouter.get("/series/:id", async (req, res) => {
       error_message: error,
     });
   }
+});
+
+adminRouter.delete("/movie/:id", async (req, res) => {
+  const id = req.params.id;
+  // console.log(req.body);
+  try {
+    if (req.body.poster) {
+      await supabase.storage.from("img").remove([req.body.poster]);
+    }
+    if (req.body.thumbnail) {
+      await supabase.storage.from("img").remove([req.body.thumbnail]);
+    }
+    if (req.body.video) {
+      await supabase.storage.from("video").remove([req.body.video]);
+    }
+    const query = `delete from data_movie WHERE id = $1`;
+    await pool.query(query, [id]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+  return res.status(200).json({ message: "delete successful" });
+});
+
+adminRouter.delete("/episode/:id", async (req, res) => {
+  const id = req.params.id;
+  // console.log(req.body);
+  try {
+    if (req.body.poster) {
+      await supabase.storage.from("img").remove([req.body.poster]);
+    }
+    if (req.body.video) {
+      await supabase.storage.from("video").remove([req.body.video]);
+    }
+    const query = `delete from episodes WHERE id = $1`;
+    await pool.query(query, [id]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+  return res.status(200).json({ message: "delete successful" });
+});
+
+adminRouter.delete("/series/:id", async (req, res) => {
+  const id = req.params.id;
+  // console.log(req.body);
+  try {
+    if (req.body.thumbnail) {
+      await supabase.storage.from("img").remove([req.body.thumbnail]);
+    }
+    const query = `delete from data_series WHERE id = $1`;
+    await pool.query(query, [id]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+  return res.status(200).json({ message: "delete successful" });
+});
+
+adminRouter.delete("/media/:id", async (req, res) => {
+  const id = req.params.id;
+  // console.log(req.body);
+  try {
+    if (req.body.cover) {
+      await supabase.storage.from("img").remove([req.body.cover]);
+    }
+    if (req.body.video) {
+      await supabase.storage.from("img").remove([req.body.video]);
+    }
+    const query = `delete from data_series WHERE id = $1`;
+    await pool.query(query, [id]);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+  return res.status(200).json({ message: "delete successful" });
 });
 
 export default adminRouter;

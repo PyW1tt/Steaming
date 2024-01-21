@@ -131,7 +131,7 @@ function useDataUser() {
       const result = await axios.get(`/user/getAll?keywords=${keywords}`);
       // const result = await axios.get(`/user/getAll`);
       setDataMovies(result.data.data);
-      console.log(result.data.data);
+      // console.log(result.data.data);
       setloading(false);
     } catch (error) {
       setloading(false);
