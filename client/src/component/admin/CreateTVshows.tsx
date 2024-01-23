@@ -226,13 +226,13 @@ function CreateTVshows() {
             />
           </div>
           <div className="max-w-xs mb-3">
-            <Label htmlFor="Author" className="text-black text-base">
-              Director
+            <Label htmlFor=" Producer" className="text-black text-base">
+              Producer
             </Label>
             <Input
               type="text"
-              id="Author"
-              placeholder="Author name"
+              id=" Producer"
+              placeholder=" Producer name"
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
@@ -247,7 +247,7 @@ function CreateTVshows() {
             <Input
               type="text"
               id="Release Date"
-              placeholder="DD-MM-YYYY"
+              placeholder="YYYY-MM-DD"
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();

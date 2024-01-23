@@ -251,7 +251,7 @@ function useMedia() {
     try {
       setloading(true);
       // console.log(data.coverName);
-      console.log(param.id);
+      // console.log(param.id);
 
       await axios.put(
         `/admin/updateEpisodes/${param.id}`,

@@ -23,7 +23,7 @@ function useDataUser() {
 
   const [dataMovies, setDataMovies] = useState([
     {
-      id: "",
+      series_id: "",
       title: "",
       author: "",
       release_date: "",
@@ -43,6 +43,7 @@ function useDataUser() {
       created_at: new Date(),
       updated_at: new Date(),
       cast_names: [{}],
+      episodes: [{}],
     },
   ]);
   const { userData, setUserData } = useAuth();
@@ -124,14 +125,35 @@ function useDataUser() {
   //   }
   // }
 
-  async function getAll(keywords) {
+  async function getAll(keywords, limit) {
     try {
       // console.log(keywords);
       setloading(true);
-      const result = await axios.get(`/user/getAll?keywords=${keywords}`);
+      const result = await axios.get(
+        `/user/getAll?keywords=${keywords}&limit=${limit}`
+      );
       // const result = await axios.get(`/user/getAll`);
       setDataMovies(result.data.data);
       // console.log(result.data.data);
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+
+  async function getRelease(limit) {
+    try {
+      // console.log(keywords);
+      setloading(true);
+      const result = await axios.get(`/user/getRelease?limit=${limit}`);
+      // const result = await axios.get(`/user/getAll`);
+      setDataMovies(result.data.data);
+      // console.log(result.data.data[0].title);
+      // console.log(result.data.data.title);
+      // console.log(result.data.data.release_date);
+      // console.log("-------");
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -148,6 +170,7 @@ function useDataUser() {
     // getMovies,
     dataMovies,
     getAll,
+    getRelease,
   };
 }
 

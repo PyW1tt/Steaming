@@ -5,6 +5,7 @@ import DropDown from "./DropDown";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useDataUser from "../hook/useDataUser";
+import { Button } from "@/components/ui/button";
 interface NavbarProps {
   children: React.ReactNode;
   bg?: string;
@@ -13,7 +14,7 @@ function Navbar(props: NavbarProps): JSX.Element {
   const { userData, isAuthenticated } = useAuth();
   const { getData } = useDataUser();
   const navigate = useNavigate();
-  console.log(userData);
+  // console.log(userData);
 
   const isHome = React.Children.toArray(props.children).some(
     (child) => (child as React.ReactElement).type === Header
@@ -38,7 +39,9 @@ function Navbar(props: NavbarProps): JSX.Element {
   );
 
   useEffect(() => {
-    getData();
+    {
+      isAuthenticated && getData();
+    }
   }, []);
   return (
     <>
@@ -94,27 +97,38 @@ function Navbar(props: NavbarProps): JSX.Element {
             </Link>
           )}
         </div>
-        <div className="justify-start items-center gap-[23px] flex">
-          <div
-            className=" hover:cursor-pointer"
+        {isAuthenticated ? (
+          <div className="justify-start items-center gap-[23px] flex">
+            <div
+              className=" hover:cursor-pointer"
+              onClick={() => {
+                navigate("/search");
+              }}
+            >
+              <img src="../../icon/search.svg" alt="" />
+            </div>
+            <div className="justify-start items-center gap-1 flex">
+              <img
+                className="w-[50px] h-[50px] rounded-full border border-white"
+                src={
+                  userData.profile_img === null
+                    ? "https://via.placeholder.com/32x32"
+                    : userData.profile_img
+                }
+              />
+              <DropDown />
+            </div>
+          </div>
+        ) : (
+          <Button
+            className="bg-emerald-600 hover:bg-emerald-400 font-normal text-lg"
             onClick={() => {
-              navigate("/search");
+              navigate("/login");
             }}
           >
-            <img src="../../icon/search.svg" alt="" />
-          </div>
-          <div className="justify-start items-center gap-1 flex">
-            <img
-              className="w-[50px] h-[50px] rounded-full border border-white"
-              src={
-                userData.profile_img === null
-                  ? "https://via.placeholder.com/32x32"
-                  : userData.profile_img
-              }
-            />
-            <DropDown />
-          </div>
-        </div>
+            Login
+          </Button>
+        )}
       </div>
       {props.children}
     </>

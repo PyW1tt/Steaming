@@ -212,12 +212,12 @@ function UpdateMovie() {
           </div>
           <div className="max-w-xs mb-3">
             <Label htmlFor="Author" className="text-black text-base">
-              Director
+              Producer
             </Label>
             <Input
               type="text"
-              id="Author"
-              placeholder="Author name"
+              id=" Producer"
+              placeholder=" Producer name"
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
@@ -233,7 +233,7 @@ function UpdateMovie() {
             <Input
               type="text"
               id="Release Date"
-              placeholder="DD-MM-YYYY"
+              placeholder="YYYY-MM-DD"
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();

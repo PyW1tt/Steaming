@@ -6,8 +6,6 @@ function useInputType() {
     "Fantasy",
     "Thriller",
     "Science fiction",
-    "Korean Dramas",
-    "TV Shows",
     "Adventure",
     "Crime",
     "Mystery",

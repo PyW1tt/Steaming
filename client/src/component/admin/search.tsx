@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import data from "../../hook/useMoviesData";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useDataMovie } from "../../context/dataMovieContext";
 import { Input } from "@/components/ui/input";
@@ -8,24 +7,41 @@ import NotFoundPage from "../../pages/NotFoundPage";
 import useDataUser from "../../hook/useDataUser";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
 
+// type MyFunctionType = (arg1: string, arg2: number) => void;
+
 function Search() {
   // const { setDataMovie } = useDataMovie();
   const [keywords, setKeywords] = useState("");
   const { loading, isError, dataMovies, getAll } = useDataUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getAll(keywords);
-  }, []);
+  const limit = "100";
 
   function handleSearch() {
-    getAll(keywords);
+    getAll(keywords, limit);
   }
+
+  // const debounce = (func: MyFunctionType) => {
+  //   let timer: ReturnType<typeof setTimeout> | null;
+
+  //   return (...args: Parameters<MyFunctionType>) => {
+  //     if (timer) clearTimeout(timer);
+
+  //     timer = setTimeout(() => {
+  //       timer = null;
+  //       func(...args);
+  //     }, 900);
+  //   };
+  // };
+  // const optimizedFn = useCallback(debounce(getAll), []);
+
   function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      getAll(keywords);
+      getAll(keywords, limit);
     }
   }
+  useEffect(() => {
+    getAll(keywords, limit);
+  }, []);
 
   return (
     <div className="h-full">
@@ -43,6 +59,7 @@ function Search() {
               value={keywords}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setKeywords(e.target.value);
+                // optimizedFn(e.target.value);
               }}
               onKeyPress={handleKeyPress}
             />
@@ -56,9 +73,9 @@ function Search() {
                   className="relative hover:z-30  cursor-pointer transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-95 duration-200 flex justify-center"
                   onClick={() => {
                     if (item.type === "Movie") {
-                      navigate(`/updateMovie/${item.id}`);
+                      navigate(`/updateMovie/${item.series_id}`);
                     } else {
-                      navigate(`/updateTVshows/${item.id}`);
+                      navigate(`/updateTVshows/${item.series_id}`);
                     }
                   }}
                 >

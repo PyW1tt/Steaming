@@ -300,12 +300,12 @@ function UpdateTVshows() {
           </div>
           <div className="max-w-xs mb-3">
             <Label htmlFor="Author" className="text-black text-base">
-              Author
+              Producer
             </Label>
             <Input
               type="text"
-              id="Director"
-              placeholder="Author name"
+              id=" Producer"
+              placeholder=" Producer name"
               className="text-black"
               value={dataSeriesId.author || ""}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -321,14 +321,14 @@ function UpdateTVshows() {
             <Input
               type="text"
               id="Release Date"
-              placeholder="DD-MM-YYYY"
+              placeholder="YYYY-MM-DD"
               className="text-black"
               value={dataSeriesId.release_date || ""}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
                 // const parts = e.target.value.split("-");
                 // const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                handleChange("date", e.target.value);
+                handleChange("release_date", e.target.value);
               }}
             />
           </div>

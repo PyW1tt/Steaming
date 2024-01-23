@@ -92,28 +92,57 @@ userRouter.get("/movies", async (req, res) => {
 
 userRouter.get("/getAll", async (req, res) => {
   let keywords = req.query.keywords;
+  const limit = req.query.limit;
   // console.log(keywords);
   let query = "";
   let values = [];
   try {
-    if (keywords) {
+    if (keywords && limit) {
       keywords = "%" + keywords + "%";
-      query = `SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
+      query = `
+        SELECT 
+          data_series.id AS series_id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at,
+          NULL AS poster_url,
+          NULL AS video_url,
+          COALESCE(jsonb_agg(jsonb_build_object(
+              'coverUrl', episodes.poster_url,    
+              'videoUrl', episodes.video_url
+          )), '[]'::jsonb) AS episodes
         FROM data_series
-        WHERE title ILIKE $1 OR author ILIKE $1 OR genres ILIKE $1
+        LEFT JOIN episodes ON data_series.id = episodes.data_series_id
+        WHERE data_series.title ILIKE $1 OR data_series.author ILIKE $1 OR data_series.genres ILIKE $1
+        GROUP BY data_series.id 
         UNION
-        SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
+        SELECT 
+          data_movie.id AS movie_id, data_movie.title, data_movie.author, data_movie.release_date, data_movie.rating, data_movie.description, data_movie.type, data_movie.genres, data_movie.mpa, data_movie.thumbnail_name, data_movie.thumbnail_url, data_movie.created_at, data_movie.updated_at,
+          poster_url, video_url,
+          NULL AS episodes
         FROM data_movie
-        WHERE title ILIKE $1 OR author ILIKE $1 OR genres ILIKE $1
-        ORDER BY rating DESC`;
-      values = [keywords];
-    } else {
-      query = `SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
-        FROM data_series
-        UNION
-        SELECT id, title, author, release_date, rating, description, type, genres, mpa, thumbnail_name, thumbnail_url, created_at, updated_at
-        FROM data_movie
-        ORDER BY rating DESC`;
+        WHERE data_movie.title ILIKE $2 OR data_movie.author ILIKE $2 OR data_movie.genres ILIKE $2
+        ORDER BY rating DESC
+        LIMIT $3`;
+      values = [keywords, keywords, limit];
+    } else if (limit) {
+      query = `SELECT 
+      data_series.id AS series_id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at,
+      NULL AS poster_url,
+      NULL AS video_url,
+      COALESCE(jsonb_agg(jsonb_build_object(
+          'coverUrl', episodes.poster_url,    
+          'videoUrl', episodes.video_url
+      )), '[]'::jsonb) AS episodes
+  FROM data_series
+  LEFT JOIN episodes ON data_series.id = episodes.data_series_id
+  GROUP BY data_series.id 
+  UNION
+  SELECT 
+      data_movie.id AS movie_id, data_movie.title, data_movie.author, data_movie.release_date, data_movie.rating, data_movie.description, data_movie.type, data_movie.genres, data_movie.mpa, data_movie.thumbnail_name, data_movie.thumbnail_url, data_movie.created_at, data_movie.updated_at,
+      poster_url,video_url,
+      NULL AS episodes
+  FROM data_movie
+  ORDER BY rating DESC
+        limit $1`;
+      values = [limit];
     }
     const result = await pool.query(query, values);
     return res.status(200).json({ data: result.rows });
@@ -125,5 +154,41 @@ userRouter.get("/getAll", async (req, res) => {
     });
   }
 });
-
+userRouter.get("/getRelease", async (req, res) => {
+  const limit = req.query.limit;
+  let query = "";
+  let values = [];
+  try {
+    if (limit) {
+      query = `SELECT 
+    data_series.id AS series_id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at,
+    NULL AS poster_url,
+    NULL AS video_url,
+    COALESCE(jsonb_agg(jsonb_build_object(
+        'coverUrl', episodes.poster_url,    
+        'videoUrl', episodes.video_url
+    )), '[]'::jsonb) AS episodes
+FROM data_series
+LEFT JOIN episodes ON data_series.id = episodes.data_series_id
+GROUP BY data_series.id 
+UNION
+SELECT 
+    data_movie.id AS movie_id, data_movie.title, data_movie.author, data_movie.release_date, data_movie.rating, data_movie.description, data_movie.type, data_movie.genres, data_movie.mpa, data_movie.thumbnail_name, data_movie.thumbnail_url, data_movie.created_at, data_movie.updated_at,
+    poster_url,video_url,
+    NULL AS episodes
+FROM data_movie
+ORDER BY release_date DESC
+      limit $1`;
+      values = [limit];
+    }
+    const result = await pool.query(query, values);
+    return res.status(200).json({ data: result.rows });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: " failed",
+      error_message: error,
+    });
+  }
+});
 export default userRouter;

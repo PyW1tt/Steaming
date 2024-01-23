@@ -463,7 +463,7 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
     }
 
     const update = new Date();
-    const query = `UPDATE data_movie  (title=$1,author=$2,release_date=$3,hours=$4,min=$5,rating=$6,description=$7,type=$8,genres=$9,mpa=$10,updated_at=$11 WHERE id=$12)
+    const query = `UPDATE data_movie SET title=$1,author=$2,release_date=$3,hours=$4,min=$5,rating=$6,description=$7,type=$8,genres=$9,mpa=$10,updated_at=$11 WHERE id=$12
        `;
     const value = [
       dataMovie.title,
