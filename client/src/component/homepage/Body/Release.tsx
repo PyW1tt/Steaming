@@ -9,12 +9,13 @@ import ModalSeries from "../../ModalSeries";
 import useOpenModal from "../../../hook/useOpenModal";
 import { LoadingRelease } from "../../../pages/LoadingPage";
 import useDataUser from "../../../hook/useDataUser";
+import { useDataMovie } from "../../../context/dataMovieContext";
 
 function Release(): JSX.Element {
   const [hoveredItem, setHoveredItem] = useState<unknown>(null);
   const { openModalMoive, openModalseries } = useOpenModal();
   const { getRelease, dataMovies, loading, isError } = useDataUser();
-
+  const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
   const limit = "10";
 
   useEffect(() => {
@@ -46,10 +47,11 @@ function Release(): JSX.Element {
                 onMouseEnter={() => setHoveredItem(index)}
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => {
-                  item.genres === "movie"
-                    ? openModalMoive()
-                    : openModalseries();
-                  // setDataMovie(item);
+                  localStorage.setItem(
+                    "idMedia",
+                    JSON.stringify(item.series_id)
+                  );
+                  item.type === "Movie" ? openModalMoive() : openModalseries();
                 }}
               >
                 <img
@@ -82,8 +84,8 @@ function Release(): JSX.Element {
           })}
         </Swiper>
       )}
-      {/* <ModalMovie />
-      <ModalSeries /> */}
+      {isModalMovieOpen && <ModalMovie />}
+      {isModalSeriesOpen && <ModalSeries />}
     </div>
   );
 }

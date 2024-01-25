@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useDataUser from "../hook/useDataUser";
 import { Button } from "@/components/ui/button";
+
 interface NavbarProps {
   children: React.ReactNode;
   bg?: string;
@@ -39,7 +40,7 @@ function Navbar(props: NavbarProps): JSX.Element {
   );
 
   useEffect(() => {
-    getData();
+    isAuthenticated && getData();
   }, []);
   return (
     <>
@@ -53,48 +54,63 @@ function Navbar(props: NavbarProps): JSX.Element {
             <img src="../../icon/Logo.svg" alt="" />
           </Link>
         </div>
-        <div className="justify-start items-start gap-8 flex text-2xl ">
-          <Link
-            to="/"
-            className={` hover:text-emerald-500 ${
-              isHome ? "font-extrabold " : "font-normal"
-            }`}
-          >
-            Home
-          </Link>
-          <Link
-            to="/tvshows"
-            className={` hover:text-emerald-500 ${
-              isTVShow ? "font-extrabold " : "font-normal"
-            }`}
-          >
-            Series
-          </Link>
-          <Link
-            to="/movies"
-            className={` hover:text-emerald-500 ${
-              isMovies ? "font-extrabold " : "font-normal"
-            }`}
-          >
-            Moives
-          </Link>
-          <Link
-            to="/mylist"
-            className={` hover:text-emerald-500 ${
-              isMyList ? "font-extrabold " : "font-normal"
-            }`}
-          >
-            My List
-          </Link>
-          {userData.role === "admin" && (
+        {isAuthenticated ? (
+          <div className="justify-start items-start gap-8 flex text-2xl ">
             <Link
-              to="/adminSearch"
-              className={` hover:text-emerald-500 ${"font-normal"}`}
+              to="/"
+              className={` hover:text-emerald-500 ${
+                isHome ? "font-extrabold " : "font-normal"
+              }`}
             >
-              Admin
+              Home
             </Link>
-          )}
-        </div>
+
+            <Link
+              to="/tvshows"
+              className={` hover:text-emerald-500 ${
+                isTVShow ? "font-extrabold " : "font-normal"
+              }`}
+            >
+              Series
+            </Link>
+            <Link
+              to="/movies"
+              className={` hover:text-emerald-500 ${
+                isMovies ? "font-extrabold " : "font-normal"
+              }`}
+            >
+              Moives
+            </Link>
+            <Link
+              to="/mylist"
+              className={` hover:text-emerald-500 ${
+                isMyList ? "font-extrabold " : "font-normal"
+              }`}
+            >
+              My List
+            </Link>
+            {userData.role === "admin" && (
+              <Link
+                to="/adminSearch"
+                className={` hover:text-emerald-500 ${"font-normal"}`}
+              >
+                Admin
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div>
+            <Link
+              to="/"
+              className={` hover:text-emerald-500 ${
+                isHome ? "font-extrabold " : "font-normal"
+              }flex text-2xl`}
+            >
+              Home
+            </Link>
+          </div>
+        )}
+
         {isAuthenticated ? (
           <div className="justify-start items-center gap-[23px] flex">
             <div

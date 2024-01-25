@@ -50,7 +50,7 @@ function Search() {
         <div className="flex justify-center mb-10">
           <Input
             type=""
-            placeholder="Search for movies, TV shows, or genres "
+            placeholder="Search for movies , series , producer  or genres "
             className=" text-lg text-center  rounded-full text-black border-[#28262d] mr-2"
             value={keywords}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

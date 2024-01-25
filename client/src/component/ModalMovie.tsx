@@ -7,8 +7,18 @@ import useMedia from "../hook/adminHook/useMedia";
 import { LoadingMovieModal } from "../pages/LoadingPage";
 function ModalMovie() {
   const { isModalMovieOpen } = useDataMovie();
-  const { loading, isError, getMoviesIdModal, dataMovieId } = useMedia();
+  const {
+    loading,
+    isError,
+    getMoviesIdModal,
+    dataMovieId,
+    handleAddWatchList,
+    watch_list,
+    setWatchList,
+    handleChangeWatchList,
+  } = useMedia();
   const { closeModalMoive } = useOpenModal();
+
   // const {
   //   closeModal,
   //   addWatchList,
@@ -64,7 +74,7 @@ function ModalMovie() {
                   onClick={() => {
                     navigate(`/movieId/${dataMovieId.id}`);
                     closeModalMoive();
-                    // console.log(dataMovieId.id);
+                    localStorage.removeItem("idMedia");
                   }}
                 >
                   <img
@@ -75,18 +85,57 @@ function ModalMovie() {
                   Play Now
                 </Button>
 
-                {/* {dataMovie.list === undefined || dataMovie.list === false ? (
+                {watch_list === true ? (
+                  <Button
+                    className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                    onClick={() => {
+                      handleChangeWatchList(
+                        dataMovieId.watch_list[0].watchListId,
+                        "false"
+                      );
+                      setWatchList(false);
+                    }}
+                  >
+                    <img
+                      src="../../../icon/check.svg"
+                      alt=""
+                      className="mr-[10px]"
+                    />
+                    Watchlist
+                  </Button>
+                ) : (
                   <Button
                     className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      // dataMovie.list = true;
-                      // console.log(dataMovie.list);
-
-                      // dataMovie.list = watchList;
-                      // setWatchList(!watchList);
-
-                      dataMovie.list = addWatchList;
-                      setAddWatchList(!addWatchList);
+                      {
+                        watch_list === null
+                          ? handleAddWatchList(dataMovieId.id, "movie")
+                          : handleChangeWatchList(
+                              dataMovieId.watch_list[0].watchListId,
+                              "true"
+                            );
+                      }
+                      setWatchList(true);
+                    }}
+                  >
+                    <img
+                      src="../../../icon/bookmark.svg"
+                      alt=""
+                      className="mr-[10px]"
+                    />
+                    Add Watchlist
+                  </Button>
+                )}
+                {/* {watch_list === null || watch_list === "false" ? (
+                  <Button
+                    className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                    onClick={() => {
+                      {
+                        watch_list === null
+                          ? handleAddWatchList(dataMovieId.id, "movie")
+                          : console.log("123");
+                      }
+                      setWatchList("true");
                     }}
                   >
                     <img
@@ -100,11 +149,11 @@ function ModalMovie() {
                   <Button
                     className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      // dataMovie.list = false;
-                      // console.log(dataMovie.list);
-
-                      dataMovie.list = cancelWatchList;
-                      setCancelWatchList(!cancelWatchList);
+                      handleChangeWatchList(
+                        dataMovieId.watch_list[0].watchListId,
+                        "false"
+                      );
+                      setWatchList("false");
                     }}
                   >
                     <img

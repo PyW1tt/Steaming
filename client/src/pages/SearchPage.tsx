@@ -49,7 +49,7 @@ function SearchPage() {
           </button>
           <Input
             type=""
-            placeholder="Search for movies, TV shows, or genres "
+            placeholder="Search for movies , series , producer  or genres "
             className="bg-[#28262d] text-lg text-center  hover:border-emerald-300 focus:border-emerald-600 rounded-full "
             value={keywords}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

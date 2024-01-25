@@ -8,6 +8,8 @@ interface DataMovieContextProps {
   isModalSeriesOpen: boolean;
   setDataMovie: React.Dispatch<React.SetStateAction<DataMovie>>;
   dataMovie: DataMovie;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+  refresh: boolean;
 }
 
 const dataMovieContext = React.createContext<DataMovieContextProps | undefined>(
@@ -30,6 +32,7 @@ function DataMovieProvider(props: React.PropsWithChildren<object>) {
     subscriber: "",
     genres: "",
   });
+  const [refresh, setRefresh] = useState<boolean>(false);
   return (
     <dataMovieContext.Provider
       value={{
@@ -39,6 +42,8 @@ function DataMovieProvider(props: React.PropsWithChildren<object>) {
         dataMovie,
         isModalSeriesOpen,
         setIsModalSeriesOpen,
+        refresh,
+        setRefresh,
       }}
     >
       {props.children}

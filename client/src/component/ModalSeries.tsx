@@ -10,13 +10,23 @@ import { LoadingMovieModal } from "../pages/LoadingPage";
 function ModalSeries() {
   const { isModalSeriesOpen, dataMovie } = useDataMovie();
   const { closeModalseries } = useOpenModal();
-  const { loading, isError, dataSeriesIdModadl, getSeriesIdModal } = useMedia();
+  const {
+    loading,
+    isError,
+    dataSeriesIdModadl,
+    getSeriesIdModal,
+    handleAddWatchList,
+    watch_list,
+    setWatchList,
+    handleChangeWatchList,
+  } = useMedia();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     getSeriesIdModal();
   }, []);
+  // console.log(dataSeriesIdModadl);
 
   if (!isModalSeriesOpen) return null;
 
@@ -57,6 +67,7 @@ function ModalSeries() {
                   onClick={() => {
                     navigate(`/serieId/${dataSeriesIdModadl.episodes[0].id}`);
                     closeModalseries();
+                    localStorage.removeItem("idMedia");
                   }}
                 >
                   <img
@@ -67,36 +78,15 @@ function ModalSeries() {
                   Play Now
                 </Button>
 
-                {/* {dataMovie.list === undefined || dataMovie.list === false ? (
-                  <Button
-                    className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                    onClick={() => {
-                      // dataMovie.list = true;
-                      // console.log(dataMovie.list);
-
-                      // dataMovie.list = watchList;
-                      // setWatchList(!watchList);
-
-                      dataMovie.list = addWatchList;
-                      setAddWatchList(!addWatchList);
-                    }}
-                  >
-                    <img
-                      src="../../../icon/bookmark.svg"
-                      alt=""
-                      className="mr-[10px]"
-                    />
-                    Add Watchlist
-                  </Button>
-                ) : (
+                {watch_list === true ? (
                   <Button
                     className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      // dataMovie.list = false;
-                      // console.log(dataMovie.list);
-
-                      dataMovie.list = cancelWatchList;
-                      setCancelWatchList(!cancelWatchList);
+                      handleChangeWatchList(
+                        dataSeriesIdModadl.watch_list[0].watchListId,
+                        "false"
+                      );
+                      setWatchList(false);
                     }}
                   >
                     <img
@@ -106,7 +96,29 @@ function ModalSeries() {
                     />
                     Watchlist
                   </Button>
-                )} */}
+                ) : (
+                  <Button
+                    className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                    onClick={() => {
+                      {
+                        watch_list === null
+                          ? handleAddWatchList(dataSeriesIdModadl.id, "series")
+                          : handleChangeWatchList(
+                              dataSeriesIdModadl.watch_list[0].watchListId,
+                              "true"
+                            );
+                      }
+                      setWatchList(true);
+                    }}
+                  >
+                    <img
+                      src="../../../icon/bookmark.svg"
+                      alt=""
+                      className="mr-[10px]"
+                    />
+                    Add Watchlist
+                  </Button>
+                )}
               </div>
             </div>
           </div>

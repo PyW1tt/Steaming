@@ -50,7 +50,7 @@ function MovieId() {
             }`}
           >
             <img
-              src="../../public/icon/left.svg"
+              src="../../icon/left.svg"
               alt=""
               className=" hover:cursor-pointer ml-5"
               onClick={() => {

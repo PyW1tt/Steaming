@@ -3,11 +3,15 @@ import Navbar from "../component/Navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import useDataUser from "../hook/useDataUser";
 import NotFoundPage from "./NotFoundPage";
-import { useNavigate } from "react-router-dom";
+import useOpenModal from "../hook/useOpenModal";
+import { useDataMovie } from "../context/dataMovieContext";
+import ModalMovie from "../component/ModalMovie";
+import ModalSeries from "../component/ModalSeries";
 
 function TVshowsPage() {
   const { loading, isError, dataMovies, getSeries } = useDataUser();
-  const navigate = useNavigate();
+  const { openModalseries } = useOpenModal();
+  const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
 
   useEffect(() => {
     getSeries();
@@ -36,11 +40,8 @@ function TVshowsPage() {
                     key={index}
                     className="relative hover:z-30  cursor-pointer transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-95 duration-200 flex justify-center"
                     onClick={() => {
-                      if (item.type === "Movie") {
-                        navigate(`/updateMovie/${item.series_id}`);
-                      } else {
-                        navigate(`/updateTVshows/${item.series_id}`);
-                      }
+                      localStorage.setItem("idMedia", JSON.stringify(item.id));
+                      openModalseries();
                     }}
                   >
                     <img
@@ -77,6 +78,8 @@ function TVshowsPage() {
           )}
         </div>
       </Navbar>
+      {isModalMovieOpen && <ModalMovie />}
+      {isModalSeriesOpen && <ModalSeries />}
     </div>
   );
 }

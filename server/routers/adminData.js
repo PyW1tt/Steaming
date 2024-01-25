@@ -546,12 +546,17 @@ adminRouter.get("/movies/:id", async (req, res) => {
         jsonb_agg(jsonb_build_object(
           'cast_name', cast_name.cast_name,
           'id', cast_name.id,
-          'movie_id', data_movie_id
-        )) AS cast_names
+          'movie_id', cast_name.data_movie_id
+        )) AS cast_names,
+        COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
+          'watchListAdd', watch_list.add ,       
+          'watchListId' , watch_list.id
+        )), '[]'::jsonb) AS watch_list
       FROM data_movie
       LEFT JOIN cast_name ON data_movie.id = cast_name.data_movie_id
+      LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id
       WHERE data_movie.id = $1
-      GROUP BY data_movie.id;
+      GROUP BY data_movie.id
     `,
       [Id]
     );
@@ -586,13 +591,18 @@ adminRouter.get("/series/:id", async (req, res) => {
       data_series.thumbnail_url,
       data_series.created_at,
       data_series.updated_at,
-      COALESCE(jsonb_agg(jsonb_build_object(
+      COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
         'cast_name', cast_name.cast_name,
         'id', cast_name.id,
         'series_id', data_series.id
-      )), '[]'::jsonb) AS cast_names   
+      )), '[]'::jsonb) AS cast_names,
+      COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
+        'watchListAdd', watch_list.add ,       
+        'watchListId' , watch_list.id
+      )), '[]'::jsonb) AS watch_list
     FROM data_series
     LEFT JOIN cast_name ON data_series.id = cast_name.data_series_id  
+    LEFT JOIN watch_list ON data_series.id = watch_list.data_series_id
     WHERE data_series.id = $1
     GROUP BY data_series.id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at
     ORDER BY data_series.id;

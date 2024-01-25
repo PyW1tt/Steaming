@@ -1,17 +1,19 @@
 import React from "react";
-import Action from "./Body/Action";
 import Popular from "./Body/Popular";
 import Release from "./Body/Release";
 import WatchList from "./Body/WatchList";
 import Genres from "./Body/Genres";
+import { useAuth } from "../../context/AuthContext";
 
 function Body(): JSX.Element {
+  const { isAuthenticated } = useAuth();
+
   return (
     <section className="bg-[#28262d] ">
       {/* <Action /> */}
       <Popular />
       <Release />
-      <WatchList />
+      {isAuthenticated && <WatchList />}
       <Genres />
     </section>
   );

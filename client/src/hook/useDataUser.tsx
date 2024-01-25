@@ -20,10 +20,13 @@ import Swal from "sweetalert2";
 function useDataUser() {
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-
+  // const [watch_list, setWatchList] = useState([
+  //   { watchListId: "", watchListAdd: "" },
+  // ]);
   const [dataMovies, setDataMovies] = useState([
     {
-      series_id: "",
+      // id: "",
+      id: "",
       title: "",
       author: "",
       release_date: "",
@@ -53,6 +56,7 @@ function useDataUser() {
           videoUrl: "",
         },
       ],
+      watch_list: [{ watchListId: "", watchListAdd: true }],
     },
   ]);
   const { userData, setUserData } = useAuth();
@@ -148,16 +152,43 @@ function useDataUser() {
       console.log(error);
     }
   }
-
+  async function getMyLists() {
+    try {
+      setloading(true);
+      const userDataString = localStorage.getItem("userData");
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const result = await axios.get(`/user/getMyLists/${userData.id}`);
+        setDataMovies(result.data.data);
+      } else {
+        console.error("userData is not available in localStorage");
+      }
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
   async function getAll(keywords: string, limit: string) {
     try {
-      // console.log(keywords);
       setloading(true);
-      const result = await axios.get(
-        `/user/getAll?keywords=${keywords}&limit=${limit}`
-      );
-      // const result = await axios.get(`/user/getAll`);
-      setDataMovies(result.data.data);
+
+      const userDataString = localStorage.getItem("userData");
+
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const result = await axios.get(
+          `/user/${userData.id}/getAll?keywords=${keywords}&limit=${limit}`
+        );
+
+        setDataMovies(result.data.data);
+        console.log(result.data.data);
+      } else {
+        console.error("userData is not available in localStorage");
+      }
+
+      // setWatchList(result.data.data.watch_list);
       // console.log(result.data.data);
       setloading(false);
     } catch (error) {
@@ -196,6 +227,9 @@ function useDataUser() {
     getAll,
     getRelease,
     getSeries,
+    getMyLists,
+    // watch_list,
+    // setWatchList,
   };
 }
 

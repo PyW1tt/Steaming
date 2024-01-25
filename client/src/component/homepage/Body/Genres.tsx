@@ -82,6 +82,7 @@ function Genres(): JSX.Element {
   useEffect(() => {
     getAll("Action", limit);
   }, []);
+  // console.log(dataMovies);
 
   return (
     <>
@@ -171,16 +172,39 @@ function Genres(): JSX.Element {
                               )}
                             </span>
                             <p className="text-gray-500 mx-1">•</p>
-                            <span className="text-gray-400">2022</span>
+                            <span className="text-gray-400">
+                              {item.release_date.substring(0, 4)}
+                            </span>
                             <p className="text-gray-500 mx-1">•</p>
-                            <span className="text-gray-400">Fantasy</span>
+                            <span className="text-gray-400">{item.genres}</span>
                           </div>
                         </div>
                         <div className="mt-10 flex ">
                           <Button
                             className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                             onClick={() => {
-                              navigate("/movieId");
+                              if (item.type === "Movie") {
+                                navigate(`/movieId/${item.series_id}`);
+                              } else if (
+                                item.episodes &&
+                                item.episodes.length > 0
+                              ) {
+                                // ตรวจสอบว่า item.episodes ไม่ใช่ null และมีข้อมูล
+                                const sortedEpisodes = [...item.episodes].sort(
+                                  (a, b) => {
+                                    // เรียงตอนตามลำดับที่คุณต้องการ
+                                    return (
+                                      parseInt(a.episodes_ep) -
+                                      parseInt(b.episodes_ep)
+                                    );
+                                  }
+                                );
+
+                                // ใช้ตอนแรกหลังจากการเรียงลำดับ
+                                const firstEpisodeId = sortedEpisodes[0]?.id;
+
+                                navigate(`/serieId/${firstEpisodeId}`);
+                              }
                             }}
                           >
                             <img

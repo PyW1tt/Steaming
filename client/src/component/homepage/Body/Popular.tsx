@@ -13,6 +13,7 @@ import useDataUser from "../../../hook/useDataUser";
 import { LoadingPopular } from "../../../pages/LoadingPage";
 // import useMedia from "../../../hook/adminHook/useMedia";
 import { useDataMovie } from "../../../context/dataMovieContext";
+
 function Popular(): JSX.Element {
   const { openModalMoive, openModalseries } = useOpenModal();
   // const { setDataMovie } = useDataMovie();

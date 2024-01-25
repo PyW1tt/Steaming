@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -9,13 +9,24 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import useDataUser from "../../hook/useDataUser";
 import { LoadingHeader } from "../../pages/LoadingPage";
+import useMedia from "../../hook/adminHook/useMedia";
+
 function Header(): React.JSX.Element {
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(true);
   const { getAll, dataMovies, loading, isError } = useDataUser();
+  const {
+    handleAddWatchList,
+    // watch_list,
+    // setWatchList,
+    handleChangeWatchList,
+  } = useMedia();
   const limit = "10";
+  // console.log(watch_list);
+
   useEffect(() => {
     getAll("", limit);
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -36,6 +47,10 @@ function Header(): React.JSX.Element {
           className="mySwiper absolute top-0 w-full "
         >
           {dataMovies.map((item, index) => {
+            // let watch_list = "";
+            // watch_list = item.watch_list[0].watchListAdd;
+            // console.log(item.watch_list);
+
             return (
               <SwiperSlide key={index} className="h-[648px]  relative">
                 <div className="bg-gradient-to-t from-[#28262d] via-zinc-850 to-black w-full h-full absolute opacity-85 z-10"></div>
@@ -136,23 +151,50 @@ function Header(): React.JSX.Element {
                       Play Now
                     </Button>
 
-                    {item.list === undefined || item.list === false ? (
-                      <Button className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
-                        <img
-                          src="../../../icon/bookmark.svg"
-                          alt=""
-                          className="mr-[10px]"
-                        />
-                        Add Watchlist
-                      </Button>
-                    ) : (
-                      <Button className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
+                    {item.watch_list[0].watchListAdd === true ? (
+                      <Button
+                        className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                        onClick={() => {
+                          handleChangeWatchList(
+                            item.watch_list[0].watchListId,
+                            "false"
+                          );
+                          // setWatchList(false);
+                          setRefresh(!refresh);
+                        }}
+                      >
                         <img
                           src="../../../icon/check.svg"
                           alt=""
                           className="mr-[10px]"
                         />
                         Watchlist
+                      </Button>
+                    ) : (
+                      <Button
+                        className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                        onClick={() => {
+                          {
+                            item.watch_list[0].watchListAdd === null
+                              ? handleAddWatchList(
+                                  item.series_id,
+                                  item.type === "Movie" ? "movie" : "series"
+                                )
+                              : handleChangeWatchList(
+                                  item.watch_list[0].watchListId,
+                                  "true"
+                                );
+                          }
+                          // setWatchList(true);
+                          setRefresh(!refresh);
+                        }}
+                      >
+                        <img
+                          src="../../../icon/bookmark.svg"
+                          alt=""
+                          className="mr-[10px]"
+                        />
+                        Add Watchlist
                       </Button>
                     )}
                   </div>

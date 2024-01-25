@@ -5,7 +5,8 @@ import HomePageBefore from "./HomePageBefore";
 
 function HomePage() {
   const auth = useAuth();
-  return auth.isAuthenticated ? <HomePageAfter /> : <HomePageBefore />;
+  return <HomePageAfter />;
+  // return auth.isAuthenticated ? <HomePageAfter /> : <HomePageBefore />;
 }
 
 export default HomePage;

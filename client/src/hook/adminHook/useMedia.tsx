@@ -3,11 +3,15 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDataMovie } from "../../context/dataMovieContext";
+
 function useMedia() {
   const param = useParams();
   const navigate = useNavigate();
+  const { refresh, setRefresh } = useDataMovie();
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
+  const [watch_list, setWatchList] = useState<null | boolean>(null);
   // const [idMedia, setIdMedia] = useState("");
   const [dataMovieId, setDataMovieId] = useState({
     id: "",
@@ -30,6 +34,7 @@ function useMedia() {
     created_at: new Date(),
     updated_at: new Date(),
     cast_names: [{ id: "", movie_id: "", cast_name: "" }],
+    watch_list: { id: "", add: "" },
   });
   const [dataSeriesIdModadl, setDataSeriesIdMedia] = useState({
     id: "",
@@ -45,6 +50,9 @@ function useMedia() {
     thumbnail_url: "",
     created_at: new Date(),
     updated_at: new Date(),
+    // watch_list: "",
+    // watchListId: "",
+    watch_list: { id: "", add: "" },
     cast_names: [{ id: "", movie_id: "", cast_name: "" }],
     episodes: [
       {
@@ -352,7 +360,8 @@ function useMedia() {
       const result = await axios.get(`/admin/movies/${idMedia}`);
 
       setDataMovieId(result.data.data);
-      // console.log(result.data.data);
+      setWatchList(result.data.data.watch_list[0].watchListAdd);
+      // console.log(result.data.data.watch_list[0].watchListAdd);
 
       setloading(false);
     } catch (error) {
@@ -368,8 +377,10 @@ function useMedia() {
       setloading(true);
       const result = await axios.get(`/admin/series/${idMedia}`);
 
+      setWatchList(result.data.data.watch_list[0].watchListAdd);
       setDataSeriesIdMedia(result.data.data);
-      // console.log(result.data.data);
+
+      // console.log(result.data.data.watch_list[0].watchListAdd);
 
       setloading(false);
     } catch (error) {
@@ -569,6 +580,47 @@ function useMedia() {
       console.log(error);
     }
   }
+
+  async function handleAddWatchList(id: string, type: string) {
+    try {
+      // setloading(true);
+      const userDataString = localStorage.getItem("userData");
+
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+
+        await axios.post(`/user/${userData.id}/watchList/${id}`, { type });
+        // console.log(result.data.data);
+      }
+
+      // setEpisodeId(result.data.data);
+      setRefresh(!refresh);
+      // setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+
+  async function handleChangeWatchList(id: string, bool: string) {
+    try {
+      // setloading(true);
+
+      await axios.put(`/user/watchList/${id}`, {
+        bool,
+      });
+      // console.log(result.data.data);
+
+      // setEpisodeId(result.data.data);
+      setRefresh(!refresh);
+      // setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
   return {
     loading,
     isError,
@@ -598,6 +650,10 @@ function useMedia() {
     getEpisodeById,
     episodeId,
     setEpisodeId,
+    handleAddWatchList,
+    watch_list,
+    setWatchList,
+    handleChangeWatchList,
   };
 }
 
