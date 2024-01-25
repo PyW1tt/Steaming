@@ -11,11 +11,14 @@ import ModalSeries from "../../ModalSeries";
 // import { useDataMovie } from "../../../context/dataMovieContext";
 import useDataUser from "../../../hook/useDataUser";
 import { LoadingPopular } from "../../../pages/LoadingPage";
-
+// import useMedia from "../../../hook/adminHook/useMedia";
+import { useDataMovie } from "../../../context/dataMovieContext";
 function Popular(): JSX.Element {
   const { openModalMoive, openModalseries } = useOpenModal();
   // const { setDataMovie } = useDataMovie();
   const { getAll, dataMovies, loading, isError } = useDataUser();
+  // const { setIdMedia } = useMedia();
+  const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
   const limit = "10";
 
   useEffect(() => {
@@ -46,10 +49,11 @@ function Popular(): JSX.Element {
                 key={index}
                 className=" px-[20px] cursor-pointer py-6 relative flex justify-center it transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 duration-200"
                 onClick={() => {
-                  item.genres === "movie"
-                    ? openModalMoive()
-                    : openModalseries();
-                  // setDataMovie(item);
+                  localStorage.setItem(
+                    "idMedia",
+                    JSON.stringify(item.series_id)
+                  );
+                  item.type === "Movie" ? openModalMoive() : openModalseries();
                 }}
               >
                 <div className="w-[38px] flex items-center justify-center">
@@ -106,8 +110,8 @@ function Popular(): JSX.Element {
           })}
         </Swiper>
       )}
-      <ModalMovie />
-      <ModalSeries />
+      {isModalMovieOpen && <ModalMovie />}
+      {isModalSeriesOpen && <ModalSeries />}
     </div>
   );
 }

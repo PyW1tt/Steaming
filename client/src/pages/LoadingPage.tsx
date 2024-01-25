@@ -109,7 +109,7 @@ export function LoadingRelease() {
 }
 export function LoadingWatchist() {
   return (
-    <div className="flex justify-between py-7  pl-[35px] pr-[25px]">
+    <div className="flex justify-between py-7  pl-[35px] pr-[25px] mb-[30px]">
       <div className="flex flex-col">
         <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
         <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
@@ -152,4 +152,40 @@ export function LoadingHeader() {
     </div>
   );
 }
+export function LoadingMovieModal() {
+  return (
+    <div className="w-[1000px] bg-[#28262d] h-[830px] rounded-2xl ">
+      <Skeleton className="w-full h-[502px]" />
+      <div className="px-12 my-5">
+        <Skeleton className="w-[250px] h-4 rounded-2xl" />
+
+        <div className="mt-5">
+          <Skeleton className="w-[100px] h-4 rounded-2xl mt-1" />
+          <Skeleton className="w-[900px] h-4 rounded-2xl mt-1" />
+          <Skeleton className="w-[900px] h-4 rounded-2xl mt-1" />
+        </div>
+        <div className="mt-5">
+          <Skeleton className="w-[200px] h-4 rounded-2xl mt-1" />
+        </div>
+        <div className="mt-5">
+          {/* <Skeleton className="w-[100px] h-4 rounded-2xl mt-1" /> */}
+          <Skeleton className="w-[900px] h-4 rounded-2xl mt-1" />
+          <Skeleton className="w-[900px] h-4 rounded-2xl mt-1" />
+          <Skeleton className="w-[500px] h-4 rounded-2xl mt-1" />
+        </div>
+        <div className="mt-5">
+          <Skeleton className="w-[150px] h-4 rounded-2xl mt-1" />
+        </div>
+      </div>
+    </div>
+  );
+}
+export function LoadingMovie() {
+  return (
+    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-t from-[#28262d] from-5% via-zinc-950 to-black">
+      <ReactLoading type="spin" color="#10b981" height={"5%"} width={"5%"} />
+    </div>
+  );
+}
+
 export default LoadingPage;

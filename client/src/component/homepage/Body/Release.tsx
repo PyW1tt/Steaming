@@ -82,8 +82,8 @@ function Release(): JSX.Element {
           })}
         </Swiper>
       )}
-      <ModalMovie />
-      <ModalSeries />
+      {/* <ModalMovie />
+      <ModalSeries /> */}
     </div>
   );
 }

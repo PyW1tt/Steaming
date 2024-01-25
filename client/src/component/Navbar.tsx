@@ -23,7 +23,7 @@ function Navbar(props: NavbarProps): JSX.Element {
     (child) =>
       React.isValidElement(child) &&
       child.type === "div" &&
-      (child.props.className || "").includes("tvshows")
+      (child.props.className || "").includes("series")
   );
   const isMovies = React.Children.toArray(props.children).some(
     (child) =>
@@ -39,9 +39,7 @@ function Navbar(props: NavbarProps): JSX.Element {
   );
 
   useEffect(() => {
-    {
-      isAuthenticated && getData();
-    }
+    getData();
   }, []);
   return (
     <>

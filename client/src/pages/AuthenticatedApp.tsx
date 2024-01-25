@@ -15,6 +15,8 @@ import CreateTVshowsPage from "./adminRole/CreateTVshowsPage";
 import UpdateMoivePage from "./adminRole/UpdateMoviePage";
 import UpdateTVshowsPage from "./adminRole/UpdateTVshowsPage";
 import NotFoundPage from "./NotFoundPage";
+import SerieId from "./SerieId";
+
 function AuthenticatedApp() {
   return (
     <Routes>
@@ -26,7 +28,8 @@ function AuthenticatedApp() {
       <Route path="/mylist" element={<MyListPage />} />
       <Route path="/profile/:id" element={<ProfilePage />} />
       <Route path="/search" element={<SearchPage />} />
-      <Route path="/MovieId/:id" element={<MovieId />} />
+      <Route path="/movieId/:id" element={<MovieId />} />
+      <Route path="/serieId/:id" element={<SerieId />} />
       <Route path="*" element={<NotFoundPage />} />
 
       {/* AdminRole------- */}

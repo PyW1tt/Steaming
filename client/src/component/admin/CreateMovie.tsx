@@ -398,13 +398,13 @@ function CreateMovie() {
                 <img
                   src="https://via.placeholder.com/148x148"
                   alt=""
-                  className=" w-[400px] h-[200px]"
+                  className=" w-[250px] h-[300px]"
                 />
               ) : (
                 Object.keys(thumbnail).map((index) => (
                   <img
                     key={index}
-                    className=" w-[400px] h-[200px]"
+                    className="w-[250px] h-[300px]"
                     src={URL.createObjectURL(thumbnail[index])}
                     alt=""
                   />
@@ -415,7 +415,7 @@ function CreateMovie() {
                 id=""
                 placeholder=""
                 onChange={handleThumbnail}
-                className="hover:cursor-pointer max-w-[400px] text-black mt-2"
+                className="hover:cursor-pointer max-w-[250px] text-black mt-2"
               />
             </div>
 
@@ -484,10 +484,11 @@ function CreateMovie() {
           <div className="w-full flex justify-end">
             <Button
               className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
-              onClick={() => {
+              onClick={async () => {
                 // console.log(movieData);
 
-                postDatamovie(data, thumbnail[1], poster[1], video[1]);
+                await postDatamovie(data, thumbnail[1], poster[1], video[1]);
+                location.reload();
                 // handleSubmit();
               }}
             >

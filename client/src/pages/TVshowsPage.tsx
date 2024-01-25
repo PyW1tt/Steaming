@@ -1,13 +1,80 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../component/Navbar";
-import List from "../component/List";
+import { Skeleton } from "@/components/ui/skeleton";
+import useDataUser from "../hook/useDataUser";
+import NotFoundPage from "./NotFoundPage";
+import { useNavigate } from "react-router-dom";
 
 function TVshowsPage() {
+  const { loading, isError, dataMovies, getSeries } = useDataUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getSeries();
+  }, []);
+
   return (
-    <div className="bg-[#28262d] h-screen">
+    <div
+      className={`${
+        dataMovies.length <= 17 ? "h-screen" : "h-full"
+      } bg-[#28262d] `}
+    >
       <Navbar>
-        <div className="tvshows">
-          <List />
+        <div className="series px-[100px] mt-9">
+          {loading ? (
+            <div className="flex gap-2 h-screen">
+              <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-gradient-to-t from-black from-15%" />
+              {/* <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-slate-700" /> */}
+            </div>
+          ) : isError ? (
+            <NotFoundPage />
+          ) : (
+            <div className={`flex flex-wrap gap-7  `}>
+              {dataMovies.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="relative hover:z-30  cursor-pointer transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-95 duration-200 flex justify-center"
+                    onClick={() => {
+                      if (item.type === "Movie") {
+                        navigate(`/updateMovie/${item.series_id}`);
+                      } else {
+                        navigate(`/updateTVshows/${item.series_id}`);
+                      }
+                    }}
+                  >
+                    <img
+                      src={
+                        item.thumbnail_url
+                          ? item.thumbnail_url
+                          : "https://via.placeholder.com/148x148"
+                      }
+                      alt=""
+                      className="w-[220px] h-[300px] rounded-2xl object-fill"
+                    />
+
+                    <div className=" absolute bottom-0  w-[220px] h-[150px] p-5 bg-gradient-to-t from-black from-15%  rounded-bl-2xl rounded-br-2xl flex-col justify-end items-start gap-1 inline-flex">
+                      <p className="text-base font-bold leading-normal tracking-tight mb-1">
+                        {item.title}
+                      </p>
+                      <div className=" flex items-center text-xs font-medium ">
+                        <img
+                          src="../../../../icon/star.svg"
+                          alt=""
+                          className="mr-1 "
+                        />
+                        <p className="font-semibold ">{item.rating}</p>
+                        <p className="text-gray-500 mx-1 ">|</p>
+                        <p className="text-gray-500">{item.genres}</p>
+                        <p className="text-gray-500 mx-1 ">•</p>
+                        <p className="text-gray-500">{item.type}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </Navbar>
     </div>

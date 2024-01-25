@@ -393,13 +393,13 @@ function CreateTVshows() {
                 <img
                   src="https://via.placeholder.com/148x148"
                   alt=""
-                  className=" w-[400px] h-[200px]"
+                  className=" w-[250px] h-[300px]"
                 />
               ) : (
                 Object.keys(thumbnail).map((index) => (
                   <img
                     key={index}
-                    className=" w-[400px] h-[200px]"
+                    className=" w-[250px] h-[300px]"
                     src={URL.createObjectURL(thumbnail[index])}
                     alt=""
                   />
@@ -410,7 +410,7 @@ function CreateTVshows() {
                 id=""
                 placeholder=""
                 onChange={handleThumbnail}
-                className="hover:cursor-pointer max-w-[400px] text-black mt-2"
+                className="hover:cursor-pointer max-w-[250px] text-black mt-2"
               />
             </div>
           </div>
@@ -581,6 +581,7 @@ function CreateTVshows() {
                   showConfirmButton: false,
                   timer: 1500,
                 });
+                location.reload();
               }}
             >
               Create Movie

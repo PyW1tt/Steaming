@@ -4,7 +4,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination } from "swiper/modules";
-import data from "../../hook/useMoviesData";
 import "./Homepage.css";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -46,12 +45,12 @@ function Header(): React.JSX.Element {
                     poster={
                       item.type === "Movie"
                         ? item.poster_url
-                        : (item.episodes[0] as { coverUrl: string }).coverUrl
+                        : item.episodes[0].coverUrl
                     }
                     src={
                       item.type === "Movie"
                         ? item.video_url
-                        : (item.episodes[0] as { videoUrl: string }).videoUrl
+                        : item.episodes[0].videoUrl
                     }
                     autoPlay
                     muted
@@ -64,7 +63,40 @@ function Header(): React.JSX.Element {
                     {item.title}
                   </p>
                   <div className=" mt-2 text-sm font-normal flex">
-                    <span className="text-gray-400">{item.duration}</span>{" "}
+                    <span className="text-gray-400 ml-1">
+                      {item.type === "Movie" ? (
+                        item.hours != null ? (
+                          item.min === "" ? (
+                            <span className="text-gray-400">
+                              {" "}
+                              {item.hours}h
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">
+                              {item.hours}h{item.min}m
+                            </span>
+                          )
+                        ) : (
+                          <span className="text-gray-400"> {item.min}m</span>
+                        )
+                      ) : item.episodes[0].hours != null ? (
+                        item.episodes[0].min === "" ? (
+                          <span className="text-gray-400">
+                            {" "}
+                            {item.episodes[0].hours}h
+                          </span>
+                        ) : (
+                          <span className="text-gray-400">
+                            {item.episodes[0].hours}h{item.episodes[0].min}m
+                          </span>
+                        )
+                      ) : (
+                        <span className="text-gray-400">
+                          {" "}
+                          {item.episodes[0].min}m
+                        </span>
+                      )}
+                    </span>
                     <p className="text-gray-500 mx-1">•</p>
                     <span className="text-gray-400">2022</span>
                     <p className="text-gray-500 mx-1">•</p>
@@ -75,7 +107,25 @@ function Header(): React.JSX.Element {
                     <Button
                       className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                       onClick={() => {
-                        navigate(`/MovieId/${item.series_id}`);
+                        if (item.type === "Movie") {
+                          navigate(`/movieId/${item.series_id}`);
+                        } else if (item.episodes && item.episodes.length > 0) {
+                          // ตรวจสอบว่า item.episodes ไม่ใช่ null และมีข้อมูล
+                          const sortedEpisodes = [...item.episodes].sort(
+                            (a, b) => {
+                              // เรียงตอนตามลำดับที่คุณต้องการ
+                              return (
+                                parseInt(a.episodes_ep) -
+                                parseInt(b.episodes_ep)
+                              );
+                            }
+                          );
+
+                          // ใช้ตอนแรกหลังจากการเรียงลำดับ
+                          const firstEpisodeId = sortedEpisodes[0]?.id;
+
+                          navigate(`/serieId/${firstEpisodeId}`);
+                        }
                       }}
                     >
                       <img

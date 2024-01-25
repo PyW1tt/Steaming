@@ -8,7 +8,7 @@ function useMedia() {
   const navigate = useNavigate();
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-
+  // const [idMedia, setIdMedia] = useState("");
   const [dataMovieId, setDataMovieId] = useState({
     id: "",
     title: "",
@@ -31,38 +31,37 @@ function useMedia() {
     updated_at: new Date(),
     cast_names: [{ id: "", movie_id: "", cast_name: "" }],
   });
-  // const [dataSeriesId, setDataSeriesId] = useState({
-  //   id: "",
-  //   title: "",
-  //   author: "",
-  //   release_date: "",
-  //   rating: "",
-  //   description: "",
-  //   type: "",
-  //   genres: "",
-  //   mpa: "",
-  //   thumbnail_name: "",
-  //   thumbnail_url: "",
-  //   created_at: new Date(),
-  //   updated_at: new Date(),
-  //   cast_names: [{ id: "", movie_id: "", cast_name: "" }],
-  //   episodes: [
-  //     {
-  //       id: "",
-  //       episode: "",
-  //       episodeName: "",
-  //       hours: "",
-  //       min: "",
-  //       series_id: "",
-  //       details: "",
-  //       coverName: "",
-  //       coverUrl: "",
-  //       videoName: "",
-  //       videoUrl: "",
-  //     },
-  //   ],
-  // });
-
+  const [dataSeriesIdModadl, setDataSeriesIdMedia] = useState({
+    id: "",
+    title: "",
+    author: "",
+    release_date: "",
+    rating: "",
+    description: "",
+    type: "",
+    genres: "",
+    mpa: "",
+    thumbnail_name: "",
+    thumbnail_url: "",
+    created_at: new Date(),
+    updated_at: new Date(),
+    cast_names: [{ id: "", movie_id: "", cast_name: "" }],
+    episodes: [
+      {
+        id: "",
+        episode: "",
+        episodeName: "",
+        hours: "",
+        min: "",
+        series_id: "",
+        details: "",
+        coverName: "",
+        coverUrl: "",
+        videoName: "",
+        videoUrl: "",
+      },
+    ],
+  });
   const [dataSeriesId, setDataSeriesId] = useState({
     id: "",
     title: "",
@@ -96,7 +95,21 @@ function useMedia() {
       NewVideo: null as File | null,
     },
   ]);
-
+  const [episodeId, setEpisodeId] = useState({
+    id: "",
+    title: "",
+    episodes_ep: "",
+    hours: "",
+    min: "",
+    data_series_id: "",
+    details: "",
+    poster_name: "",
+    poster_url: "",
+    video_name: "",
+    video_url: "",
+    created_at: new Date(),
+    updated_at: new Date(),
+  });
   async function postDatamovie(data, thumbnail, poster, video) {
     try {
       setloading(true);
@@ -331,14 +344,63 @@ function useMedia() {
       console.log(error);
     }
   }
+  async function getMoviesIdModal() {
+    const idMedia = localStorage.getItem("idMedia");
+    // console.log(idMedia);
+    try {
+      setloading(true);
+      const result = await axios.get(`/admin/movies/${idMedia}`);
 
+      setDataMovieId(result.data.data);
+      // console.log(result.data.data);
+
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+  async function getSeriesIdModal() {
+    const idMedia = localStorage.getItem("idMedia");
+    // console.log(idMedia);
+    try {
+      setloading(true);
+      const result = await axios.get(`/admin/series/${idMedia}`);
+
+      setDataSeriesIdMedia(result.data.data);
+      // console.log(result.data.data);
+
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
   async function getMoviesById(id) {
+    // console.log(id);
+
     try {
       setloading(true);
       const result = await axios.get(`/admin/movies/${id}`);
 
       setDataMovieId(result.data.data);
       console.log(result.data.data);
+
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+  async function getEpisodeById(id) {
+    try {
+      setloading(true);
+      const result = await axios.get(`/user/episode/${id}`);
+      setEpisodeId(result.data.data);
+      // console.log(result.data.data);
 
       setloading(false);
     } catch (error) {
@@ -529,6 +591,13 @@ function useMedia() {
     handleDeleteEpisodes,
     handleDeleteSeries,
     handleDeleteMedia,
+    // setIdMedia,
+    getMoviesIdModal,
+    getSeriesIdModal,
+    dataSeriesIdModadl,
+    getEpisodeById,
+    episodeId,
+    setEpisodeId,
   };
 }
 

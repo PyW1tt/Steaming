@@ -3,15 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import useMedia from "../hook/adminHook/useMedia";
 import { LoadingMovie } from "./LoadingPage";
 
-function MovieId() {
+function SerieId() {
   const [isMouseMoving, setIsMouseMoving] = useState<boolean>(false);
-
-  const { loading, isError, getMoviesById, dataMovieId } = useMedia();
+  const { loading, isError, getEpisodeById, episodeId } = useMedia();
   const navigate = useNavigate();
   const param = useParams();
 
   useEffect(() => {
-    getMoviesById(param.id);
+    getEpisodeById(param.id);
+
     const handleMouseMove = () => {
       setIsMouseMoving(true);
 
@@ -33,6 +33,8 @@ function MovieId() {
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+  //   console.log(dataEpisodeId);
+  //   console.log(Array.isArray(episodeId));
 
   return (
     <div>
@@ -42,6 +44,9 @@ function MovieId() {
         <p>Not Found</p>
       ) : (
         <div className=" h-screen w-screen bg-black">
+          {/* {Array.isArray(episodeId) &&
+            episodeId.map((item, index) => (
+              <div key={index}> */}
           <nav
             className={` ${
               isMouseMoving
@@ -59,19 +64,21 @@ function MovieId() {
             />
             <div className="flex text-xl font-bold">
               <div className=" font-light">Wacthing :</div> &nbsp;
-              {dataMovieId.title}
+              {episodeId.title}
             </div>
           </nav>
           <video
             autoPlay
             controls
             className=" h-full w-full"
-            src={dataMovieId.video_url}
+            src={episodeId.video_url}
           ></video>
+          {/* </div>
+            ))} */}
         </div>
       )}
     </div>
   );
 }
 
-export default MovieId;
+export default SerieId;

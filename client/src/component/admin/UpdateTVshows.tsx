@@ -484,13 +484,13 @@ function UpdateTVshows() {
                       : "https://via.placeholder.com/148x148"
                   }
                   alt=""
-                  className=" w-[400px] h-[200px]"
+                  className=" w-[250px] h-[300px]"
                 />
               ) : (
                 Object.keys(thumbnail).map((index) => (
                   <img
                     key={index}
-                    className=" w-[400px] h-[200px]"
+                    className=" w-[250px] h-[300px]"
                     src={URL.createObjectURL(thumbnail[index])}
                     alt=""
                   />
@@ -501,7 +501,7 @@ function UpdateTVshows() {
                 id=""
                 placeholder=""
                 onChange={handleThumbnail}
-                className="hover:cursor-pointer max-w-[400px] text-black mt-2"
+                className="hover:cursor-pointer max-w-[250px] text-black mt-2"
               />
             </div>
           </div>
@@ -662,7 +662,7 @@ function UpdateTVshows() {
                   </div>
 
                   <button
-                    className="absolute top-5 right-5 bg-red-600 hover:bg-red-400 w-[20px] h-[20px] rounded-full flex justify-center items-center"
+                    className="absolute top-5 right-5 bg-slate-400 hover:bg-slate-300 hover:text-slate-600 w-[25px] h-[25px] rounded-full flex justify-center items-center"
                     onClick={() => {
                       setIsModalEpisodes(!isModalEpisodes);
                       setIdEpisodes(episode.id);

@@ -84,8 +84,8 @@ function WatchList(): JSX.Element {
           })}
         </Swiper>
       )}
-      <ModalMovie />
-      <ModalSeries />
+      {/* <ModalMovie />
+      <ModalSeries /> */}
     </div>
   );
 }

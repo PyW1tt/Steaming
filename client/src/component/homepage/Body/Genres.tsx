@@ -17,59 +17,59 @@ interface genres {
 const genres: genres[] = [
   {
     genres: "Action",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706024510229",
   },
   {
     genres: "Drama",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706021762753",
   },
   {
     genres: "Romance",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706119155986",
   },
   {
     genres: "Fantasy",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706114418703",
   },
   {
     genres: "Thriller",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706119654712",
   },
   {
     genres: "Science fiction",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706119430526",
   },
   {
     genres: "Adventure",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706025135090",
   },
   {
     genres: "Crime",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706110951597",
   },
   {
     genres: "Mystery",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706118907124",
   },
   {
     genres: "Animation",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706027982702",
   },
   {
     genres: "Historical",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706115388794",
   },
   {
     genres: "Documentary",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706113887020",
   },
   {
     genres: "Comedy",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706110575652",
   },
   {
     genres: "Horror",
-    img: "../../../../genres/Superhero.jpg",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706118714809",
   },
 ];
 
@@ -129,15 +129,52 @@ function Genres(): JSX.Element {
                         <p className="w-[500px] text-5xl font-bold leading-[54px] tracking-tight mb-5">
                           {item.title}
                         </p>
-                        <div className=" mt-2 text-sm font-normal flex  items-center">
+                        <div className=" mt-2 text-sm font-normal flex ">
                           <img src="../../../../public/icon/star.svg" alt="" />
-                          <span className="text-gray-400 ml-1">
-                            {item.duration}
-                          </span>{" "}
-                          <p className="text-gray-500 mx-1">•</p>
-                          <span className="text-gray-400">2022</span>
-                          <p className="text-gray-500 mx-1">•</p>
-                          <span className="text-gray-400">Fantasy</span>
+                          <div className="flex mt-1">
+                            <span className="text-gray-400 ml-1">
+                              {item.type === "Movie" ? (
+                                item.hours != null ? (
+                                  item.min === "" ? (
+                                    <span className="text-gray-400">
+                                      {" "}
+                                      {item.hours}h
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-400">
+                                      {item.hours}h{item.min}m
+                                    </span>
+                                  )
+                                ) : (
+                                  <span className="text-gray-400">
+                                    {" "}
+                                    {item.min}m
+                                  </span>
+                                )
+                              ) : item.episodes[0].hours != null ? (
+                                item.episodes[0].min === "" ? (
+                                  <span className="text-gray-400">
+                                    {" "}
+                                    {item.episodes[0].hours}h
+                                  </span>
+                                ) : (
+                                  <span className="text-gray-400">
+                                    {item.episodes[0].hours}h
+                                    {item.episodes[0].min}m
+                                  </span>
+                                )
+                              ) : (
+                                <span className="text-gray-400">
+                                  {" "}
+                                  {item.episodes[0].min}m
+                                </span>
+                              )}
+                            </span>
+                            <p className="text-gray-500 mx-1">•</p>
+                            <span className="text-gray-400">2022</span>
+                            <p className="text-gray-500 mx-1">•</p>
+                            <span className="text-gray-400">Fantasy</span>
+                          </div>
                         </div>
                         <div className="mt-10 flex ">
                           <Button
@@ -203,15 +240,16 @@ function Genres(): JSX.Element {
                     }}
                   >
                     <div
-                      className="rounded-xl w-[210px]  justify-center items-center flex bg-cover bg-center bg-no-repeat ml-4"
-                      style={{ backgroundImage: `url(${item.img})` }}
+                      className="rounded-xl w-[210px]  justify-center items-center flex bg-cover bg-center bg-no-repeat ml-4 "
+                      style={{ backgroundImage: `url(${item.img}) ` }}
                     >
                       <div
-                        className={`w-[210px] h-[99px]  rounded-xl  hover:border-2 hover:border-emerald-400 flex justify-center items-center
+                        className={`w-[210px] h-[99px]  rounded-xl  hover:border-2 hover:border-emerald-400 flex justify-center items-center bg-black 
+  
                     ${
                       nameGenres === item.genres
-                        ? "border-2 border-emerald-600 bg-emerald-600 bg-opacity-20 "
-                        : ""
+                        ? "border-2 border-emerald-600 bg-emerald-600 bg-opacity-50 "
+                        : "bg-opacity-75"
                     }`}
                       >
                         <div className=" text-lg font-extrabold leading-[18px] ">

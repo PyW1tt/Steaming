@@ -43,7 +43,16 @@ function useDataUser() {
       created_at: new Date(),
       updated_at: new Date(),
       cast_names: [{}],
-      episodes: [{}],
+      episodes: [
+        {
+          id: "",
+          episodes_ep: "",
+          hours: "",
+          min: "",
+          coverUrl: "",
+          videoUrl: "",
+        },
+      ],
     },
   ]);
   const { userData, setUserData } = useAuth();
@@ -109,23 +118,38 @@ function useDataUser() {
     }
   }
 
-  // async function getMovies() {
-  //   try {
-  //     setloading(true);
-  //     const result = await axios.get(`/user/movies`);
+  async function getMovies() {
+    try {
+      setloading(true);
+      const result = await axios.get(`/user/movies`);
 
-  //     setDataMovies(result.data.data);
-  //     console.log(result.data.data);
+      setDataMovies(result.data.data);
+      // console.log(result.data.data);
 
-  //     setloading(false);
-  //   } catch (error) {
-  //     setloading(false);
-  //     setIsError(true);
-  //     console.log(error);
-  //   }
-  // }
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+  async function getSeries() {
+    try {
+      setloading(true);
+      const result = await axios.get(`/user/series`);
 
-  async function getAll(keywords, limit) {
+      setDataMovies(result.data.data);
+      // console.log(result.data.data);
+
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+
+  async function getAll(keywords: string, limit: string) {
     try {
       // console.log(keywords);
       setloading(true);
@@ -167,10 +191,11 @@ function useDataUser() {
     updateProfile,
     loading,
     isError,
-    // getMovies,
+    getMovies,
     dataMovies,
     getAll,
     getRelease,
+    getSeries,
   };
 }
 

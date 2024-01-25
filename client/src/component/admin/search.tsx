@@ -2,12 +2,13 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useDataMovie } from "../../context/dataMovieContext";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import NotFoundPage from "../../pages/NotFoundPage";
 import useDataUser from "../../hook/useDataUser";
-import { LoadingPageAdmin } from "../../pages/LoadingPage";
+// import { LoadingPageAdmin, LoadingRelease } from "../../pages/LoadingPage";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// type MyFunctionType = (arg1: string, arg2: number) => void;
+type MyFunctionType = (arg1: string, arg2: string) => void;
 
 function Search() {
   // const { setDataMovie } = useDataMovie();
@@ -16,56 +17,59 @@ function Search() {
   const navigate = useNavigate();
   const limit = "100";
 
-  function handleSearch() {
-    getAll(keywords, limit);
-  }
+  // function handleSearch() {
+  //   getAll(keywords, limit);
+  // }
 
-  // const debounce = (func: MyFunctionType) => {
-  //   let timer: ReturnType<typeof setTimeout> | null;
+  const debounce = (func: MyFunctionType) => {
+    let timer: ReturnType<typeof setTimeout> | null;
 
-  //   return (...args: Parameters<MyFunctionType>) => {
-  //     if (timer) clearTimeout(timer);
+    return (...args: Parameters<MyFunctionType>) => {
+      if (timer) clearTimeout(timer);
 
-  //     timer = setTimeout(() => {
-  //       timer = null;
-  //       func(...args);
-  //     }, 900);
-  //   };
-  // };
-  // const optimizedFn = useCallback(debounce(getAll), []);
+      timer = setTimeout(() => {
+        timer = null;
+        func(...args);
+      }, 850);
+    };
+  };
+  const optimizedFn = useCallback(debounce(getAll), []);
 
-  function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") {
-      getAll(keywords, limit);
-    }
-  }
+  // function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
+  //   if (e.key === "Enter") {
+  //     getAll(keywords, limit);
+  //   }
+  // }
   useEffect(() => {
     getAll(keywords, limit);
   }, []);
 
   return (
-    <div className="h-full">
-      {loading ? (
-        <LoadingPageAdmin />
-      ) : isError ? (
-        <NotFoundPage />
-      ) : (
-        <div className="mb-10">
-          <div className="flex justify-center mb-10">
-            <Input
-              type=""
-              placeholder="Search for movies, TV shows, or categories "
-              className=" text-lg text-center  rounded-full text-black border-[#28262d] mr-2"
-              value={keywords}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setKeywords(e.target.value);
-                // optimizedFn(e.target.value);
-              }}
-              onKeyPress={handleKeyPress}
-            />
-            <Button onClick={handleSearch}>search</Button>
+    <div className={`${dataMovies.length <= 17 ? "h-screen" : "h-full"}`}>
+      <div className="mb-10">
+        <div className="flex justify-center mb-10">
+          <Input
+            type=""
+            placeholder="Search for movies, TV shows, or genres "
+            className=" text-lg text-center  rounded-full text-black border-[#28262d] mr-2"
+            value={keywords}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setKeywords(e.target.value);
+              optimizedFn(e.target.value, limit);
+            }}
+            // onKeyPress={handleKeyPress}
+          />
+          {/* <Button onClick={handleSearch}>search</Button> */}
+        </div>
+        {loading ? (
+          <div className="flex gap-2 h-screen">
+            <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-gradient-to-t from-black from-15%" />
+            {/* <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-slate-700" /> */}
           </div>
-          <div className=" flex flex-wrap gap-1.5 h-full w-full">
+        ) : isError ? (
+          <NotFoundPage />
+        ) : (
+          <div className={`flex flex-wrap gap-1.5  `}>
             {dataMovies.map((item, index) => {
               return (
                 <div
@@ -110,8 +114,8 @@ function Search() {
               );
             })}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

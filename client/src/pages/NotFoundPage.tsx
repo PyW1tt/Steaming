@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function NotFoundPage() {
   const navigate = useNavigate();
   return (
-    <div className="flex justify-center items-center w-full h-[709px]">
+    <div className="flex justify-center items-center w-full h-[709px] ">
       <div className="text-center flex flex-col">
         <img src="../../icon/bad.svg" alt="" />
         <p className="text-black text-6xl font-extrabold mt-5">404</p>
