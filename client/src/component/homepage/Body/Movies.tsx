@@ -11,22 +11,19 @@ import { LoadingRelease } from "../../../pages/LoadingPage";
 import useDataUser from "../../../hook/useDataUser";
 import { useDataMovie } from "../../../context/dataMovieContext";
 
-function Release(): JSX.Element {
+function Movies() {
   const [hoveredItem, setHoveredItem] = useState<unknown>(null);
   const { openModalMoive, openModalseries } = useOpenModal();
-  const { getRelease, dataMovies, loading, isError } = useDataUser();
+  const { getMovies, dataMovies, loading, isError } = useDataUser();
   const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
-  const limit = "10";
 
   useEffect(() => {
-    getRelease(limit);
+    getMovies();
   }, []);
 
   return (
     <div className="pt-10 px-[100px]">
-      <p className="text-2xl font-bold leading-loose tracking-tight ">
-        Just Release
-      </p>
+      <p className="text-2xl font-bold leading-loose tracking-tight ">Movies</p>
       {loading ? (
         <LoadingRelease />
       ) : isError ? (
@@ -87,4 +84,4 @@ function Release(): JSX.Element {
   );
 }
 
-export default Release;
+export default Movies;

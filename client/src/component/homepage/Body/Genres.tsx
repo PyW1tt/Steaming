@@ -9,6 +9,7 @@ import "./Swiper.css";
 import { useNavigate } from "react-router-dom";
 import { LoadingGenres } from "../../../pages/LoadingPage";
 import useDataUser from "../../../hook/useDataUser";
+import { useAuth } from "../../../context/AuthContext";
 interface genres {
   genres: string;
   img: string;
@@ -74,13 +75,18 @@ const genres: genres[] = [
 ];
 
 function Genres(): JSX.Element {
+  const auth = useAuth();
   const [nameGenres, setNameGenres] = useState<string>("Action");
   const navigate = useNavigate();
-  const { loading, isError, dataMovies, getAll } = useDataUser();
+  const { loading, isError, dataMovies, getAll, getAllWithId } = useDataUser();
   const limit = "5";
 
   useEffect(() => {
-    getAll("Action", limit);
+    if (auth.isAuthenticated) {
+      getAllWithId("", limit);
+    } else {
+      getAll("", limit);
+    }
   }, []);
   // console.log(dataMovies);
 
@@ -184,7 +190,7 @@ function Genres(): JSX.Element {
                             className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                             onClick={() => {
                               if (item.type === "Movie") {
-                                navigate(`/movieId/${item.series_id}`);
+                                navigate(`/movieId/${item.id}`);
                               } else if (
                                 item.episodes &&
                                 item.episodes.length > 0
@@ -215,23 +221,68 @@ function Genres(): JSX.Element {
                             Play Now
                           </Button>
 
-                          {item.list === undefined || item.list === false ? (
-                            <Button className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
+                          {auth.isAuthenticated ? (
+                            item.watch_list[0].watchListAdd === true ? (
+                              <Button
+                                className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                                onClick={() => {
+                                  handleChangeWatchList(
+                                    item.watch_list[0].watchListId,
+                                    "false"
+                                  );
+                                  // setWatchList(false);
+                                  setRefresh(!refresh);
+                                }}
+                              >
+                                <img
+                                  src="../../../icon/check.svg"
+                                  alt=""
+                                  className="mr-[10px]"
+                                />
+                                Watchlist
+                              </Button>
+                            ) : (
+                              <Button
+                                className="bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                                onClick={() => {
+                                  if (
+                                    item.watch_list[0].watchListAdd === null
+                                  ) {
+                                    handleAddWatchList(
+                                      item.id,
+                                      item.type === "Movie" ? "movie" : "series"
+                                    );
+                                  } else {
+                                    handleChangeWatchList(
+                                      item.watch_list[0].watchListId,
+                                      "true"
+                                    );
+                                  }
+                                  // setWatchList(true);
+                                  setRefresh(!refresh);
+                                }}
+                              >
+                                <img
+                                  src="../../../icon/bookmark.svg"
+                                  alt=""
+                                  className="mr-[10px]"
+                                />
+                                Add Watchlist
+                              </Button>
+                            )
+                          ) : (
+                            <Button
+                              className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                              onClick={() => {
+                                navigate("*");
+                              }}
+                            >
                               <img
                                 src="../../../icon/bookmark.svg"
                                 alt=""
                                 className="mr-[10px]"
                               />
                               Add Watchlist
-                            </Button>
-                          ) : (
-                            <Button className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex">
-                              <img
-                                src="../../../icon/check.svg"
-                                alt=""
-                                className="mr-[10px]"
-                              />
-                              Watchlist
                             </Button>
                           )}
                         </div>

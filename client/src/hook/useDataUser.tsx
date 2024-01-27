@@ -174,6 +174,33 @@ function useDataUser() {
     try {
       setloading(true);
 
+      // const userDataString = localStorage.getItem("userData");
+
+      // if (userDataString) {
+      //   const userData = JSON.parse(userDataString);
+      const result = await axios.get(
+        `/user/getAll?keywords=${keywords}&limit=${limit}`
+      );
+
+      setDataMovies(result.data.data);
+      console.log(result.data.data);
+      // } else {
+      //   console.error("userData is not available in localStorage");
+      // }
+
+      // setWatchList(result.data.data.watch_list);
+      // console.log(result.data.data);
+      setloading(false);
+    } catch (error) {
+      setloading(false);
+      setIsError(true);
+      console.log(error);
+    }
+  }
+  async function getAllWithId(keywords: string, limit: string) {
+    try {
+      setloading(true);
+
       const userDataString = localStorage.getItem("userData");
 
       if (userDataString) {
@@ -228,6 +255,7 @@ function useDataUser() {
     getRelease,
     getSeries,
     getMyLists,
+    getAllWithId,
     // watch_list,
     // setWatchList,
   };
