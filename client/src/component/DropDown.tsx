@@ -38,17 +38,20 @@ function DropDown() {
           </DropdownMenuItem>
           <DropdownMenuSeparator className="my-2" />
           {userData.role === "admin" && (
-            <DropdownMenuItem
-              className="hover:cursor-pointer "
-              onClick={() => {
-                navigate(`/adminSearch`);
-              }}
-            >
-              <img src="../../icon/admin.svg" alt="" />
-              <span className="text-slate-400 text-base ml-1 ">Admin</span>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem
+                className="hover:cursor-pointer "
+                onClick={() => {
+                  navigate(`/adminSearch`);
+                }}
+              >
+                <img src="../../icon/admin.svg" alt="" />
+                <span className="text-slate-400 text-base ml-1 ">Admin</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator className="my-2" />
+            </>
           )}
-          <DropdownMenuSeparator className="my-2" />
+
           <DropdownMenuItem className="hover:cursor-pointer">
             <div
               className="flex"
