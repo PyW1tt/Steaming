@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Spin as Hamburger } from "hamburger-react";
-import Search from "./Search";
+import Search from "./SearchAdmin";
 import CreateMovie from "./CreateMovie";
 import CreatTVshows from "./CreateTVshows";
 import { useNavigate } from "react-router-dom";

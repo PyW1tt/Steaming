@@ -1,11 +1,11 @@
 import React from "react";
 import Sidebar from "../../component/admin/Sidebar";
-import Search from "../../component/admin/Search";
+import SearchAdmin from "../../component/admin/SearchAdmin";
 
 function AdminSearchPage() {
   return (
     <Sidebar>
-      <Search />
+      <SearchAdmin />
     </Sidebar>
   );
 }

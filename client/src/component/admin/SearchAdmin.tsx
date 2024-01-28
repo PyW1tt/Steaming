@@ -7,7 +7,7 @@ import { Skeleton } from "../../components/ui/skeleton";
 
 type MyFunctionType = (arg1: string, arg2: string) => void;
 
-function Search() {
+function SearchAdmin() {
   const [keywords, setKeywords] = useState("");
   const { loading, isError, dataMovies, getAll } = useDataUser();
   const navigate = useNavigate();
@@ -103,4 +103,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default SearchAdmin;
