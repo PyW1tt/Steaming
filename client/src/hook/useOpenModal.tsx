@@ -22,10 +22,6 @@ function useOpenModal() {
     setIsModalSeriesOpen(false);
   }
 
-  // function addWatchList() {}
-
-  // function cancelWatchList() {}
-
   return {
     openModalMoive,
     closeModalMoive,

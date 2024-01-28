@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Navbar from "../component/Navbar";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "../components/ui/skeleton";
 import useDataUser from "../hook/useDataUser";
 import NotFoundPage from "./NotFoundPage";
 import useOpenModal from "../hook/useOpenModal";

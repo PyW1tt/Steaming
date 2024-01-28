@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../component/register/RegisterPage.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Label } from "../components/ui/label";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 import { FormValues } from "../model/FormValues";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-// import useDataUser from "../hook/useDataUser";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -17,13 +16,6 @@ function LoginPage() {
   const eyeSolid: string = "../../../icon/eyeSolid.svg";
 
   const { login, dataLogin, setDataLogin } = useAuth();
-
-  // function submit(event: React.FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-  // }
-
-  // const { data } = useDataUser();
-  // console.log(data);
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -101,11 +93,11 @@ function LoginPage() {
                 </div>
               ) : null}
             </div>
-            <div className=" w-full flex justify-center">
+            {/* <div className=" w-full flex justify-center">
               <Link to="#" className="text-sm font-bold ">
                 <p className=" hover:text-emerald-500 ">Forgot password</p>
               </Link>
-            </div>
+            </div> */}
 
             <Button
               className="bg-emerald-600 hover:bg-emerald-400 w-full rounded-[10px] text-sm font-bold mt-6"

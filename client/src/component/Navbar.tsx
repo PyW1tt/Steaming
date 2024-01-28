@@ -5,7 +5,7 @@ import DropDown from "./DropDown";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useDataUser from "../hook/useDataUser";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -15,7 +15,6 @@ function Navbar(props: NavbarProps): JSX.Element {
   const { userData, isAuthenticated } = useAuth();
   const { getData } = useDataUser();
   const navigate = useNavigate();
-  // console.log(userData);
 
   const isHome = React.Children.toArray(props.children).some(
     (child) => (child as React.ReactElement).type === Header

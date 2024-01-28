@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Input } from "@/components/ui/input";
+import { Input } from "../components/ui/input";
 import { useNavigate } from "react-router-dom";
 import useDataUser from "../hook/useDataUser";
 import NotFoundPage from "./NotFoundPage";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "../components/ui/skeleton";
 import ModalMovie from "../component/ModalMovie";
 import ModalSeries from "../component/ModalSeries";
 import useOpenModal from "../hook/useOpenModal";

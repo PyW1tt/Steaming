@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal, { SweetAlertResult } from "sweetalert2";
 import { useOmise } from "./omisecontext";
-// import { jwtDecode } from "jwt-decode";
 
 interface UserData {
   email: string;
@@ -108,17 +107,10 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
       const result = await axios.post("/auth/login", data);
       const token = result.data.token;
       localStorage.setItem("token", token);
-
-      // const userDataFromToken = jwtDecode(token);
-      // localStorage.setItem("user", userDataFromToken);
-      // console.log(userDataFromToken);
-
-      // console.log(result.data.data);
       localStorage.setItem("userData", JSON.stringify(result.data.data));
 
       Swal.close();
       await Swal.fire({
-        // position: "top-end",
         icon: "success",
         title: "Login Successful",
         showConfirmButton: false,
@@ -139,8 +131,6 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
   }
   async function logout() {
     try {
-      // await axios.get("/logout");
-      // localStorage.removeItem("token");
       localStorage.clear();
       navigate("/login");
     } catch (error) {

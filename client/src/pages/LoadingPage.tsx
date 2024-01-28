@@ -1,6 +1,6 @@
 import React from "react";
 import ReactLoading from "react-loading";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "../components/ui/skeleton";
 
 function LoadingPage() {
   return (
@@ -48,50 +48,6 @@ export function LoadingPopular() {
           <Skeleton className="h-4 w-[90px] rounded-2xl" />
         </div>
       </div>
-      {/* <div className="w-[377px] h-[176] px-[20px] py-6 relative flex justify-center">
-        <div className="mx-3">
-          <Skeleton className="w-[107px] h-32 rounded-2xl" />
-        </div>
-        <div className="flex flex-col justify-between">
-          <Skeleton className="h-4 w-[40px] rounded-2xl" />
-          <Skeleton className="h-4 w-[150px] rounded-2xl" />
-          <Skeleton className="h-4 w-[50px] rounded-2xl" />
-          <Skeleton className="h-4 w-[90px] rounded-2xl" />
-        </div>
-      </div>
-      <div className="w-[377px] h-[176] px-[20px] py-6 relative flex justify-center">
-        <div className="mx-3">
-          <Skeleton className="w-[107px] h-32 rounded-2xl" />
-        </div>
-        <div className="flex flex-col justify-between">
-          <Skeleton className="h-4 w-[40px] rounded-2xl" />
-          <Skeleton className="h-4 w-[150px] rounded-2xl" />
-          <Skeleton className="h-4 w-[50px] rounded-2xl" />
-          <Skeleton className="h-4 w-[90px] rounded-2xl" />
-        </div>
-      </div>
-      <div className="w-[377px] h-[176] px-[20px] py-6 relative flex justify-center">
-        <div className="mx-3">
-          <Skeleton className="w-[107px] h-32 rounded-2xl" />
-        </div>
-        <div className="flex flex-col justify-between">
-          <Skeleton className="h-4 w-[40px] rounded-2xl" />
-          <Skeleton className="h-4 w-[150px] rounded-2xl" />
-          <Skeleton className="h-4 w-[50px] rounded-2xl" />
-          <Skeleton className="h-4 w-[90px] rounded-2xl" />
-        </div>
-      </div>
-      <div className="w-[377px] h-[176] px-[20px] py-6 relative flex justify-center">
-        <div className="mx-3">
-          <Skeleton className="w-[107px] h-32 rounded-2xl" />
-        </div>
-        <div className="flex flex-col justify-between">
-          <Skeleton className="h-4 w-[40px] rounded-2xl" />
-          <Skeleton className="h-4 w-[150px] rounded-2xl" />
-          <Skeleton className="h-4 w-[50px] rounded-2xl" />
-          <Skeleton className="h-4 w-[90px] rounded-2xl" />
-        </div>
-      </div> */}
     </div>
   );
 }
@@ -99,11 +55,6 @@ export function LoadingRelease() {
   return (
     <div className="flex  py-6 justify-between pl-[33px] pr-[30px] ">
       <Skeleton className="w-[220px] h-[300px] rounded-2xl " />
-      {/* <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" /> */}
     </div>
   );
 }
@@ -115,26 +66,6 @@ export function LoadingWatchist() {
         <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
         <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
       </div>
-      {/* <div className="flex flex-col">
-        <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
-        <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
-        <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
-      </div>
-      <div className="flex flex-col">
-        <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
-        <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
-        <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
-      </div>
-      <div className="flex flex-col">
-        <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
-        <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
-        <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
-      </div>
-      <div className="flex flex-col">
-        <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
-        <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
-        <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
-      </div> */}
     </div>
   );
 }
@@ -168,7 +99,6 @@ export function LoadingMovieModal() {
           <Skeleton className="w-[200px] h-4 rounded-2xl mt-1" />
         </div>
         <div className="mt-5">
-          {/* <Skeleton className="w-[100px] h-4 rounded-2xl mt-1" /> */}
           <Skeleton className="w-[900px] h-4 rounded-2xl mt-1" />
           <Skeleton className="w-[900px] h-4 rounded-2xl mt-1" />
           <Skeleton className="w-[500px] h-4 rounded-2xl mt-1" />

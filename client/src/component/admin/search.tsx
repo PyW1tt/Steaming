@@ -1,29 +1,20 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useDataMovie } from "../../context/dataMovieContext";
-import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
+import { Input } from "../../components/ui/input";
 import NotFoundPage from "../../pages/NotFoundPage";
 import useDataUser from "../../hook/useDataUser";
-// import { LoadingPageAdmin, LoadingRelease } from "../../pages/LoadingPage";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "../../components/ui/skeleton";
 
 type MyFunctionType = (arg1: string, arg2: string) => void;
 
 function Search() {
-  // const { setDataMovie } = useDataMovie();
   const [keywords, setKeywords] = useState("");
   const { loading, isError, dataMovies, getAll } = useDataUser();
   const navigate = useNavigate();
   const limit = "100";
 
-  // function handleSearch() {
-  //   getAll(keywords, limit);
-  // }
-
   const debounce = (func: MyFunctionType) => {
     let timer: ReturnType<typeof setTimeout> | null;
-
     return (...args: Parameters<MyFunctionType>) => {
       if (timer) clearTimeout(timer);
 
@@ -35,11 +26,6 @@ function Search() {
   };
   const optimizedFn = useCallback(debounce(getAll), []);
 
-  // function handleKeyPress(e: React.KeyboardEvent<HTMLInputElement>) {
-  //   if (e.key === "Enter") {
-  //     getAll(keywords, limit);
-  //   }
-  // }
   useEffect(() => {
     getAll(keywords, limit);
   }, []);
@@ -57,14 +43,11 @@ function Search() {
               setKeywords(e.target.value);
               optimizedFn(e.target.value, limit);
             }}
-            // onKeyPress={handleKeyPress}
           />
-          {/* <Button onClick={handleSearch}>search</Button> */}
         </div>
         {loading ? (
           <div className="flex gap-2 h-screen">
             <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-gradient-to-t from-black from-15%" />
-            {/* <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-slate-700" /> */}
           </div>
         ) : isError ? (
           <NotFoundPage />

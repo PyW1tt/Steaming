@@ -97,10 +97,8 @@ adminRouter.post("/createMovie", fileUpload, async (req, res) => {
         const id = data.rows[0].id;
         const castQuery = `insert into cast_name (data_movie_id ,cast_name ) values ($1, $2 )`;
         for (const cast of castArray) {
-          // console.log(cast);
           const castValues = [id, cast];
           await pool.query(castQuery, castValues);
-          // console.log("1");
         }
       } catch (error) {
         console.log(error);
@@ -126,7 +124,6 @@ adminRouter.post("/createSeries", fileUpload, async (req, res) => {
   let seriesId = "";
   try {
     const castArray = req.body.cast;
-    console.log(castArray);
     const thumbnailName = req.body.thumbnailName
       ? req.body.thumbnailName
       : (req.body.thumbnailName = null);
@@ -163,10 +160,8 @@ adminRouter.post("/createSeries", fileUpload, async (req, res) => {
         const id = data.rows[0].id;
         const castQuery = `insert into cast_name (data_series_id ,cast_name ) values ($1, $2 )`;
         for (const cast of castArray) {
-          // console.log(cast);
           const castValues = [id, cast];
           await pool.query(castQuery, castValues);
-          // console.log("1");
         }
       } catch (error) {
         console.log(error);
@@ -183,7 +178,6 @@ adminRouter.post("/createSeries", fileUpload, async (req, res) => {
       error_message: error,
     });
   }
-  // console.log(seriesId);
   return res
     .status(200)
     .json({ message: "create series successful", data: seriesId });
@@ -195,12 +189,8 @@ adminRouter.post("/createEpisodes", fileUpload, async (req, res) => {
   let video = "";
   let videolUrl = "";
   const bodyData = [{ ...req.body, ...req.files }];
-  // console.log(req.files);
   try {
     for (const data of bodyData) {
-      // console.log(data.cover[0]);
-      // console.log(data.cover === undefined);
-      // console.log("--------------");
       if (data.cover !== undefined) {
         const { fileName, Url } = await supabaseCreateEpisode(
           data.coverName,
@@ -246,7 +236,6 @@ adminRouter.post("/createEpisodes", fileUpload, async (req, res) => {
       error_message: error,
     });
   }
-  // console.log("create episodes successful");
   return res.status(200).json({ message: "create episodes successful" });
 });
 
@@ -257,13 +246,9 @@ adminRouter.put("/updateSeries/:id", fileUpload, async (req, res) => {
   const castArray = req.body.data.cast_names;
   const id = req.params.id;
   try {
-    // console.log(id);
-    // console.log(req.body);
-    // console.log(req.files);
     const originalThumbnailName = req.body.data.thumbnail_name
       ? req.body.data.thumbnail_name
       : (req.body.data.thumbnail_name = null);
-    // console.log(originalThumbnailName);
     if (req.files && req.files.thumbnailFile && req.files.thumbnailFile[0]) {
       console.log(originalThumbnailName);
       const { fileName, Url } = await supabaseUpdateMovie(
@@ -292,7 +277,6 @@ adminRouter.put("/updateSeries/:id", fileUpload, async (req, res) => {
       id,
     ];
     await pool.query(query, value);
-    // console.log(castArray);
     if (castArray) {
       try {
         for (const cast of castArray) {
@@ -336,7 +320,6 @@ adminRouter.put("/updateEpisodes/:id", fileUpload, async (req, res) => {
       let coverlUrl = data.coverUrl;
       let video = data.videoName;
       let videolUrl = data.videoUrl;
-      console.log(coverlUrl);
       if (data.newCover !== undefined) {
         const { fileName, Url } = await supabaseCreateEpisode(
           data.coverName,
@@ -345,7 +328,6 @@ adminRouter.put("/updateEpisodes/:id", fileUpload, async (req, res) => {
         );
         cover = fileName;
         coverlUrl = Url;
-        console.log(coverlUrl);
       }
       if (data.newVideo !== undefined) {
         const { fileName, Url } = await supabaseCreateEpisode(
@@ -410,7 +392,6 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
   };
   const id = req.params.id;
   const castArray = req.body.data.cast_names;
-  // console.log(req.body.data.cast_names);
   try {
     const originalThumbnailName = req.body.data.thumbnail_name
       ? req.body.data.thumbnail_name
@@ -423,18 +404,14 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
       : (req.body.data.video_name = null);
 
     if (req.files && req.files.thumbnailFile && req.files.thumbnailFile[0]) {
-      console.log(originalThumbnailName);
       const { fileName, Url } = await supabaseUpdateMovie(
         originalThumbnailName,
         req.files.thumbnailFile[0],
         "thumbnail"
       );
-      // console.log(fileName);
-      // console.log(Url);
       const query = `UPDATE data_movie SET thumbnail_name = $1, thumbnail_url = $2 WHERE id = $3`;
       const value = [fileName, Url, id];
       await pool.query(query, value);
-      console.log("Updated thumbnail");
     }
 
     if (req.files && req.files.posterFile && req.files.posterFile[0]) {
@@ -446,11 +423,9 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
       const query = `UPDATE data_movie SET poster_name = $1, poster_url = $2 WHERE id = $3`;
       const value = [fileName, Url, id];
       await pool.query(query, value);
-      console.log("Updated poster");
     }
 
     if (req.files && req.files.videoFile && req.files.videoFile[0]) {
-      console.log(originalVideoName);
       const { fileName, Url } = await supabaseUpdateMovie(
         originalVideoName,
         req.files.videoFile[0],
@@ -459,7 +434,6 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
       const query = `UPDATE data_movie SET video_name = $1, video_url = $2 WHERE id = $3`;
       const value = [fileName, Url, id];
       await pool.query(query, value);
-      console.log("Updated video");
     }
 
     const update = new Date();
@@ -480,7 +454,6 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
       id,
     ];
     await pool.query(query, value);
-    // console.log(castArray);
     if (castArray) {
       try {
         for (const cast of castArray) {
@@ -521,8 +494,6 @@ adminRouter.get("/:userId/movies/:id", async (req, res) => {
   try {
     const userId = req.params.userId;
     const Id = req.params.id;
-    // console.log(userId);
-    // console.log(Id);
     const result = await pool.query(
       `
       SELECT
@@ -562,7 +533,6 @@ adminRouter.get("/:userId/movies/:id", async (req, res) => {
     `,
       [userId, Id]
     );
-    // console.log(result.rows[0]);
     return res.status(200).json({ data: result.rows[0] });
   } catch (error) {
     console.log(error);
@@ -574,9 +544,9 @@ adminRouter.get("/:userId/movies/:id", async (req, res) => {
 });
 
 adminRouter.get("/:userId/series/:id", async (req, res) => {
+  const userId = req.params.userId;
+  const id = req.params.id;
   try {
-    const userId = req.params.userId;
-    const id = req.params.id;
     const result = await pool.query(
       `
       SELECT
@@ -633,8 +603,6 @@ adminRouter.get("/:userId/series/:id", async (req, res) => {
       [id]
     );
     const dataSeries = { ...result.rows[0], ...episodes.rows[0] };
-    // console.log(dataSeries);
-
     return res.status(200).json({ data: dataSeries });
   } catch (error) {
     console.log(error);
@@ -647,7 +615,6 @@ adminRouter.get("/:userId/series/:id", async (req, res) => {
 
 adminRouter.delete("/movie/:id", async (req, res) => {
   const id = req.params.id;
-  // console.log(req.body);
   try {
     if (req.body.poster) {
       await supabase.storage.from("img").remove([req.body.poster]);
@@ -672,7 +639,6 @@ adminRouter.delete("/movie/:id", async (req, res) => {
 
 adminRouter.delete("/episode/:id", async (req, res) => {
   const id = req.params.id;
-  // console.log(req.body);
   try {
     if (req.body.poster) {
       await supabase.storage.from("img").remove([req.body.poster]);
@@ -694,7 +660,6 @@ adminRouter.delete("/episode/:id", async (req, res) => {
 
 adminRouter.delete("/series/:id", async (req, res) => {
   const id = req.params.id;
-  // console.log(req.body);
   try {
     if (req.body.thumbnail) {
       await supabase.storage.from("img").remove([req.body.thumbnail]);
@@ -713,7 +678,6 @@ adminRouter.delete("/series/:id", async (req, res) => {
 
 adminRouter.delete("/media/:id", async (req, res) => {
   const id = req.params.id;
-  // console.log(req.body);
   try {
     if (req.body.cover) {
       await supabase.storage.from("img").remove([req.body.cover]);

@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import React from "react";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { usePaymentInputs } from "react-payment-inputs";
 import images from "react-payment-inputs/images";
 import { useOmise } from "../../context/omisecontext";
 import { useAuth } from "../../context/AuthContext";
-import Loading from "../../pages/Loading";
 
 function Payment(): JSX.Element {
-  // const [cardNumber, setCardNumber] = useState<string>("");
-  // const [cardName, setCardName] = useState<string>("");
-  // const [month, setMonth] = useState<string>("");
-  // const [year, setYear] = useState<string>("");
-  // const [cvc, setCvc] = useState<string>("");
   const { register, dataRegister } = useAuth();
   const { setOmiseCard } = useOmise();
   const {
@@ -61,11 +55,7 @@ function Payment(): JSX.Element {
   });
 
   return (
-    <div
-    // onSubmit={() => {
-    //   omiseCardHandler(omiseCard);
-    // }}
-    >
+    <div>
       <p className=" text-center font-semibold text-2xl mb-6">Payment</p>
       <div className="mb-2 h-24 relative">
         <Label className="font-semibold text-base" htmlFor="">
@@ -201,15 +191,9 @@ function Payment(): JSX.Element {
         onClick={() => {
           register(dataRegister);
         }}
-        // disabled={
-        //   !formik.isValid ||
-        //   Object.values(formik.values).some((value) => value === "")
-        // }
-        // disabled={status === false}
       >
         Register
       </Button>
-      {/* {status && <Loading />} */}
     </div>
   );
 }

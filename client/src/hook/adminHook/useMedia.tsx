@@ -12,7 +12,6 @@ function useMedia() {
   const [loading, setloading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [watch_list, setWatchList] = useState<null | boolean>(null);
-  // const [idMedia, setIdMedia] = useState("");
   const [dataMovieId, setDataMovieId] = useState({
     id: "",
     title: "",
@@ -50,8 +49,6 @@ function useMedia() {
     thumbnail_url: "",
     created_at: new Date(),
     updated_at: new Date(),
-    // watch_list: "",
-    // watchListId: "",
     watch_list: { id: "", add: "" },
     cast_names: [{ id: "", movie_id: "", cast_name: "" }],
     episodes: [
@@ -122,7 +119,7 @@ function useMedia() {
     try {
       setloading(true);
 
-      const result = await axios.post(
+      await axios.post(
         "/admin/createMovie",
         {
           data,
@@ -137,11 +134,8 @@ function useMedia() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
-      console.log(result);
       setloading(false);
       await Swal.fire({
-        // position: "top-end",
         icon: "success",
         title: "Create Successful",
         showConfirmButton: false,
@@ -176,10 +170,7 @@ function useMedia() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      // console.log(result.data.data);
-      // setIdSeries(result.data.data);
       localStorage.setItem("idSeries", result.data.data);
-      // idSeries = result.data.data;
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -195,7 +186,6 @@ function useMedia() {
 
   async function createDataEpisodes(data) {
     const idSeries = localStorage.getItem("idSeries");
-    // console.log(idSeries);
     try {
       setloading(true);
       await axios.post(
@@ -232,10 +222,7 @@ function useMedia() {
   async function updateDataSeries(thumbnail, id, data) {
     try {
       setloading(true);
-      // console.log(thumbnail);
-      // console.log("id :" + id);
-      // console.log(data);
-      const result = await axios.put(
+      await axios.put(
         `/admin/updateSeries/${id}`,
         {
           data,
@@ -245,10 +232,6 @@ function useMedia() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log(result.data);
-      // setIdSeries(result.data.data);
-      // localStorage.setItem("idSeries", result.data.data);
-      // idSeries = result.data.data;
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -263,17 +246,8 @@ function useMedia() {
   }
 
   async function updateDataEpisodes(data) {
-    // const idSeries = localStorage.getItem("idSeries");
-    // console.log(idSeries);
-
-    // console.log(param.id);
-
-    // console.log(data);
     try {
       setloading(true);
-      // console.log(data.coverName);
-      // console.log(param.id);
-
       await axios.put(
         `/admin/updateEpisodes/${param.id}`,
         {
@@ -297,7 +271,6 @@ function useMedia() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      // console.log(result.data);
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -311,13 +284,8 @@ function useMedia() {
     }
   }
   async function updateDatamovieId(id, data, thumbnail, poster, video) {
-    // console.log(data.thumbnail_name);
     try {
       setloading(true);
-      // console.log(thumbnail);
-      // console.log(poster);
-      // console.log(video);
-
       await axios.put(
         `/admin/updateMovie/${id}`,
         {
@@ -330,10 +298,8 @@ function useMedia() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      // console.log(result);
       setloading(false);
       await Swal.fire({
-        // position: "top-end",
         icon: "success",
         title: "Update Successful",
         showConfirmButton: false,
@@ -343,7 +309,6 @@ function useMedia() {
       setloading(false);
       setIsError(true);
       await Swal.fire({
-        // position: "top-end",
         icon: "error",
         title: error.message,
         showConfirmButton: false,
@@ -356,7 +321,6 @@ function useMedia() {
     const userDataString = localStorage.getItem("userData");
     const idMedia = localStorage.getItem("idMedia");
 
-    // console.log(idMedia);
     try {
       setloading(true);
 
@@ -368,7 +332,6 @@ function useMedia() {
 
         setDataMovieId(result.data.data);
         setWatchList(result.data.data.watch_list[0].watchListAdd);
-        // console.log(result.data.data.id);
       }
 
       setTimeout(() => {
@@ -383,7 +346,6 @@ function useMedia() {
   async function getSeriesIdModal() {
     const userDataString = localStorage.getItem("userData");
     const idMedia = localStorage.getItem("idMedia");
-    // console.log(idMedia);
     try {
       setloading(true);
       if (userDataString) {
@@ -395,8 +357,6 @@ function useMedia() {
 
         setWatchList(result.data.data.watch_list[0].watchListAdd);
         setDataSeriesIdMedia(result.data.data);
-
-        // console.log(result.data.data.watch_list[0].watchListAdd);
       }
       setTimeout(() => {
         setloading(false);
@@ -434,8 +394,6 @@ function useMedia() {
       setloading(true);
       const result = await axios.get(`/user/episode/${id}`);
       setEpisodeId(result.data.data);
-      // console.log(result.data.data);
-
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -446,33 +404,32 @@ function useMedia() {
   async function getSeriesById(id) {
     try {
       setloading(true);
-      const result = await axios.get(`/admin/series/${id}`);
-      // console.log(result.data);
-      // setDataSeriesId(result.data.data);
-      const data = {
-        id: result.data.data.id,
-        title: result.data.data.title,
-        author: result.data.data.author,
-        release_date: result.data.data.release_date,
-        rating: result.data.data.rating,
-        description: result.data.data.description,
-        type: result.data.data.type,
-        genres: result.data.data.genres,
-        mpa: result.data.data.mpa,
-        thumbnail_name: result.data.data.thumbnail_name,
-        thumbnail_url: result.data.data.thumbnail_url,
-        created_at: result.data.data.created_at,
-        updated_at: result.data.data.updated_at,
-        cast_names: result.data.data.cast_names,
-      };
-      // console.log(data.cast_names);
+      const userDataString = localStorage.getItem("userData");
 
-      const episode = result.data.data.episodes;
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const result = await axios.get(`/admin/${userData.id}/series/${id}`);
+        const data = {
+          id: result.data.data.id,
+          title: result.data.data.title,
+          author: result.data.data.author,
+          release_date: result.data.data.release_date,
+          rating: result.data.data.rating,
+          description: result.data.data.description,
+          type: result.data.data.type,
+          genres: result.data.data.genres,
+          mpa: result.data.data.mpa,
+          thumbnail_name: result.data.data.thumbnail_name,
+          thumbnail_url: result.data.data.thumbnail_url,
+          created_at: result.data.data.created_at,
+          updated_at: result.data.data.updated_at,
+          cast_names: result.data.data.cast_names,
+        };
+        const episode = result.data.data.episodes;
+        setDataEpisodeId(episode);
+        setDataSeriesId(data);
+      }
 
-      // console.log(data);
-      // console.log(episode);
-      setDataEpisodeId(episode);
-      setDataSeriesId(data);
       setloading(false);
     } catch (error) {
       setloading(false);
@@ -493,7 +450,6 @@ function useMedia() {
       });
       setloading(false);
       await Swal.fire({
-        // position: "top-end",
         icon: "success",
         title: "Delete Successful",
         showConfirmButton: false,
@@ -504,7 +460,6 @@ function useMedia() {
       setloading(false);
       setIsError(true);
       await Swal.fire({
-        // position: "top-end",
         icon: "error",
         title: error.message,
         showConfirmButton: false,
@@ -525,18 +480,15 @@ function useMedia() {
       });
       setloading(false);
       await Swal.fire({
-        // position: "top-end",
         icon: "success",
         title: "Delete Successful",
         showConfirmButton: false,
         timer: 1500,
       });
-      // navigate("/adminSearch");
     } catch (error) {
       setloading(false);
       setIsError(true);
       await Swal.fire({
-        // position: "top-end",
         icon: "error",
         title: error.message,
         showConfirmButton: false,
@@ -546,10 +498,7 @@ function useMedia() {
     }
   }
 
-  async function handleDeleteSeries(id: string, thumbnail) {
-    // console.log(id);
-    // console.log(thumbnail);
-
+  async function handleDeleteSeries(id: string, thumbnail: string) {
     try {
       setloading(true);
       await axios.delete(`/admin/series/${id}`, {
@@ -558,19 +507,10 @@ function useMedia() {
         },
       });
       setloading(false);
-      // await Swal.fire({
-      //   // position: "top-end",
-      //   icon: "success",
-      //   title: "Delete Successful",
-      //   showConfirmButton: false,
-      //   timer: 1500,
-      // });
-      // navigate("/adminSearch");
     } catch (error) {
       setloading(false);
       setIsError(true);
       await Swal.fire({
-        // position: "top-end",
         icon: "error",
         title: error.message,
         showConfirmButton: false,
@@ -579,10 +519,12 @@ function useMedia() {
       console.log(error);
     }
   }
-
-  async function handleDeleteMedia(data) {
+  interface data {
+    coverName: string;
+    videoName: string;
+  }
+  async function handleDeleteMedia(data: data) {
     try {
-      // console.log(data);
       setloading(true);
       await axios.delete(`/admin/media/${param.id}`, {
         data: {
@@ -606,7 +548,6 @@ function useMedia() {
 
   async function handleAddWatchList(id: string, type: string) {
     try {
-      // setloading(true);
       const userDataString = localStorage.getItem("userData");
 
       if (userDataString) {
@@ -616,13 +557,10 @@ function useMedia() {
           `/user/${userData.id}/watchList/${id}`,
           { type }
         );
-        // console.log(result.data.data);
         localStorage.setItem("watchListId", JSON.stringify(result.data.data));
       }
 
-      // setEpisodeId(result.data.data);
       setRefresh(!refresh);
-      // setloading(false);
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -632,16 +570,10 @@ function useMedia() {
 
   async function handleChangeWatchList(id: string, bool: string) {
     try {
-      // setloading(true);
-
       await axios.put(`/user/watchList/${id}`, {
         bool,
       });
-      // console.log(result.data.data);
-
-      // setEpisodeId(result.data.data);
       setRefresh(!refresh);
-      // setloading(false);
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -670,7 +602,6 @@ function useMedia() {
     handleDeleteEpisodes,
     handleDeleteSeries,
     handleDeleteMedia,
-    // setIdMedia,
     getMoviesIdModal,
     getSeriesIdModal,
     dataSeriesIdModadl,

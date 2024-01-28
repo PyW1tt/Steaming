@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./Admin.css";
 import useInputType from "../../hook/adminHook/useInputType";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+import { Button } from "../../components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,24 +13,13 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 import useMedia from "../../hook/adminHook/useMedia";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
 function CreateMovie() {
   const { genres, MPA, type } = useInputType();
   const { postDatamovie, loading, isError } = useMedia();
-
-  // const [title, setTitle] = useState("");
-  // const [author, setAuthor] = useState("");
-  // const [date, setDate] = useState("");
-  // const [hours, setHours] = useState("");
-  // const [min, setMin] = useState("");
-  // const [rating, setRating] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [type, setType] = useState("");
-  // const [genres, setGenres] = useState("");
-  // const [MPA, setMPA] = useState("");
 
   const [movieData, setMovieData] = useState({
     title: "",
@@ -50,7 +39,6 @@ function CreateMovie() {
   const [video, setVideo] = useState({});
 
   const [cast, setCast] = useState<{ [key: string]: string }>({});
-  // const [cast, setCast] = useState<string[]>([]);
   const [divs, setDivs] = useState<JSX.Element[]>([
     <Input
       type="text"
@@ -63,19 +51,6 @@ function CreateMovie() {
       }
     />,
   ]);
-
-  // const handleInputChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  //   index: number
-  // ) => {
-  //   const { value } = event.target;
-
-  //   setCast((prevInputValues) => {
-  //     const newInputValues = [...prevInputValues];
-  //     newInputValues[index] = value;
-  //     return newInputValues;
-  //   });
-  // };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -90,7 +65,6 @@ function CreateMovie() {
   };
 
   const handleAddDiv = () => {
-    // สร้าง div ใหม่ที่มี input ภายใน
     const newDiv = (
       <Input
         id="Cast"
@@ -98,15 +72,11 @@ function CreateMovie() {
         placeholder="Cast name"
         key={divs.length}
         className="text-black mb-1"
-        onChange={
-          (e: React.ChangeEvent<HTMLInputElement>) =>
-            handleInputChange(e, divs.length.toString())
-          // handleInputChange(e, divs.length)
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handleInputChange(e, divs.length.toString())
         }
       />
     );
-    // อัพเดท state เพื่อเพิ่ม div ใหม่
-    // setDivs((prevDivs) => [...prevDivs, newDiv]);
     const newDivs = [...divs, newDiv];
     setDivs(newDivs);
   };
@@ -141,8 +111,6 @@ function CreateMovie() {
   const handleVideo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
 
-    // console.log(selectedFile);
-
     if (selectedFile) {
       const newVideo = { ...video };
 
@@ -160,27 +128,11 @@ function CreateMovie() {
       [key]: value,
     }));
   };
-  // const uniqueId = Date.now();
+
   const data = {
     ...movieData,
     cast: cast,
-    // thumbnailName: `${uniqueId}`,
-    // thumbnailFile: thumbnail,
-    // posterName: `${uniqueId}`,
-    // posterFile: poster,
-    // videoName: uniqueId,
-    // videoFile: video,
   };
-
-  // const handleSubmit = () => {
-  //   // console.log(data);
-  //   // console.log(movieData);
-  //   // console.log(cast);
-  //   // console.log(thumbnail);
-  //   // console.log(poster);
-  //   // console.log(video);
-  //   // console.log(data);
-  // };
 
   return (
     <div className="">
@@ -231,8 +183,6 @@ function CreateMovie() {
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
-                // const parts = e.target.value.split("-");
-                // const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
                 handleChange("date", e.target.value);
               }}
             />
@@ -294,7 +244,7 @@ function CreateMovie() {
               placeholder="Write a brief description of the movie, including its plot, characters, and key themes."
               id="Description"
               className="text-black"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 e.preventDefault();
                 handleChange("description", e.target.value);
               }}
@@ -311,17 +261,6 @@ function CreateMovie() {
               <SelectContent className="">
                 <SelectGroup>
                   <SelectLabel className="text-black">Type</SelectLabel>
-                  {/* {type.map((type, index) => {
-                    return (
-                      <SelectItem
-                        key={index}
-                        value={type}
-                        className="text-black"
-                      >
-                        {type}
-                      </SelectItem>
-                    );
-                  })} */}
                   <SelectItem value={type[0]} className="text-black">
                     {type[0]}
                   </SelectItem>
@@ -463,12 +402,7 @@ function CreateMovie() {
                     key={index}
                     className="w-[400px] h-[200px]"
                     src={URL.createObjectURL(video[index])}
-                  >
-                    {/* <source
-                  src={URL.createObjectURL(video[index])}
-                  type="video/mp4"
-                /> */}
-                  </video>
+                  ></video>
                 ))
               )}
               <Input
@@ -485,11 +419,8 @@ function CreateMovie() {
             <Button
               className="mt-24 bg-emerald-600 hover:bg-emerald-400 "
               onClick={async () => {
-                // console.log(movieData);
-
                 await postDatamovie(data, thumbnail[1], poster[1], video[1]);
                 location.reload();
-                // handleSubmit();
               }}
             >
               Create Movie

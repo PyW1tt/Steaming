@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Admin.css";
 import useInputType from "../../hook/adminHook/useInputType";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+import { Button } from "../../components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
@@ -43,22 +43,11 @@ function UpdateTVshows() {
   const [isModalEpisodes, setIsModalEpisodes] = useState(false);
   const [isModalSeries, setIsModalSeries] = useState(false);
   const [idEpisodes, setIdEpisodes] = useState("");
-  // const [thumbnailName, setThumbnailName] = useState("");
   const [coverName, setCoverName] = useState("");
   const [videoName, setVideoName] = useState("");
   const [episodesName, setEpisodesName] = useState("");
-  // const [movieData, setMovieData] = useState({
-  //   title: "",
-  //   author: "",
-  //   date: "",
-  //   rating: "",
-  //   description: "",
-  //   type: "",
-  //   genres: "",
-  //   MPA: "",
-  // });
   const [thumbnail, setThumbnail] = useState({});
-  // const [cast, setCast] = useState<{ [key: string]: string }>({});
+
   const [divs, setDivs] = useState<JSX.Element[]>([
     <Input
       type="text"
@@ -72,30 +61,8 @@ function UpdateTVshows() {
     />,
   ]);
 
-  // const [episodes, setEpisodes] = useState<
-  //   Array<{
-  //     cover: File | null;
-  //     video: File | null;
-  //     episode: string | null;
-  //     hours: string | null;
-  //     min: string | null;
-  //     details: string | null;
-  //     // idSeries: string | null;
-  //   }>
-  // >([
-  //   {
-  //     cover: null,
-  //     video: null,
-  //     episode: null,
-  //     hours: null,
-  //     min: null,
-  //     details: null,
-  //     // idSeries: null,
-  //   },
-  // ]);
-
   const handleEpisodesCover = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number,
     type:
       | "NewCover"
@@ -106,22 +73,19 @@ function UpdateTVshows() {
       | "min"
       | "details"
   ) => {
-    const files = event.target.files;
     if (
-      files &&
-      files.length > 0 &&
-      (type === "NewCover" || type === "NewVideo")
+      (type === "NewCover" || type === "NewVideo") &&
+      event.target instanceof HTMLInputElement &&
+      event.target.files
     ) {
+      const files = event.target.files;
       const updatedEpisodes = [...dataEpisodeId];
 
-      updatedEpisodes[index][type] = files[0];
-      // console.log(updatedEpisodes);
-      setDataEpisodeId(updatedEpisodes);
+      if (files.length > 0) {
+        updatedEpisodes[index][type] = files[0];
+        setDataEpisodeId(updatedEpisodes);
+      }
     }
-    // console.log(event.target.value);
-
-    // console.log(index);
-
     if (
       type === "episode" ||
       type === "episodeName" ||
@@ -134,18 +98,8 @@ function UpdateTVshows() {
       updatedEpisodes[index][type] = event.target.value;
 
       setDataEpisodeId(updatedEpisodes);
-      // console.log([index]);
-      // console.log([type]);
-      // console.log(updatedEpisodes[index][type]);
-
-      // setDataEpisodeId({
-      //   ...dataEpisodeId,
-      //   episodeName: event.target.value,
-      // })
     }
-    // console.log(files);
   };
-  // console.log(dataEpisodeId);
 
   const handleAddDivEpisodes = () => {
     setDataEpisodeId((prevEpisodes) => [
@@ -184,7 +138,6 @@ function UpdateTVshows() {
     });
   };
   const handleAddDiv = () => {
-    // สร้าง div ใหม่ที่มี input ภายใน
     const newDiv = (
       <Input
         id="Cast"
@@ -192,10 +145,8 @@ function UpdateTVshows() {
         placeholder="Cast name"
         key={divs.length}
         className="text-black mb-1"
-        onChange={
-          (e: React.ChangeEvent<HTMLInputElement>) =>
-            handleInputChange(e, divs.length.toString())
-          // handleInputChange(e, divs.length)
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handleInputChange(e, divs.length.toString())
         }
       />
     );
@@ -210,7 +161,6 @@ function UpdateTVshows() {
       ],
     }));
   };
-
   const handleThumbnail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
 
@@ -326,8 +276,6 @@ function UpdateTVshows() {
               value={dataSeriesId.release_date || ""}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
-                // const parts = e.target.value.split("-");
-                // const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
                 handleChange("release_date", e.target.value);
               }}
             />
@@ -361,7 +309,7 @@ function UpdateTVshows() {
               id="Description"
               className="text-black"
               value={dataSeriesId.description || ""}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 e.preventDefault();
                 handleChange("description", e.target.value);
               }}
@@ -450,8 +398,6 @@ function UpdateTVshows() {
               Cast
             </Label>
             {dataSeriesId.cast_names.map((item, index) => {
-              // console.log(dataSeriesId.cast_names);
-
               return (
                 <Input
                   key={index}
@@ -655,9 +601,9 @@ function UpdateTVshows() {
                       value={episode.details || ""}
                       placeholder="Episode details"
                       className=" text-black "
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        handleEpisodesCover(event, index, "details")
-                      }
+                      onChange={(
+                        event: React.ChangeEvent<HTMLTextAreaElement>
+                      ) => handleEpisodesCover(event, index, "details")}
                     />
                   </div>
 

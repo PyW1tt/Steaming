@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import data from "../hook/useMoviesData";
+import React, { useEffect } from "react";
 import { useDataMovie } from "../context/dataMovieContext";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import useOpenModal from "../hook/useOpenModal";
 import { useNavigate } from "react-router-dom";
 import useMedia from "../hook/adminHook/useMedia";
@@ -26,7 +25,6 @@ function ModalSeries() {
   useEffect(() => {
     getSeriesIdModal();
   }, []);
-  // console.log(dataSeriesIdModadl);
 
   if (!isModalSeriesOpen) return null;
 
@@ -245,8 +243,5 @@ function ModalSeries() {
     </div>
   );
 }
-// </div>
-// );
-// }
 
 export default ModalSeries;

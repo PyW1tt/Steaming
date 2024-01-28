@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Admin.css";
 import useInputType from "../../hook/adminHook/useInputType";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+import { Button } from "../../components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import useMedia from "../../hook/adminHook/useMedia";
@@ -34,50 +34,12 @@ function UpdateMovie() {
     handleDeleteMovie,
   } = useMedia();
 
-  // const [title, setTitle] = useState("");
-  // const [author, setAuthor] = useState("");
-  // const [date, setDate] = useState("");
-  // const [hours, setHours] = useState("");
-  // const [min, setMin] = useState("");
-  // const [rating, setRating] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [type, setType] = useState("");
-  // const [genres, setGenres] = useState("");
-  // const [MPA, setMPA] = useState("");
-
-  // const [movieData, setMovieData] = useState({
-  //   title: "",
-  //   author: "",
-  //   date: "",
-  //   hours: "",
-  //   min: "",
-  //   rating: "",
-  //   description: "",
-  //   type: "",
-  //   genres: "",
-  //   MPA: "",
-  // });
   const [isModalMovie, setIsModalMovie] = useState(false);
   const [thumbnail, setThumbnail] = useState({});
   const [poster, setPoster] = useState({});
   const [video, setVideo] = useState({});
 
-  // const [cast, setCast] = useState<{ [key: string]: string }>({});
-  // const [cast, setCast] = useState<string[]>([]);
   const [divs, setDivs] = useState<JSX.Element[]>([]);
-
-  // const handleInputChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>,
-  //   index: number
-  // ) => {
-  //   const { value } = event.target;
-
-  //   setCast((prevInputValues) => {
-  //     const newInputValues = [...prevInputValues];
-  //     newInputValues[index] = value;
-  //     return newInputValues;
-  //   });
-  // };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -87,7 +49,6 @@ function UpdateMovie() {
     setDataMovieId((prevInputValues) => {
       const updatedCastNames = [...prevInputValues.cast_names];
       updatedCastNames[key] = { ...updatedCastNames[key], cast_name: value };
-      // console.log(updatedCastNames[key]);
       return {
         ...prevInputValues,
         cast_names: updatedCastNames,
@@ -114,7 +75,7 @@ function UpdateMovie() {
       ...prevData,
       cast_names: [
         ...prevData.cast_names,
-        { id: "", movie_id: "", cast_name: "" }, // เพิ่ม cast name ใหม่
+        { id: "", movie_id: "", cast_name: "" },
       ],
     }));
   };
@@ -169,22 +130,10 @@ function UpdateMovie() {
       [key]: value || "",
     }));
   };
-  // const handleSubmit = () => {
-  //   // const data = { ...movieData, cast: cast };
-  //   // console.log(data);
-  //   // console.log(movieData);
-  //   // console.log(cast);
-  //   console.log(thumbnail);
-  //   console.log(poster);
-  //   console.log(video);
-  //   console.log(dataMovieId);
-  // };
 
   useEffect(() => {
     getMoviesById(param.id);
   }, []);
-  // console.log(dataMovieId.cast_names[0].cast_name);
-  // console.log(dataMovieId.cast_names);
 
   return (
     <div className="">
@@ -237,8 +186,6 @@ function UpdateMovie() {
               className="text-black"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 e.preventDefault();
-                // const parts = e.target.value.split("-");
-                // const sqlFormattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
                 handleChange("release_date", e.target.value);
               }}
               value={dataMovieId.release_date}
@@ -304,7 +251,7 @@ function UpdateMovie() {
               placeholder="Write a brief description of the movie, including its plot, characters, and key themes."
               id="Description"
               className="text-black"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 e.preventDefault();
                 handleChange("description", e.target.value);
               }}
@@ -502,12 +449,7 @@ function UpdateMovie() {
                     key={index}
                     className="w-[400px] h-[200px]"
                     src={URL.createObjectURL(video[index])}
-                  >
-                    {/* <source
-                    src={URL.createObjectURL(video[index])}
-                    type="video/mp4"
-                  /> */}
-                  </video>
+                  ></video>
                 ))
               )}
               <Input
@@ -589,9 +531,6 @@ function UpdateMovie() {
                   updateDatamovieId(
                     param.id,
                     dataMovieId,
-                    // thumbnail[1],
-                    // poster[1],
-                    // video[1]
                     thumbnail[1] ?? "",
                     poster[1] ?? "",
                     video[1] ?? ""

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDataMovie } from "../context/dataMovieContext";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 import useOpenModal from "../hook/useOpenModal";
 import { useNavigate } from "react-router-dom";
 import useMedia from "../hook/adminHook/useMedia";
@@ -18,19 +18,6 @@ function ModalMovie() {
     handleChangeWatchList,
   } = useMedia();
   const { closeModalMoive } = useOpenModal();
-
-  // const {
-  //   closeModal,
-  //   addWatchList,
-  //   setAddWatchList,
-  //   cancelWatchList,
-  //   setCancelWatchList,
-  // } = useOpenModal();
-  // const [watchList, setWatchList] = useState<boolean>(false);
-
-  const [addWatchList, setAddWatchList] = useState<boolean>(true);
-  const [cancelWatchList, setCancelWatchList] = useState<boolean>(false);
-
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -6,8 +6,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuRadioGroup,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+} from "../components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useDataUser from "../hook/useDataUser";

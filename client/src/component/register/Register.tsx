@@ -3,9 +3,9 @@ import { useState } from "react";
 import "./RegisterPage.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Label } from "../../components/ui/label";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 import { PropState } from "../../model/PropState";
 import { FormValues } from "../../model/FormValues";
 import { Link } from "react-router-dom";
@@ -13,20 +13,10 @@ import { useAuth } from "../../context/AuthContext";
 
 function Register(prop: PropState): JSX.Element {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  // const [username, setUsername] = useState<string>("");
-  // const [password, setPassword] = useState<string>("");
-  // const [email, setEmail] = useState<string>("");
   const { dataRegister, setDataRegister } = useAuth();
 
   const eyeOutline: string = "../../../icon/eyeOutline.svg";
   const eyeSolid: string = "../../../icon/eyeSolid.svg";
-
-  // function submit(event: React.FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-  //   console.log(username);
-  //   console.log(password);
-  //   console.log(email);
-  // }
 
   interface RegisterFormValues extends FormValues {
     username: string;

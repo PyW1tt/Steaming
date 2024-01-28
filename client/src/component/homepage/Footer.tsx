@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import BackToTop from "../BackToTop";
 
 function Footer(): JSX.Element {
   return (
@@ -62,7 +61,6 @@ function Footer(): JSX.Element {
           © 2023
         </div>
       </div>
-      {/* <BackToTop /> */}
     </>
   );
 }

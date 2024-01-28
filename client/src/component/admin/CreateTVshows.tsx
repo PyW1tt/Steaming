@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Admin.css";
 import useInputType from "../../hook/adminHook/useInputType";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Textarea } from "../../components/ui/textarea";
+import { Button } from "../../components/ui/button";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "../../components/ui/select";
 import Swal from "sweetalert2";
 import { LoadingPageAdmin } from "../../pages/LoadingPage";
 import NotFoundPage from "../../pages/NotFoundPage";
@@ -21,14 +21,8 @@ import useMedia from "../../hook/adminHook/useMedia";
 
 function CreateTVshows() {
   const { genres, MPA, type } = useInputType();
-  const {
-    loading,
-    isError,
-    createDataEpisodes,
-    createDataSeries,
-    setloading,
-    // idSeries,
-  } = useMedia();
+  const { loading, isError, createDataEpisodes, createDataSeries, setloading } =
+    useMedia();
   const [movieData, setMovieData] = useState({
     title: "",
     author: "",
@@ -63,7 +57,6 @@ function CreateTVshows() {
       hours: string | null;
       min: string | null;
       details: string | null;
-      // idSeries: string | null;
     }>
   >([
     {
@@ -79,7 +72,7 @@ function CreateTVshows() {
   ]);
 
   const handleEpisodesCover = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number,
     type:
       | "cover"
@@ -90,7 +83,10 @@ function CreateTVshows() {
       | "min"
       | "details"
   ) => {
-    const files = event.target.files;
+    const files =
+      type === "cover" || type === "video"
+        ? (event.target as HTMLInputElement).files
+        : null;
     if (files && files.length > 0 && (type === "cover" || type === "video")) {
       const updatedEpisodes = [...episodes];
 
@@ -129,13 +125,6 @@ function CreateTVshows() {
     ]);
   };
 
-  // const data = {
-  //   ...movieData,
-  //   cast: cast,
-  //   thumbnail: thumbnail,
-  //   episodes: episodes,
-  // };
-
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     key: string
@@ -148,7 +137,6 @@ function CreateTVshows() {
     }));
   };
   const handleAddDiv = () => {
-    // สร้าง div ใหม่ที่มี input ภายใน
     const newDiv = (
       <Input
         id="Cast"
@@ -156,15 +144,11 @@ function CreateTVshows() {
         placeholder="Cast name"
         key={divs.length}
         className="text-black mb-1"
-        onChange={
-          (e: React.ChangeEvent<HTMLInputElement>) =>
-            handleInputChange(e, divs.length.toString())
-          // handleInputChange(e, divs.length)
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handleInputChange(e, divs.length.toString())
         }
       />
     );
-    // อัพเดท state เพื่อเพิ่ม div ใหม่
-    // setDivs((prevDivs) => [...prevDivs, newDiv]);
     const newDivs = [...divs, newDiv];
     setDivs(newDivs);
   };
@@ -200,7 +184,6 @@ function CreateTVshows() {
       video,
     })
   );
-  // console.log(idSeries);
 
   return (
     <div className="">
@@ -284,7 +267,7 @@ function CreateTVshows() {
               placeholder="Write a brief description of the movie, including its plot, characters, and key themes."
               id="Description"
               className="text-black"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                 e.preventDefault();
                 handleChange("description", e.target.value);
               }}
@@ -301,17 +284,6 @@ function CreateTVshows() {
               <SelectContent className="">
                 <SelectGroup>
                   <SelectLabel className="text-black">Type</SelectLabel>
-                  {/* {type.map((type, index) => {
-                    return (
-                      <SelectItem
-                        key={index}
-                        value={type}
-                        className="text-black"
-                      >
-                        {type}
-                      </SelectItem>
-                    );
-                  })} */}
                   <SelectItem value={type[1]} className="text-black">
                     {type[1]}
                   </SelectItem>
@@ -547,9 +519,9 @@ function CreateTVshows() {
                       id={`episodeDescription-${index}`}
                       placeholder="Episode details"
                       className=" text-black "
-                      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                        handleEpisodesCover(event, index, "details")
-                      }
+                      onChange={(
+                        event: React.ChangeEvent<HTMLTextAreaElement>
+                      ) => handleEpisodesCover(event, index, "details")}
                     />
                   </div>
                 </div>

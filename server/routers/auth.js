@@ -89,15 +89,11 @@ authRouter.post("/login", async (req, res) => {
         "SELECT id,email, package, role ,img_name,profile_img,created_at  FROM user_profile WHERE email = $1",
         [loginData.email]
       );
-
-      // const token = data.session.access_token;
-      // console.log(result.rows[0]);
       const token = jwt.sign(
         {
           data: result.rows[0],
         },
         process.env.SECRET_KEY,
-        // { expiresIn: "900000" }
         { expiresIn: "43200000" }
       );
 

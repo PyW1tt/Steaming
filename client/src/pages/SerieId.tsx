@@ -44,9 +44,6 @@ function SerieId() {
         <p>Not Found</p>
       ) : (
         <div className=" h-screen w-screen bg-black">
-          {/* {Array.isArray(episodeId) &&
-            episodeId.map((item, index) => (
-              <div key={index}> */}
           <nav
             className={` ${
               isMouseMoving
@@ -73,8 +70,6 @@ function SerieId() {
             className=" h-full w-full"
             src={episodeId.video_url}
           ></video>
-          {/* </div>
-            ))} */}
         </div>
       )}
     </div>

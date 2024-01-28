@@ -15,8 +15,6 @@ interface OmiseCard {
 interface OmiseContextProps {
   setOmiseCard: Dispatch<SetStateAction<OmiseCard>>;
   omiseCard: OmiseCard;
-  // setStatus: React.Dispatch<React.SetStateAction<boolean>>;
-  // status: boolean;
   omiseCardHandler: () => Promise<void>;
 }
 
@@ -26,7 +24,6 @@ const omiseContext = React.createContext<OmiseContextProps | undefined>(
 
 function OmiseProvider(props: React.PropsWithChildren<object>) {
   const navigate = useNavigate();
-  // const [status, setStatus] = useState(false);
   const [omiseCard, setOmiseCard] = useState<OmiseCard>({
     cardNumber: "",
     cardName: "",
@@ -37,16 +34,6 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
   });
 
   const omiseCardHandler = async () => {
-    // Swal.fire({
-    //   title: "Please Wait!",
-    //   html: "Currently paying",
-    //   allowOutsideClick: false,
-    //   didOpen: () => {
-    //     Swal.showLoading();
-    //   },
-    // });
-    // setStatus(true);
-    console.log(omiseCard);
     const bodyFormData = new FormData();
 
     bodyFormData.append("card[expiration_month]", omiseCard.month);
@@ -54,10 +41,7 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
     bodyFormData.append("card[name]", omiseCard.cardName);
     bodyFormData.append("card[number]", omiseCard.cardNumber);
 
-    console.log(omiseCard, "");
-
     try {
-      console.log(0);
       const token = await axios.post(
         `https://vault.omise.co/tokens`,
         bodyFormData,
@@ -71,8 +55,6 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
           },
         }
       );
-      console.log(token.data.id);
-      console.log(1);
       const result = await axios.post(`pamentGateway`, {
         amount: Number(omiseCard.totalAmount) * 100,
         token: token.data.id,
@@ -80,17 +62,11 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
           "Content-Type": "application/json",
         },
       });
-      console.log(result);
 
       if (result.data.message === "successful") {
-        // setStatus(false);
-        // Swal.close();
         await Swal.fire("Payment Successful", "", "success");
         navigate("/login");
       }
-      // if (result.data.message === "authentication failed") {
-      //   await Swal.fire("Payment Failed", "", "error");
-      // }
     } catch (error) {
       console.log(error);
       await Swal.fire("Payment Failed", "", "error");
@@ -103,8 +79,6 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
         omiseCard,
         setOmiseCard,
         omiseCardHandler,
-        // setStatus,
-        // status,
       }}
     >
       {props.children}

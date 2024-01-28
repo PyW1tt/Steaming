@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Spin as Hamburger } from "hamburger-react";
-import Search from "./search";
+import Search from "./Search";
 import CreateMovie from "./CreateMovie";
 import CreatTVshows from "./CreateTVshows";
 import { useNavigate } from "react-router-dom";
@@ -132,7 +132,7 @@ function Sidebar(props: SidebarProps): JSX.Element {
               navigate("/");
             }}
           >
-            <img src="../../../public/icon/Logo.svg" alt="" />
+            <img src="../../../icon/Logo.svg" alt="" />
           </div>
           <p className="text-2xl font-bold leading-10 tracking-tight">
             Administrator

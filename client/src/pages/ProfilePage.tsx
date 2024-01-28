@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
 import useDataUser from "../hook/useDataUser";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -17,18 +17,8 @@ function ProfilePage() {
     getData();
   }, []);
 
-  // const userDataString = localStorage.getItem("userData");
-
-  // if (userDataString) {
-  //   const userData = JSON.parse(userDataString);
-  //   console.log(userData);
-  // } else {
-  //   console.error("userData is not available in localStorage");
-  // }
-
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
-    // console.log(e.target.files);
 
     if (selectedFile) {
       // นำออกไปเพื่อหลีกเลี่ยงการให้รูปภาพมี key ที่เป็น undefined
@@ -44,14 +34,8 @@ function ProfilePage() {
       newAvatars[0] = selectedFile;
 
       setAvatar(newAvatars);
-      // console.log(newAvatars[0]);
     }
   };
-  // const imgName = data?.img_name;
-  // const avatars = {
-  //   avatars: avatar[0],
-  // };
-  // console.log(avatar[0]);
 
   //package
   const monthlyPrice = 4.99;
@@ -60,7 +44,6 @@ function ProfilePage() {
     userData?.package === 1 ? `${monthlyPrice}/month` : `${yearlyPrice}/year`;
 
   //date start
-  // const isDate = new Date(data?.created_at);
   const isDate = new Date(userData?.created_at ?? "");
   const yyyy = isDate.getFullYear();
   const mm = String(isDate.getMonth() + 1).padStart(2, "0");

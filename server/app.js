@@ -5,6 +5,7 @@ import pamentGatewayRouter from "./routers/payment.js";
 import authRouter from "./routers/auth.js";
 import userRouter from "./routers/userData.js";
 import adminRouter from "./routers/adminData.js";
+import unauthenticatedRouter from "./routers/unauthenGetData.js";
 
 function init() {
   const app = express();
@@ -21,6 +22,8 @@ function init() {
   app.use("/user", userRouter);
   //admin
   app.use("/admin", adminRouter);
+  //unauthenticated
+  app.use("/unauthen", unauthenticatedRouter);
 
   app.get("/", (req, res) => {
     res.send("Hello World!");
