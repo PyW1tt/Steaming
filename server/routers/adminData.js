@@ -517,9 +517,11 @@ adminRouter.put("/updateMovie/:id", fileUpload, async (req, res) => {
   return res.status(200).json({ message: "update successful" });
 });
 
-adminRouter.get("/movies/:id", async (req, res) => {
+adminRouter.get("/:userId/movies/:id", async (req, res) => {
   try {
+    const userId = req.params.userId;
     const Id = req.params.id;
+    // console.log(userId);
     // console.log(Id);
     const result = await pool.query(
       `
@@ -554,11 +556,11 @@ adminRouter.get("/movies/:id", async (req, res) => {
         )), '[]'::jsonb) AS watch_list
       FROM data_movie
       LEFT JOIN cast_name ON data_movie.id = cast_name.data_movie_id
-      LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id
-      WHERE data_movie.id = $1
+      LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id AND watch_list.user_profile_id = $1
+      WHERE data_movie.id = $2
       GROUP BY data_movie.id
     `,
-      [Id]
+      [userId, Id]
     );
     // console.log(result.rows[0]);
     return res.status(200).json({ data: result.rows[0] });
@@ -571,10 +573,10 @@ adminRouter.get("/movies/:id", async (req, res) => {
   }
 });
 
-adminRouter.get("/series/:id", async (req, res) => {
+adminRouter.get("/:userId/series/:id", async (req, res) => {
   try {
+    const userId = req.params.userId;
     const id = req.params.id;
-
     const result = await pool.query(
       `
       SELECT
@@ -602,12 +604,12 @@ adminRouter.get("/series/:id", async (req, res) => {
       )), '[]'::jsonb) AS watch_list
     FROM data_series
     LEFT JOIN cast_name ON data_series.id = cast_name.data_series_id  
-    LEFT JOIN watch_list ON data_series.id = watch_list.data_series_id
-    WHERE data_series.id = $1
+    LEFT JOIN watch_list ON data_series.id = watch_list.data_series_id AND watch_list.user_profile_id = $1
+    WHERE data_series.id = $2
     GROUP BY data_series.id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at
     ORDER BY data_series.id;
     `,
-      [id]
+      [userId, id]
     );
     const episodes = await pool.query(
       `SELECT

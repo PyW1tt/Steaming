@@ -353,17 +353,27 @@ function useMedia() {
     }
   }
   async function getMoviesIdModal() {
+    const userDataString = localStorage.getItem("userData");
     const idMedia = localStorage.getItem("idMedia");
+
     // console.log(idMedia);
     try {
       setloading(true);
-      const result = await axios.get(`/admin/movies/${idMedia}`);
 
-      setDataMovieId(result.data.data);
-      setWatchList(result.data.data.watch_list[0].watchListAdd);
-      // console.log(result.data.data.watch_list[0].watchListAdd);
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const result = await axios.get(
+          `/admin/${userData.id}/movies/${idMedia}`
+        );
 
-      setloading(false);
+        setDataMovieId(result.data.data);
+        setWatchList(result.data.data.watch_list[0].watchListAdd);
+        // console.log(result.data.data.id);
+      }
+
+      setTimeout(() => {
+        setloading(false);
+      }, 1000);
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -371,18 +381,26 @@ function useMedia() {
     }
   }
   async function getSeriesIdModal() {
+    const userDataString = localStorage.getItem("userData");
     const idMedia = localStorage.getItem("idMedia");
     // console.log(idMedia);
     try {
       setloading(true);
-      const result = await axios.get(`/admin/series/${idMedia}`);
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
 
-      setWatchList(result.data.data.watch_list[0].watchListAdd);
-      setDataSeriesIdMedia(result.data.data);
+        const result = await axios.get(
+          `/admin/${userData.id}/series/${idMedia}`
+        );
 
-      // console.log(result.data.data.watch_list[0].watchListAdd);
+        setWatchList(result.data.data.watch_list[0].watchListAdd);
+        setDataSeriesIdMedia(result.data.data);
 
-      setloading(false);
+        // console.log(result.data.data.watch_list[0].watchListAdd);
+      }
+      setTimeout(() => {
+        setloading(false);
+      }, 1000);
     } catch (error) {
       setloading(false);
       setIsError(true);
@@ -390,14 +408,19 @@ function useMedia() {
     }
   }
   async function getMoviesById(id) {
-    // console.log(id);
-
     try {
       setloading(true);
-      const result = await axios.get(`/admin/movies/${id}`);
+      const userDataString = localStorage.getItem("userData");
 
-      setDataMovieId(result.data.data);
-      console.log(result.data.data);
+      if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        const result = await axios.get(`/admin/${userData.id}/movies/${id}`);
+
+        setDataMovieId(result.data.data);
+        // console.log(result.data.data);
+      } else {
+        console.error("userData is not available in localStorage");
+      }
 
       setloading(false);
     } catch (error) {
@@ -589,8 +612,12 @@ function useMedia() {
       if (userDataString) {
         const userData = JSON.parse(userDataString);
 
-        await axios.post(`/user/${userData.id}/watchList/${id}`, { type });
+        const result = await axios.post(
+          `/user/${userData.id}/watchList/${id}`,
+          { type }
+        );
         // console.log(result.data.data);
+        localStorage.setItem("watchListId", JSON.stringify(result.data.data));
       }
 
       // setEpisodeId(result.data.data);

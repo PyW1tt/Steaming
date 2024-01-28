@@ -82,10 +82,16 @@ function ModalSeries() {
                   <Button
                     className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      handleChangeWatchList(
-                        dataSeriesIdModadl.watch_list[0].watchListId,
-                        "false"
-                      );
+                      const watchList = localStorage.getItem("watchListId");
+                      if (watchList) {
+                        const idWatchList = JSON.parse(watchList);
+                        handleChangeWatchList(idWatchList, "false");
+                      } else {
+                        handleChangeWatchList(
+                          dataSeriesIdModadl.watch_list[0].watchListId,
+                          "false"
+                        );
+                      }
                       setWatchList(false);
                     }}
                   >
@@ -100,13 +106,20 @@ function ModalSeries() {
                   <Button
                     className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      {
-                        watch_list === null
-                          ? handleAddWatchList(dataSeriesIdModadl.id, "series")
-                          : handleChangeWatchList(
-                              dataSeriesIdModadl.watch_list[0].watchListId,
-                              "true"
-                            );
+                      if (watch_list === null) {
+                        localStorage.removeItem("watchListId");
+                        handleAddWatchList(dataSeriesIdModadl.id, "series");
+                      } else {
+                        const watchList = localStorage.getItem("watchListId");
+                        if (watchList) {
+                          const idWatchList = JSON.parse(watchList);
+                          handleChangeWatchList(idWatchList, "true");
+                        } else {
+                          handleChangeWatchList(
+                            dataSeriesIdModadl.watch_list[0].watchListId,
+                            "true"
+                          );
+                        }
                       }
                       setWatchList(true);
                     }}

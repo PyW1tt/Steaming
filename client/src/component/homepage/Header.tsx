@@ -15,16 +15,10 @@ import { useAuth } from "../../context/AuthContext";
 function Header(): React.JSX.Element {
   const auth = useAuth();
   const navigate = useNavigate();
-  const [refresh, setRefresh] = useState(true);
-  const { getAll, getAllWithId, dataMovies, loading, isError } = useDataUser();
-  const {
-    handleAddWatchList,
-    // watch_list,
-    // setWatchList,
-    handleChangeWatchList,
-  } = useMedia();
+  const { getAll, getAllWithId, dataMovies, loading, isError, setDataMovies } =
+    useDataUser();
+  const { handleAddWatchList, handleChangeWatchList } = useMedia();
   const limit = "10";
-  // console.log(watch_list);
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -32,7 +26,8 @@ function Header(): React.JSX.Element {
     } else {
       getAll("", limit);
     }
-  }, [refresh]);
+    // console.log(dataMovies);
+  }, []);
 
   return (
     <>
@@ -129,7 +124,7 @@ function Header(): React.JSX.Element {
                       className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                       onClick={() => {
                         if (item.type === "Movie") {
-                          navigate(`/movieId/${item.id}`);
+                          navigate(`/movieId/${item.series_id}`);
                         } else if (item.episodes && item.episodes.length > 0) {
                           // ตรวจสอบว่า item.episodes ไม่ใช่ null และมีข้อมูล
                           const sortedEpisodes = [...item.episodes].sort(
@@ -156,8 +151,91 @@ function Header(): React.JSX.Element {
                       />
                       Play Now
                     </Button>
+                    <Button
+                      className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                      onClick={() => {
+                        if (auth.isAuthenticated) {
+                          const currentWatchListAdd =
+                            item.watch_list[0].watchListAdd;
 
-                    {auth.isAuthenticated ? (
+                          if (currentWatchListAdd === true) {
+                            const watchList =
+                              localStorage.getItem("watchListId");
+                            if (watchList) {
+                              const idWatchList = JSON.parse(watchList);
+                              handleChangeWatchList(idWatchList, "false");
+                            } else {
+                              handleChangeWatchList(
+                                item.watch_list[0].watchListId,
+                                "false"
+                              );
+                            }
+
+                            const newDataMovies = [...dataMovies];
+                            newDataMovies[index].watch_list[0].watchListAdd =
+                              !newDataMovies[index].watch_list[0].watchListAdd;
+                            setDataMovies(newDataMovies);
+                          } else {
+                            if (item.watch_list[0].watchListAdd === null) {
+                              localStorage.removeItem("watchListId");
+                              handleAddWatchList(
+                                item.series_id,
+                                item.type === "Movie" ? "movie" : "series"
+                              );
+                              const newDataMovies = [...dataMovies];
+                              newDataMovies[index].watch_list[0].watchListAdd =
+                                true;
+                              setDataMovies(newDataMovies);
+                            } else {
+                              const watchList =
+                                localStorage.getItem("watchListId");
+                              if (watchList) {
+                                const idWatchList = JSON.parse(watchList);
+                                handleChangeWatchList(idWatchList, "true");
+                              } else {
+                                handleChangeWatchList(
+                                  item.watch_list[0].watchListId,
+                                  "true"
+                                );
+                              }
+
+                              const newDataMovies = [...dataMovies];
+                              newDataMovies[index].watch_list[0].watchListAdd =
+                                !newDataMovies[index].watch_list[0]
+                                  .watchListAdd;
+                              setDataMovies(newDataMovies);
+                            }
+                          }
+
+                          // setRefresh(!refresh);
+                        } else {
+                          navigate("*");
+                        }
+                      }}
+                    >
+                      {auth.isAuthenticated &&
+                      item.watch_list[0].watchListAdd === true ? (
+                        <>
+                          <img
+                            src="../../../icon/check.svg"
+                            alt=""
+                            className="mr-[10px]"
+                          />
+                          Watchlist
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src="../../../icon/bookmark.svg"
+                            alt=""
+                            className="mr-[10px]"
+                          />
+                          Add Watchlist
+                        </>
+                      )}
+                    </Button>
+
+                    {/* {auth.isAuthenticated ? (
                       item.watch_list[0].watchListAdd === true ? (
                         <Button
                           className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
@@ -218,7 +296,7 @@ function Header(): React.JSX.Element {
                         />
                         Add Watchlist
                       </Button>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </SwiperSlide>

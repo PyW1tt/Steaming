@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import data from "../../../hook/useMoviesData";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -8,22 +7,27 @@ import "./Swiper.css";
 import ModalMovie from "../../ModalMovie";
 import useOpenModal from "../../../hook/useOpenModal";
 import ModalSeries from "../../ModalSeries";
-// import { useDataMovie } from "../../../context/dataMovieContext";
 import useDataUser from "../../../hook/useDataUser";
 import { LoadingPopular } from "../../../pages/LoadingPage";
-// import useMedia from "../../../hook/adminHook/useMedia";
+import { useNavigate } from "react-router-dom";
 import { useDataMovie } from "../../../context/dataMovieContext";
+import { useAuth } from "../../../context/AuthContext";
 
 function Popular(): JSX.Element {
+  const auth = useAuth();
   const { openModalMoive, openModalseries } = useOpenModal();
   // const { setDataMovie } = useDataMovie();
-  const { getAll, dataMovies, loading, isError } = useDataUser();
-  // const { setIdMedia } = useMedia();
+  const { getAll, getAllWithId, dataMovies, loading, isError } = useDataUser();
+  const navigate = useNavigate();
   const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
   const limit = "10";
 
   useEffect(() => {
-    getAll("", limit);
+    if (auth.isAuthenticated) {
+      getAllWithId("", limit);
+    } else {
+      getAll("", limit);
+    }
   }, []);
   // console.log(dataMovies);
   return (
@@ -50,11 +54,17 @@ function Popular(): JSX.Element {
                 key={index}
                 className=" px-[20px] cursor-pointer py-6 relative flex justify-center it transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-110 duration-200"
                 onClick={() => {
-                  localStorage.setItem(
-                    "idMedia",
-                    JSON.stringify(item.series_id)
-                  );
-                  item.type === "Movie" ? openModalMoive() : openModalseries();
+                  if (auth.isAuthenticated) {
+                    localStorage.setItem(
+                      "idMedia",
+                      JSON.stringify(item.series_id)
+                    );
+                    item.type === "Movie"
+                      ? openModalMoive()
+                      : openModalseries();
+                  } else {
+                    navigate("*");
+                  }
                 }}
               >
                 <div className="w-[38px] flex items-center justify-center">

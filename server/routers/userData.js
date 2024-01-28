@@ -24,6 +24,9 @@ userRouter.post("/:userId/watchList/:mediaId", async (req, res) => {
 
       const result = await pool.query(query, value);
       // console.log(result.rows[0].id);
+      return res
+        .status(200)
+        .json({ data: result.rows[0].id, message: "Add watchlist successful" });
     }
   } catch (error) {
     console.log(error.message);
@@ -32,7 +35,6 @@ userRouter.post("/:userId/watchList/:mediaId", async (req, res) => {
       error_message: error,
     });
   }
-  return res.status(200).json({ message: "Add watchlist successful" });
 });
 userRouter.put("/watchList/:mediaId", async (req, res) => {
   const mediaId = req.params.mediaId;
@@ -320,53 +322,55 @@ userRouter.get("/:id/getAll", async (req, res) => {
   const id = req.params.id;
   let keywords = req.query.keywords;
   const limit = req.query.limit;
-  // console.log(keywords);
   let query = "";
   let values = [];
   try {
-    // console.log(id);
     if (keywords && limit) {
       keywords = "%" + keywords + "%";
       query = `
         SELECT 
-          data_series.id AS series_id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at,
-          NULL AS poster_url,
-          NULL AS video_url,
-          NULL AS hours,
-          NULL AS min,
-          COALESCE(jsonb_agg(jsonb_build_object(
-              'id', episodes.id,
-              'episodes_ep',episodes.episodes_ep,
-              'hours', episodes.hours,    
-              'min', episodes.min,  
-              'coverUrl', episodes.poster_url,    
-              'videoUrl', episodes.video_url
-          )), '[]'::jsonb) AS episodes,
-          COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
-            'watchListAdd', watch_list.add ,       
-            'watchListId' , watch_list.id
-          )), '[]'::jsonb) AS watch_list
-        FROM data_series
-        LEFT JOIN episodes ON data_series.id = episodes.data_series_id
-        LEFT JOIN watch_list ON data_series.id = watch_list.data_series_id
-        WHERE data_series.title ILIKE $1 OR data_series.author ILIKE $1 OR data_series.genres ILIKE $1
-        GROUP BY data_series.id 
-        UNION
-        SELECT 
-          data_movie.id AS movie_id, data_movie.title, data_movie.author, data_movie.release_date, data_movie.rating, data_movie.description, data_movie.type, data_movie.genres, data_movie.mpa, data_movie.thumbnail_name, data_movie.thumbnail_url, data_movie.created_at, data_movie.updated_at,
-          poster_url, video_url,hours, min,
-          NULL AS episodes,
-          COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
-            'watchListAdd', watch_list.add ,       
-            'watchListId' , watch_list.id
-          )), '[]'::jsonb) AS watch_list
-        FROM data_movie
-        LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id
-        WHERE data_movie.title ILIKE $2 OR data_movie.author ILIKE $2 OR data_movie.genres ILIKE $2
-        GROUP BY data_movie.id
-        ORDER BY rating DESC
-        LIMIT $3`;
-      values = [keywords, keywords, limit];
+        data_series.id AS series_id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at,
+        NULL AS poster_url,
+        NULL AS video_url,
+        NULL AS hours,
+        NULL AS min,
+        COALESCE(jsonb_agg(jsonb_build_object(
+            'id', episodes.id,
+            'episodes_ep', episodes.episodes_ep,
+            'hours', episodes.hours,    
+            'min', episodes.min,  
+            'coverUrl', episodes.poster_url,    
+            'videoUrl', episodes.video_url
+        )), '[]'::jsonb) AS episodes,
+        COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
+          'watchListAdd', watch_list.add ,       
+          'watchListId' , watch_list.id,
+          'seriesId' , watch_list.user_profile_id,
+          'userId' , watch_list.user_profile_id
+        )), '[]'::jsonb) AS watch_list
+      FROM data_series
+      LEFT JOIN episodes ON data_series.id = episodes.data_series_id
+      LEFT JOIN watch_list ON data_series.id = watch_list.data_series_id AND watch_list.user_profile_id = $1
+      WHERE (data_series.title ILIKE $2 OR data_series.author ILIKE $2 OR data_series.genres ILIKE $2)
+      GROUP BY data_series.id 
+      UNION
+      SELECT 
+        data_movie.id AS movie_id, data_movie.title, data_movie.author, data_movie.release_date, data_movie.rating, data_movie.description, data_movie.type, data_movie.genres, data_movie.mpa, data_movie.thumbnail_name, data_movie.thumbnail_url, data_movie.created_at, data_movie.updated_at,
+        poster_url, video_url, hours, min,
+        NULL AS episodes,
+        COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
+          'watchListAdd', watch_list.add ,       
+          'watchListId' , watch_list.id,
+          'movieId' , watch_list.user_profile_id,
+          'userId' , watch_list.user_profile_id
+        )), '[]'::jsonb) AS watch_list
+      FROM data_movie
+      LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id AND watch_list.user_profile_id = $3
+      WHERE (data_movie.title ILIKE $4 OR data_movie.author ILIKE $4 OR data_movie.genres ILIKE $4)     
+      GROUP BY data_movie.id
+      ORDER BY rating DESC
+      LIMIT $5;`;
+      values = [id, keywords, id, keywords, limit];
     } else if (limit) {
       query = `SELECT 
       data_series.id AS series_id, data_series.title, data_series.author, data_series.release_date, data_series.rating, data_series.description, data_series.type, data_series.genres, data_series.mpa, data_series.thumbnail_name, data_series.thumbnail_url, data_series.created_at, data_series.updated_at,
@@ -384,10 +388,12 @@ userRouter.get("/:id/getAll", async (req, res) => {
       )), '[]'::jsonb) AS episodes,
       COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
         'watchListAdd', watch_list.add ,       
-        'watchListId' , watch_list.id
+        'watchListId' , watch_list.id,
+        'seriesId' , watch_list.user_profile_id,
+        'userId' , watch_list.user_profile_id
 )), '[]'::jsonb) AS watch_list
         FROM data_series
-  LEFT JOIN watch_list ON data_series.id= watch_list.data_series_id
+  LEFT JOIN watch_list ON data_series.id= watch_list.data_series_id AND watch_list.user_profile_id = $1
   LEFT JOIN episodes ON data_series.id = episodes.data_series_id
     GROUP BY data_series.id 
   UNION
@@ -397,17 +403,19 @@ userRouter.get("/:id/getAll", async (req, res) => {
       NULL AS episodes,
       COALESCE(jsonb_agg(DISTINCT jsonb_build_object(
         'watchListAdd', watch_list.add ,       
-        'watchListId' , watch_list.id
+        'watchListId' , watch_list.id,
+        'movieId' , watch_list.user_profile_id,
+        'userId' , watch_list.user_profile_id
 )), '[]'::jsonb) AS watch_list 
         FROM data_movie
-  LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id
+  LEFT JOIN watch_list ON data_movie.id = watch_list.data_movie_id AND watch_list.user_profile_id = $2
     GROUP BY data_movie.id
   ORDER BY rating DESC
-        limit $1`;
-      values = [limit];
+        limit $3`;
+      values = [id, id, limit];
     }
     const result = await pool.query(query, values);
-    // console.log(result.rows[0].episodes);
+    // console.log(result.rows[0].watch_list);
     return res.status(200).json({ data: result.rows });
   } catch (error) {
     console.log(error);

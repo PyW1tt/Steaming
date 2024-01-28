@@ -48,7 +48,7 @@ export function LoadingPopular() {
           <Skeleton className="h-4 w-[90px] rounded-2xl" />
         </div>
       </div>
-      <div className="w-[377px] h-[176] px-[20px] py-6 relative flex justify-center">
+      {/* <div className="w-[377px] h-[176] px-[20px] py-6 relative flex justify-center">
         <div className="mx-3">
           <Skeleton className="w-[107px] h-32 rounded-2xl" />
         </div>
@@ -91,19 +91,19 @@ export function LoadingPopular() {
           <Skeleton className="h-4 w-[50px] rounded-2xl" />
           <Skeleton className="h-4 w-[90px] rounded-2xl" />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
 export function LoadingRelease() {
   return (
-    <div className="flex  py-6 justify-between pl-[33px] pr-[30px]">
+    <div className="flex  py-6 justify-between pl-[33px] pr-[30px] ">
+      <Skeleton className="w-[220px] h-[300px] rounded-2xl " />
+      {/* <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
       <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
       <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
       <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
-      <Skeleton className="w-[220px] h-[300px] rounded-2xl" />
+      <Skeleton className="w-[220px] h-[300px] rounded-2xl" /> */}
     </div>
   );
 }
@@ -115,7 +115,7 @@ export function LoadingWatchist() {
         <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
         <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
       </div>
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
         <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
         <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
@@ -134,7 +134,7 @@ export function LoadingWatchist() {
         <Skeleton className="w-[280px] h-[160px] rounded-2xl" />
         <Skeleton className="h-4 w-[200px] rounded-2xl mt-3" />
         <Skeleton className="h-4 w-[150px] rounded-2xl mt-2" />
-      </div>
+      </div> */}
     </div>
   );
 }

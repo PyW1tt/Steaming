@@ -89,14 +89,6 @@ function Navbar(props: NavbarProps): JSX.Element {
             >
               My List
             </Link>
-            {userData.role === "admin" && (
-              <Link
-                to="/adminSearch"
-                className={` hover:text-emerald-500 ${"font-normal"}`}
-              >
-                Admin
-              </Link>
-            )}
           </div>
         ) : (
           <div>

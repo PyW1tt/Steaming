@@ -4,18 +4,14 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Navigation } from "swiper/modules";
 import "./Swiper.css";
-import ModalMovie from "../../ModalMovie";
-import ModalSeries from "../../ModalSeries";
-import useOpenModal from "../../../hook/useOpenModal";
 import { LoadingRelease } from "../../../pages/LoadingPage";
 import useDataUser from "../../../hook/useDataUser";
-import { useDataMovie } from "../../../context/dataMovieContext";
+import { useNavigate } from "react-router-dom";
 
 function Series() {
   const [hoveredItem, setHoveredItem] = useState<unknown>(null);
-  const { openModalMoive, openModalseries } = useOpenModal();
   const { getSeries, dataMovies, loading, isError } = useDataUser();
-  const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getSeries();
@@ -44,8 +40,7 @@ function Series() {
                 onMouseEnter={() => setHoveredItem(index)}
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => {
-                  localStorage.setItem("idMedia", JSON.stringify(item.id));
-                  item.type === "Movie" ? openModalMoive() : openModalseries();
+                  navigate("*");
                 }}
               >
                 <img
@@ -78,8 +73,6 @@ function Series() {
           })}
         </Swiper>
       )}
-      {isModalMovieOpen && <ModalMovie />}
-      {isModalSeriesOpen && <ModalSeries />}
     </div>
   );
 }

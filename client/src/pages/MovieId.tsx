@@ -9,6 +9,7 @@ function MovieId() {
   const { loading, isError, getMoviesById, dataMovieId } = useMedia();
   const navigate = useNavigate();
   const param = useParams();
+  // console.log(param.id);
 
   useEffect(() => {
     getMoviesById(param.id);

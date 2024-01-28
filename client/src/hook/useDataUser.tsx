@@ -27,6 +27,7 @@ function useDataUser() {
     {
       // id: "",
       id: "",
+      series_id: "",
       title: "",
       author: "",
       release_date: "",
@@ -56,7 +57,7 @@ function useDataUser() {
           videoUrl: "",
         },
       ],
-      watch_list: [{ watchListId: "", watchListAdd: true }],
+      watch_list: [{ watchListId: "", watchListAdd: true, id: "" }],
     },
   ]);
   const { userData, setUserData } = useAuth();
@@ -183,7 +184,7 @@ function useDataUser() {
       );
 
       setDataMovies(result.data.data);
-      console.log(result.data.data);
+      // console.log(result.data.data);
       // } else {
       //   console.error("userData is not available in localStorage");
       // }
@@ -256,6 +257,7 @@ function useDataUser() {
     getSeries,
     getMyLists,
     getAllWithId,
+    setDataMovies,
     // watch_list,
     // setWatchList,
   };

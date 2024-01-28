@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingGenres } from "../../../pages/LoadingPage";
 import useDataUser from "../../../hook/useDataUser";
 import { useAuth } from "../../../context/AuthContext";
+import useMedia from "../../../hook/adminHook/useMedia";
 interface genres {
   genres: string;
   img: string;
@@ -78,7 +79,9 @@ function Genres(): JSX.Element {
   const auth = useAuth();
   const [nameGenres, setNameGenres] = useState<string>("Action");
   const navigate = useNavigate();
-  const { loading, isError, dataMovies, getAll, getAllWithId } = useDataUser();
+  const { loading, isError, dataMovies, getAll, getAllWithId, setDataMovies } =
+    useDataUser();
+  const { handleAddWatchList, handleChangeWatchList } = useMedia();
   const limit = "5";
 
   useEffect(() => {
@@ -190,7 +193,7 @@ function Genres(): JSX.Element {
                             className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                             onClick={() => {
                               if (item.type === "Movie") {
-                                navigate(`/movieId/${item.id}`);
+                                navigate(`/movieId/${item.series_id}`);
                               } else if (
                                 item.episodes &&
                                 item.episodes.length > 0
@@ -221,70 +224,100 @@ function Genres(): JSX.Element {
                             Play Now
                           </Button>
 
-                          {auth.isAuthenticated ? (
+                          <Button
+                            className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
+                            onClick={() => {
+                              if (auth.isAuthenticated) {
+                                const currentWatchListAdd =
+                                  item.watch_list[0].watchListAdd;
+
+                                if (currentWatchListAdd === true) {
+                                  const watchList =
+                                    localStorage.getItem("watchListId");
+                                  if (watchList) {
+                                    const idWatchList = JSON.parse(watchList);
+                                    handleChangeWatchList(idWatchList, "false");
+                                  } else {
+                                    handleChangeWatchList(
+                                      item.watch_list[0].watchListId,
+                                      "false"
+                                    );
+                                  }
+
+                                  const newDataMovies = [...dataMovies];
+                                  newDataMovies[
+                                    index
+                                  ].watch_list[0].watchListAdd =
+                                    !newDataMovies[index].watch_list[0]
+                                      .watchListAdd;
+                                  setDataMovies(newDataMovies);
+                                } else {
+                                  if (
+                                    item.watch_list[0].watchListAdd === null
+                                  ) {
+                                    localStorage.removeItem("watchListId");
+                                    handleAddWatchList(
+                                      item.series_id,
+                                      item.type === "Movie" ? "movie" : "series"
+                                    );
+                                    const newDataMovies = [...dataMovies];
+                                    newDataMovies[
+                                      index
+                                    ].watch_list[0].watchListAdd = true;
+                                    setDataMovies(newDataMovies);
+                                  } else {
+                                    const watchList =
+                                      localStorage.getItem("watchListId");
+                                    if (watchList) {
+                                      const idWatchList = JSON.parse(watchList);
+                                      handleChangeWatchList(
+                                        idWatchList,
+                                        "true"
+                                      );
+                                    } else {
+                                      handleChangeWatchList(
+                                        item.watch_list[0].watchListId,
+                                        "true"
+                                      );
+                                    }
+
+                                    const newDataMovies = [...dataMovies];
+                                    newDataMovies[
+                                      index
+                                    ].watch_list[0].watchListAdd =
+                                      !newDataMovies[index].watch_list[0]
+                                        .watchListAdd;
+                                    setDataMovies(newDataMovies);
+                                  }
+                                }
+
+                                // setRefresh(!refresh);
+                              } else {
+                                navigate("*");
+                              }
+                            }}
+                          >
+                            {auth.isAuthenticated &&
                             item.watch_list[0].watchListAdd === true ? (
-                              <Button
-                                className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                                onClick={() => {
-                                  handleChangeWatchList(
-                                    item.watch_list[0].watchListId,
-                                    "false"
-                                  );
-                                  // setWatchList(false);
-                                  setRefresh(!refresh);
-                                }}
-                              >
+                              <>
                                 <img
                                   src="../../../icon/check.svg"
                                   alt=""
                                   className="mr-[10px]"
                                 />
                                 Watchlist
-                              </Button>
+                              </>
                             ) : (
-                              <Button
-                                className="bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                                onClick={() => {
-                                  if (
-                                    item.watch_list[0].watchListAdd === null
-                                  ) {
-                                    handleAddWatchList(
-                                      item.id,
-                                      item.type === "Movie" ? "movie" : "series"
-                                    );
-                                  } else {
-                                    handleChangeWatchList(
-                                      item.watch_list[0].watchListId,
-                                      "true"
-                                    );
-                                  }
-                                  // setWatchList(true);
-                                  setRefresh(!refresh);
-                                }}
-                              >
+                              <>
                                 <img
                                   src="../../../icon/bookmark.svg"
                                   alt=""
                                   className="mr-[10px]"
                                 />
                                 Add Watchlist
-                              </Button>
-                            )
-                          ) : (
-                            <Button
-                              className="bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                              onClick={() => {
-                                navigate("*");
-                              }}
-                            >
-                              <img
-                                src="../../../icon/bookmark.svg"
-                                alt=""
-                                className="mr-[10px]"
-                              />
-                              Add Watchlist
-                            </Button>
-                          )}
+                              </>
+                            )}
+                          </Button>
                         </div>
                       </div>
                     </div>
@@ -311,7 +344,7 @@ function Genres(): JSX.Element {
                     className=" h-[110px] relative cursor-pointer pl-[25px] pr-[30px]"
                     onClick={() => {
                       setNameGenres(item.genres);
-                      getAll(item.genres, limit);
+                      getAllWithId(item.genres, limit);
                     }}
                   >
                     <div

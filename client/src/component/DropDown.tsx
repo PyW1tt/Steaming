@@ -34,9 +34,21 @@ function DropDown() {
               navigate(`/profile/${userData?.id}`);
             }}
           >
-            <img src="../../public/icon/icon=user.svg" alt="" />
+            <img src="../../icon/icon=user.svg" alt="" />
             <span className="text-slate-400 text-base ml-1 ">Profile</span>
           </DropdownMenuItem>
+          <DropdownMenuSeparator className="my-2" />
+          {userData.role === "admin" && (
+            <DropdownMenuItem
+              className="hover:cursor-pointer "
+              onClick={() => {
+                navigate(`/adminSearch`);
+              }}
+            >
+              <img src="../../icon/admin.svg" alt="" />
+              <span className="text-slate-400 text-base ml-1 ">Admin</span>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator className="my-2" />
           <DropdownMenuItem className="hover:cursor-pointer">
             <div
@@ -45,7 +57,7 @@ function DropDown() {
                 logout();
               }}
             >
-              <img src="../../public/icon/icon=logout.svg" alt="" />
+              <img src="../../icon/icon=logout.svg" alt="" />
               <span className="text-slate-400 text-base ml-1">Log Out</span>
             </div>
           </DropdownMenuItem>

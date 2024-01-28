@@ -49,7 +49,10 @@ function WatchList(): JSX.Element {
                     key={index}
                     className="pl-[35px] pr-[25px] cursor-pointer flex flex-col py-6 items-center "
                     onClick={() => {
-                      localStorage.setItem("idMedia", JSON.stringify(item.id));
+                      localStorage.setItem(
+                        "idMedia",
+                        JSON.stringify(item.series_id)
+                      );
                       item.type === "Movie"
                         ? openModalMoive()
                         : openModalseries();

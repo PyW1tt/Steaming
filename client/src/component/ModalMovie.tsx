@@ -72,6 +72,8 @@ function ModalMovie() {
                 <Button
                   className="w-[180px] h-[46px] px-6 py-3 text-sm font-bold bg-emerald-600 hover:bg-emerald-400 mr-5"
                   onClick={() => {
+                    console.log(dataMovieId.id);
+
                     navigate(`/movieId/${dataMovieId.id}`);
                     closeModalMoive();
                     localStorage.removeItem("idMedia");
@@ -89,10 +91,16 @@ function ModalMovie() {
                   <Button
                     className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      handleChangeWatchList(
-                        dataMovieId.watch_list[0].watchListId,
-                        "false"
-                      );
+                      const watchList = localStorage.getItem("watchListId");
+                      if (watchList) {
+                        const idWatchList = JSON.parse(watchList);
+                        handleChangeWatchList(idWatchList, "false");
+                      } else {
+                        handleChangeWatchList(
+                          dataMovieId.watch_list[0].watchListId,
+                          "false"
+                        );
+                      }
                       setWatchList(false);
                     }}
                   >
@@ -107,13 +115,20 @@ function ModalMovie() {
                   <Button
                     className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
                     onClick={() => {
-                      {
-                        watch_list === null
-                          ? handleAddWatchList(dataMovieId.id, "movie")
-                          : handleChangeWatchList(
-                              dataMovieId.watch_list[0].watchListId,
-                              "true"
-                            );
+                      if (watch_list === null) {
+                        localStorage.removeItem("watchListId");
+                        handleAddWatchList(dataMovieId.id, "movie");
+                      } else {
+                        const watchList = localStorage.getItem("watchListId");
+                        if (watchList) {
+                          const idWatchList = JSON.parse(watchList);
+                          handleChangeWatchList(idWatchList, "true");
+                        } else {
+                          handleChangeWatchList(
+                            dataMovieId.watch_list[0].watchListId,
+                            "true"
+                          );
+                        }
                       }
                       setWatchList(true);
                     }}
@@ -126,44 +141,6 @@ function ModalMovie() {
                     Add Watchlist
                   </Button>
                 )}
-                {/* {watch_list === null || watch_list === "false" ? (
-                  <Button
-                    className=" bg-inherit w-[180px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                    onClick={() => {
-                      {
-                        watch_list === null
-                          ? handleAddWatchList(dataMovieId.id, "movie")
-                          : console.log("123");
-                      }
-                      setWatchList("true");
-                    }}
-                  >
-                    <img
-                      src="../../../icon/bookmark.svg"
-                      alt=""
-                      className="mr-[10px]"
-                    />
-                    Add Watchlist
-                  </Button>
-                ) : (
-                  <Button
-                    className=" bg-inherit w-[150px] h-[46px] px-6 py-3 rounded-[10px] text-sm font-bold border hover:bg-zinc-500 cursor-pointer flex"
-                    onClick={() => {
-                      handleChangeWatchList(
-                        dataMovieId.watch_list[0].watchListId,
-                        "false"
-                      );
-                      setWatchList("false");
-                    }}
-                  >
-                    <img
-                      src="../../../icon/check.svg"
-                      alt=""
-                      className="mr-[10px]"
-                    />
-                    Watchlist
-                  </Button>
-                )} */}
               </div>
             </div>
           </div>

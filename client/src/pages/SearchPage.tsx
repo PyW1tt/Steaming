@@ -1,15 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Input } from "@/components/ui/input";
-// import Navbar from "../component/Navbar";
-// import List from "../component/List";
 import { useNavigate } from "react-router-dom";
 import useDataUser from "../hook/useDataUser";
 import NotFoundPage from "./NotFoundPage";
 import { Skeleton } from "@/components/ui/skeleton";
+import ModalMovie from "../component/ModalMovie";
+import ModalSeries from "../component/ModalSeries";
+import useOpenModal from "../hook/useOpenModal";
+import { useDataMovie } from "../context/dataMovieContext";
+
+type MyFunctionType = (keywords: string, limit: string) => Promise<void>;
 
 function SearchPage() {
   const [keywords, setKeywords] = useState("");
   const { loading, isError, dataMovies, getAll } = useDataUser();
+  const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
+  const { openModalMoive, openModalseries } = useOpenModal();
   const navigate = useNavigate();
   const limit = "100";
 
@@ -25,6 +31,7 @@ function SearchPage() {
       }, 850);
     };
   };
+
   const optimizedFn = useCallback(debounce(getAll), []);
 
   useEffect(() => {
@@ -63,7 +70,6 @@ function SearchPage() {
       {loading ? (
         <div className="flex gap-2 h-screen">
           <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-gradient-to-t from-black from-15%" />
-          {/* <Skeleton className="w-[220px] h-[300px] rounded-2xl bg-slate-700" /> */}
         </div>
       ) : isError ? (
         <NotFoundPage />
@@ -75,11 +81,13 @@ function SearchPage() {
                 key={index}
                 className="relative hover:z-30  cursor-pointer transition ease-in-out delay-[50ms] hover:-translate-y-1 hover:scale-95 duration-200 flex justify-center"
                 onClick={() => {
-                  if (item.type === "Movie") {
-                    navigate(`/updateMovie/${item.series_id}`);
-                  } else {
-                    navigate(`/updateTVshows/${item.series_id}`);
-                  }
+                  console.log(item.series_id);
+
+                  localStorage.setItem(
+                    "idMedia",
+                    JSON.stringify(item.series_id)
+                  );
+                  item.type === "Movie" ? openModalMoive() : openModalseries();
                 }}
               >
                 <img
@@ -114,6 +122,8 @@ function SearchPage() {
           })}
         </div>
       )}
+      {isModalMovieOpen && <ModalMovie />}
+      {isModalSeriesOpen && <ModalSeries />}
     </div>
   );
 }

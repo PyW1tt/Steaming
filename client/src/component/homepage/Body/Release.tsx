@@ -10,13 +10,17 @@ import useOpenModal from "../../../hook/useOpenModal";
 import { LoadingRelease } from "../../../pages/LoadingPage";
 import useDataUser from "../../../hook/useDataUser";
 import { useDataMovie } from "../../../context/dataMovieContext";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 function Release(): JSX.Element {
+  const auth = useAuth();
   const [hoveredItem, setHoveredItem] = useState<unknown>(null);
   const { openModalMoive, openModalseries } = useOpenModal();
   const { getRelease, dataMovies, loading, isError } = useDataUser();
   const { isModalMovieOpen, isModalSeriesOpen } = useDataMovie();
   const limit = "10";
+  const navigate = useNavigate();
 
   useEffect(() => {
     getRelease(limit);
@@ -47,8 +51,17 @@ function Release(): JSX.Element {
                 onMouseEnter={() => setHoveredItem(index)}
                 onMouseLeave={() => setHoveredItem(null)}
                 onClick={() => {
-                  localStorage.setItem("idMedia", JSON.stringify(item.id));
-                  item.type === "Movie" ? openModalMoive() : openModalseries();
+                  if (auth.isAuthenticated) {
+                    localStorage.setItem(
+                      "idMedia",
+                      JSON.stringify(item.series_id)
+                    );
+                    item.type === "Movie"
+                      ? openModalMoive()
+                      : openModalseries();
+                  } else {
+                    navigate("*");
+                  }
                 }}
               >
                 <img
