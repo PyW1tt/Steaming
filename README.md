@@ -25,7 +25,7 @@ This project is a web-based movie and series streaming platform.
 1. **Authentication:**
    - Users can log in, log out, and register.
    - Payment gateway system for subscription.
-   - 
+     
 ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/b975aa33-ee71-43b5-8758-975c5b481216)  ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/cbe890de-7489-4e07-8a3d-8dc8c8fca917)
 
 2. **User System:**
