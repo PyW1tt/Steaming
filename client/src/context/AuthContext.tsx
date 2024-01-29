@@ -79,7 +79,7 @@ function AuthProvider(props: React.PropsWithChildren<object>) {
     });
     try {
       await axios.post("/auth/register", data);
-      omiseCardHandler();
+      await omiseCardHandler();
     } catch (error) {
       console.log(error);
       Swal.close();

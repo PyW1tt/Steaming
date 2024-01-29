@@ -64,7 +64,12 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
       });
 
       if (result.data.message === "successful") {
-        await Swal.fire("Payment Successful", "", "success");
+        await Swal.fire({
+          icon: "success",
+          title: "Payment Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/login");
       }
     } catch (error) {
