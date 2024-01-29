@@ -1,6 +1,10 @@
 # Movie Streaming Project
-![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/e3d7c096-cbd0-4d35-8c26-256d88993234)
+-Before Login
 ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/974302e1-4467-4f67-8a72-928132cbf045)
+
+-After Login
+![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/602fbb46-bf89-4c61-a7cd-895e08c69b4b)
+
 
 ## Introduction
 This project is a web-based movie and series streaming platform.
