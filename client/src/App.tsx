@@ -5,7 +5,7 @@ import Unauthentication from "./pages/Unauthentication";
 import { useAuth } from "./context/AuthContext";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = "https://streaming-server.onrender.com/";
 
 function App() {
   const auth = useAuth();
