@@ -36,7 +36,7 @@ Debit card number can use
 
 ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/4bd296e6-22a6-4c35-b516-ccfca2f44e61)
 
-or (See [Omise Documentation](https://docs.opn.ooo/th/api-testing/thailand)) 
+(See [Omise Documentation](https://docs.opn.ooo/th/api-testing/thailand)) 
 
 2. **User System:**
    - Users can select movies to watch or add them to their watchlist.
