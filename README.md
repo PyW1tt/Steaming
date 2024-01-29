@@ -26,7 +26,15 @@ This project is a web-based movie and series streaming platform.
    - Users can log in, log out, and register.
    - Payment gateway system for subscription.
      
-![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/b975aa33-ee71-43b5-8758-975c5b481216)  ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/cbe890de-7489-4e07-8a3d-8dc8c8fca917)
+![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/b975aa33-ee71-43b5-8758-975c5b481216)  
+
+![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/cbe890de-7489-4e07-8a3d-8dc8c8fca917)
+
+Debit card number can use
+
+![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/4bd296e6-22a6-4c35-b516-ccfca2f44e61)
+
+or (See [Omise Documentation](https://docs.opn.ooo/th/api-testing/thailand)) 
 
 2. **User System:**
    - Users can select movies to watch or add them to their watchlist.
