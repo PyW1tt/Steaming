@@ -18,7 +18,7 @@ function RegisterPage() {
                 colorBg={step === "register" ? "#000" : "#10b981"}
                 colorNum={step === "register" ? "#10b981" : "#fff"}
               />
-              <span className="mt-1">Information</span>
+              <span className="mt-1 text-white">Information</span>
             </div>
             <div className="flex flex-col items-center">
               <Step2
@@ -37,14 +37,14 @@ function RegisterPage() {
                     : ""
                 }
               />
-              <span className="mt-1">Choose Package</span>
+              <span className="mt-1 text-white">Choose Package</span>
             </div>
             <div className=" flex flex-col items-center">
               <Step3
                 colorBg={step === "payment" ? "#000" : ""}
                 colorNum={step === "payment" ? "#10b981" : ""}
               />
-              <span className="mt-1">Payment</span>
+              <span className="mt-1 text-white">Payment</span>
             </div>
           </div>
           {step === "register" && <Register setStep={setStep} />}
