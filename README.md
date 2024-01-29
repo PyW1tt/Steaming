@@ -1,9 +1,9 @@
 # Movie Streaming Project
--Before Login
+- Before Login
 
 ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/974302e1-4467-4f67-8a72-928132cbf045)
 
--After Login
+- After Login
 
 ![image](https://github.com/PyW1tt/sideProjectByTypeScript/assets/136727247/602fbb46-bf89-4c61-a7cd-895e08c69b4b)
 
