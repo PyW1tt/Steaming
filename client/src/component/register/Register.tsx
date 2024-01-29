@@ -137,7 +137,7 @@ function Register(prop: PropState): JSX.Element {
           <p className="text-gray-400 text-sm font-normal text-center mt-6">
             Already have an account? &nbsp;
             <Link
-              to="http://localhost:5173/login"
+              to="/login"
               className=" text-sm font-bold hover:text-emerald-500 text-white"
             >
               Login
