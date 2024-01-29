@@ -10,7 +10,7 @@
 
 ## Introduction
 This project is a web-based movie and series streaming platform.
-* responsive desktop only *
+** responsive desktop only 
 
 ## How to Use
 1. Clone the project to your local machine.
