@@ -66,7 +66,7 @@ function OmiseProvider(props: React.PropsWithChildren<object>) {
       if (result.data.message === "successful") {
         await Swal.fire({
           icon: "success",
-          title: "Payment Successful",
+          title: "Register Successful , Please confirm your email",
           showConfirmButton: false,
           timer: 1500,
         });
