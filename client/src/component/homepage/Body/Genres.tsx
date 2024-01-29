@@ -152,7 +152,11 @@ function Genres(): JSX.Element {
                             {item.title}
                           </p>
                           <div className=" mt-2 text-sm font-normal flex ">
-                            <img src="../../../..icon/star.svg" alt="" />
+                            <img src="../../../icon/star.svg" alt="" />
+                            <span className="text-gray-400 mt-1">
+                              {item.rating}
+                            </span>
+                            <p className="text-gray-500 ml-1 mt-1">•</p>
                             <div className="flex mt-1">
                               <span className="text-gray-400 ml-1">
                                 {item.type === "Movie" ? (

@@ -176,7 +176,7 @@ function UpdateTVshows() {
     }
   };
   const handleChange = (key: string, value: string) => {
-    console.log({ [key]: value });
+    // console.log({ [key]: value });
 
     setDataSeriesId((prevData) => ({
       ...prevData,
