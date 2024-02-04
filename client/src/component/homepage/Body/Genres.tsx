@@ -22,11 +22,11 @@ interface genres {
 const genres: genres[] = [
   {
     genres: "Action",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706024510229",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1705753245194",
   },
   {
     genres: "Drama",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706021762753",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706114164778",
   },
   {
     genres: "Romance",
@@ -46,11 +46,11 @@ const genres: genres[] = [
   },
   {
     genres: "Adventure",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706025135090",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/series_img/cover/1706027150251",
   },
   {
     genres: "Crime",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706110951597",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706111281013",
   },
   {
     genres: "Mystery",
@@ -58,7 +58,7 @@ const genres: genres[] = [
   },
   {
     genres: "Animation",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706027982702",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706028207105",
   },
   {
     genres: "Historical",
@@ -70,7 +70,7 @@ const genres: genres[] = [
   },
   {
     genres: "Comedy",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706110575652",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706110108889",
   },
   {
     genres: "Horror",
