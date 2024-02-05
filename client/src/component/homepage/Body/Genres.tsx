@@ -22,7 +22,7 @@ interface genres {
 const genres: genres[] = [
   {
     genres: "Action",
-    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1705753245194",
+    img: "https://upxngjsfgvqqgbsapppe.supabase.co/storage/v1/object/public/img/movie_img/poster/1706022573824",
   },
   {
     genres: "Drama",
